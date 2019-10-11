@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\97ran\Documents\GitHub\Legend-Of-Peach\venv"
+set "VIRTUAL_ENV=C:\Users\97ran\Desktop\LegendOfPeach\venv"
 
 if not defined PROMPT (
     set "PROMPT=$P$G"

@@ -1,4 +1,4 @@
-#!C:\Users\97ran\Documents\GitHub\Legend-Of-Peach\venv\Scripts\python.exe
+#!C:\Users\97ran\Desktop\LegendOfPeach\venv\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'setuptools==40.8.0','console_scripts','easy_install'
 __requires__ = 'setuptools==40.8.0'
 import re
