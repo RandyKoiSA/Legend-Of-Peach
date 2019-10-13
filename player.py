@@ -51,8 +51,10 @@ class Player(Sprite):
 
             # If camera hits the very right screen, player can move upon half the screen
             if self.rect.right > self.screen_rect.right:
-                self.rect = self.screen_rect.right
+                self.rect.right = self.screen_rect.right
                 self.camera.player_hit_right_screen = True
+            elif self.rect.right < self.screen_rect.right:
+                self.camera.player_hit_right_screen = False
 
 
             # Move camera respective to player movement

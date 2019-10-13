@@ -87,19 +87,22 @@ class GameScreen:
 
     def update_collision(self):
         # Player has hit the ground or wall
-        for collision in self.background_collisions:
-            if collision.rect.colliderect(self.player_group.sprite.rect):
-                # check if the player is standing on top
-                if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
-                    self.player_group.sprite.rect.bottom = collision.rect.top
-                    self.player_group.sprite.jump_left = 1
-                else:
-                    # check if the player hits the left wall
-                    if self.player_group.sprite.rect.right < collision.rect.left + 20:
-                        self.player_group.sprite.rect.right = collision.rect.left
-                    # check if the player hits the right wall
-                    if self.player_group.sprite.rect.left > collision.rect.right - 20:
-                        self.player_group.sprite.rect.left = collision.rect.right
+        try:
+            for collision in self.background_collisions:
+                if collision.rect.colliderect(self.player_group.sprite.rect):
+                    # check if the player is standing on top
+                    if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
+                        self.player_group.sprite.rect.bottom = collision.rect.top
+                        self.player_group.sprite.jump_left = 1
+                    else:
+                        # check if the player hits the left wall
+                        if self.player_group.sprite.rect.right < collision.rect.left + 20:
+                            self.player_group.sprite.rect.right = collision.rect.left
+                        # check if the player hits the right wall
+                        if self.player_group.sprite.rect.left > collision.rect.right - 20:
+                            self.player_group.sprite.rect.left = collision.rect.right
+        except Exception:
+            print("Player Rect error")
 
 
     def update_camera(self):
