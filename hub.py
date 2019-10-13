@@ -2,6 +2,8 @@ import pygame
 from screens.game_screen import GameScreen
 from controller import Controller
 from camera import Camera
+from gamemode import GameMode
+
 
 class Hub:
     """ Hub class, provides a central module to hold all the propertie that are constantly being accessed """
@@ -16,6 +18,7 @@ class Hub:
         self.BG_COLOR = (135, 206, 235)
         self.FRATERATE = 60
 
+        self.gamemode = GameMode(self)
         self.controller = Controller(self)
         self.camera = Camera(self)
 
@@ -23,6 +26,7 @@ class Hub:
         self.game_screen = GameScreen(self)
 
         self.screen_selector = 0
+
     def display_screen(self):
         if self.screen_selector is 0:
             self.game_screen.run()

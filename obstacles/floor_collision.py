@@ -14,4 +14,4 @@ class FloorCollision(Sprite):
         self.color = (0, 0, 255, 128)
 
     def draw(self):
-        pygame.draw.rect(self.screen, self.color, self.rect, 1)
+        pygame.draw.rect(self.screen, self.color, self.rect, 2)

@@ -28,6 +28,7 @@ class Player(Sprite):
             self.rect.x -= self.velocity
         if self.controller.jump:
             if self.jump_left != 0:
+                self.controller.jump = False
                 self.jump_left -= 1
                 self.rect.y -= 150
 
@@ -37,8 +38,11 @@ class Player(Sprite):
         pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 3)
 
     def check_collision(self):
+        # Checks if the player hits the left screen
         if self.rect.left < self.screen_rect.left:
             self.rect.left = self.screen_rect.left
+        # Checks if the player goes pass the right screen
+        # If so, move the world camera off set
         if self.rect.right > self.screen_rect.right / 2:
             self.rect.right = self.screen_rect.width / 2
             self.camera.world_offset_x += self.velocity
