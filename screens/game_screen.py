@@ -3,7 +3,7 @@ import sys
 from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from player import Player
-from pygame.sprite import Group, GroupSingle
+from pygame import sprite
 import json
 
 
@@ -25,10 +25,10 @@ class GameScreen:
 
         # Back Collision Group where all the background collisions will be store
         # This does not include brick collision.
-        self.background_collisions = Group()
+        self.background_collisions = sprite.Group()
 
         # Player group spawn player in again if needed
-        self.player_group = GroupSingle()
+        self.player_group = sprite.GroupSingle()
 
         # Add instances
         # Add floor collisions instances to the map
@@ -88,7 +88,7 @@ class GameScreen:
     def update_collision(self):
         # Player has hit the ground or wall
         for collision in self.background_collisions:
-            if collision.rect.colliderect(self.player_group.sprite):
+            if collision.rect.colliderect(self.player_group.sprite.rect):
                 # check if the player is standing on top
                 if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
                     self.player_group.sprite.rect.bottom = collision.rect.top
@@ -103,7 +103,13 @@ class GameScreen:
 
 
     def update_camera(self):
+        # update the bg image off set
         self.bg_rect.x = self.camera.world_offset_x * -1
+        if self.screen.get_rect().right > self.bg_rect.right:
+            self.bg_rect.right = self.screen.get_rect().right
+            self.camera.camera_hit_right_screen = True
+
+        # update the collisions off set
         for collision in self.background_collisions:
             collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
 

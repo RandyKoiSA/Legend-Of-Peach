@@ -41,8 +41,19 @@ class Player(Sprite):
         # Checks if the player hits the left screen
         if self.rect.left < self.screen_rect.left:
             self.rect.left = self.screen_rect.left
+
         # Checks if the player goes pass the right screen
         # If so, move the world camera off set
         if self.rect.right > self.screen_rect.right / 2:
-            self.rect.right = self.screen_rect.width / 2
-            self.camera.world_offset_x += self.velocity
+            # Move camera and set player to the middle of screen
+            if not self.camera.camera_hit_right_screen:
+                self.rect.right = self.screen_rect.width / 2
+
+            # If camera hits the very right screen, player can move upon half the screen
+            if self.rect.right > self.screen_rect.right:
+                self.rect = self.screen_rect.right
+                self.camera.player_hit_right_screen = True
+
+
+            # Move camera respective to player movement
+            self.camera.moveCamera(self.velocity)
