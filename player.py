@@ -30,7 +30,7 @@ class Player(Sprite):
             if self.jump_left != 0:
                 self.controller.jump = False
                 self.jump_left -= 1
-                self.rect.y -= 150
+                self.rect.y -= 250
 
         self.check_collision()
 

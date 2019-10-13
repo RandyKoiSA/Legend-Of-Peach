@@ -3,7 +3,7 @@ import sys
 from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from player import Player
-from pygame.sprite import Group
+from pygame.sprite import Group, GroupSingle
 import json
 
 
@@ -27,12 +27,16 @@ class GameScreen:
         # This does not include brick collision.
         self.background_collisions = Group()
 
-        # Add floor collisions to the map
+        # Player group spawn player in again if needed
+        self.player_group = GroupSingle()
+
+        # Add instances
+        # Add floor collisions instances to the map
         for collision in self.json_levels["level_one"]["collision_group"]:
             self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
                                                           (collision["width"], collision["height"])))
         # Add player
-        self.player = Player(hub)
+        self.player_group.add(Player(hub))
 
     def run(self):
         self.run_event()
@@ -63,17 +67,17 @@ class GameScreen:
                     self.controller.move_right = False
 
     def run_update(self):
-        self.player.update()
+        self.update_player_group()
 
-        self.camera_update()
-        self.check_collision()
+        self.update_camera()
+        self.update_collision()
 
     def run_draw(self):
         self.screen.blit(self.bg_image, self.bg_rect)
         # Draw test collision boxes
         for collision in self.background_collisions:
             collision.draw()
-        self.player.draw()
+        self.draw_player_group()
 
     def prep_bg_image(self):
         self.bg_image = pygame.transform.scale(self.bg_image, (self.bg_rect.width * 3 + 50,
@@ -81,24 +85,24 @@ class GameScreen:
         self.bg_rect = self.bg_image.get_rect()
         self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
 
-    def check_collision(self):
+    def update_collision(self):
         # Player has hit the ground or wall
         for collision in self.background_collisions:
-            if collision.rect.colliderect(self.player):
+            if collision.rect.colliderect(self.player_group.sprite):
                 # check if the player is standing on top
-                if self.player.rect.bottom < collision.rect.top + 20:
-                    self.player.rect.bottom = collision.rect.top
-                    self.player.jump_left = 1
+                if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
+                    self.player_group.sprite.rect.bottom = collision.rect.top
+                    self.player_group.sprite.jump_left = 1
                 else:
                     # check if the player hits the left wall
-                    if self.player.rect.right < collision.rect.left + 20:
-                        self.player.rect.right = collision.rect.left
+                    if self.player_group.sprite.rect.right < collision.rect.left + 20:
+                        self.player_group.sprite.rect.right = collision.rect.left
                     # check if the player hits the right wall
-                    if self.player.rect.left > collision.rect.right - 20:
-                        self.player.rect.left = collision.rect.right
+                    if self.player_group.sprite.rect.left > collision.rect.right - 20:
+                        self.player_group.sprite.rect.left = collision.rect.right
 
 
-    def camera_update(self):
+    def update_camera(self):
         self.bg_rect.x = self.camera.world_offset_x * -1
         for collision in self.background_collisions:
             collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
@@ -108,3 +112,11 @@ class GameScreen:
         with open(filename, 'r') as read_file:
             data = json.load(read_file)
             return data
+
+    def update_player_group(self):
+        for player in self.player_group:
+            player.update()
+
+    def draw_player_group(self):
+        for player in self.player_group:
+            player.draw()

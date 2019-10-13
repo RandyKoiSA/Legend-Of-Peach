@@ -1,25 +1,49 @@
 {
   "level_one": {
-      "background_image": "imgs/level_one_map.png",
-      "collision_group": [
-          {
-            "x": 1350,
-            "y": 540,
-            "width": 100,
-            "height": 110
-          },
-          {
-            "x": 1830,
-            "y": 490,
-            "width": 100,
-            "height": 150
-          },
-          {
-            "x": 0,
-            "y": 645,
-            "width": 3325,
-            "height": 75
-          }
-      ]
+    "background_image": "imgs/level_one_map.png",
+    "collision_group": [
+      {
+        "x": 1350,
+        "y": 540,
+        "width": 100,
+        "height": 110
+      },
+      {
+        "x": 1830,
+        "y": 490,
+        "width": 100,
+        "height": 150
+      },
+      {
+        "x": 0,
+        "y": 645,
+        "width": 3325,
+        "height": 75
+      },
+      {
+        "x": 2215,
+        "y": 440,
+        "width": 100,
+        "height": 210
+      },
+      {
+        "x": 2750,
+        "y": 440,
+        "width": 95,
+        "height": 210
+      },
+      {
+          "x": 3425,
+          "y": 645,
+          "width": 730,
+          "height": 75
+      },
+      {
+          "x": 4300,
+          "y": 645,
+          "width": 730,
+          "height": 75
+      }
+    ]
   }
 }
