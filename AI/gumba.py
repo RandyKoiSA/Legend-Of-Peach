@@ -12,7 +12,7 @@ class Gumba(Sprite):
         self.original_pos = [x, y]
 
         self.rect = pygame.Rect((self.original_pos[0], self.original_pos[1]), (50, 50))
-        self.gravity = 0
+        self.gravity = 9
         self.velocity = 5
 
         self.move = True

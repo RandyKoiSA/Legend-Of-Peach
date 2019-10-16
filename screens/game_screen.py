@@ -34,15 +34,16 @@ class GameScreen:
         # Gumba group spawn gumba when apporiate
         self.gumba_group = sprite.Group()
 
-        # Add instances
-        # Add floor collisions instances to the map
-
+        # Add gumba instances to the game
         for gumba in self.json_levels["level_one"]["gumba_group"]:
             self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
+
+        # Add floor collision instances to the map
         for collision in self.json_levels["level_one"]["collision_group"]:
             self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
                                                           (collision["width"], collision["height"])))
-        # Add player
+
+        # Add player instance
         self.player_group.add(Player(hub))
 
     def run(self):
@@ -77,25 +78,30 @@ class GameScreen:
         self.update_player_group()
         self.update_enemy_group()
         self.update_camera()
-        self.update_collision()
+        self.update_world_collision()
 
     def run_draw(self):
+        # Draw background image
         self.screen.blit(self.bg_image, self.bg_rect)
+
         # Draw test collision boxes
-        for collision in self.background_collisions:
-            collision.draw()
-        for gumba in self.gumba_group:
-            gumba.draw()
+        self.draw_world_collision_group()
+
+        # Draw gumba
+        self.draw_enemy_group()
+
+        # Draw player
         self.draw_player_group()
 
     def prep_bg_image(self):
+        # Scale the background image
         self.bg_image = pygame.transform.scale(self.bg_image, (self.bg_rect.width * 3 + 50,
                                                                self.bg_rect.height * 3 + 50))
         self.bg_rect = self.bg_image.get_rect()
         self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
 
-    def update_collision(self):
-        # Player has hit the ground or wall
+    def update_world_collision(self):
+        # Player has hit the world's floor or wall such as pipes and stairs
         for collision in self.background_collisions:
             if collision.rect.colliderect(self.player_group.sprite.rect):
                 # check if the player is standing on top
@@ -114,11 +120,14 @@ class GameScreen:
         """ Checks the enemy colliding with Pipes"""
         collide_bg = pygame.sprite.spritecollideany(enemy, self.background_collisions)
         if collide_bg:
+            print(collide_bg.rect)
             enemy.move = not enemy.move
 
     def update_camera(self):
         # update the bg image off set
         self.bg_rect.x = self.camera.world_offset_x * -1
+
+        # checks if the background is at its end and stop camera movement
         if self.screen.get_rect().right > self.bg_rect.right:
             self.bg_rect.right = self.screen.get_rect().right
             self.camera.camera_hit_right_screen = True
@@ -128,6 +137,7 @@ class GameScreen:
             collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
 
     def get_levels(self):
+        """ Grab the level data from the JSON file"""
         filename = 'levels.json'
         with open(filename, 'r') as read_file:
             data = json.load(read_file)
@@ -137,11 +147,8 @@ class GameScreen:
         for player in self.player_group:
             player.update()
 
-    def draw_player_group(self):
-        for player in self.player_group:
-            player.draw()
-
     def update_enemy_group(self):
+        """ updating the gumba group """
         for gumba in self.gumba_group:
             self.check_enemy_x_collide(gumba)
             gumba.update()
@@ -153,7 +160,14 @@ class GameScreen:
                     print("ERROR: Remove Gumba does not exist")
                     pass
 
+    def draw_player_group(self):
+        for player in self.player_group:
+            player.draw()
+
     def draw_enemy_group(self):
         for gumba in self.gumba_group:
-            if gumba.rect.x <= self.screen.get_rect.right:
-                gumba.draw()
+            gumba.draw()
+
+    def draw_world_collision_group(self):
+        for collision in self.background_collisions:
+            collision.draw()
