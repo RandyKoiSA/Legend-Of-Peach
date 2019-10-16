@@ -4,6 +4,7 @@ from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from player import Player
 from pygame import sprite
+from AI.gumba import Gumba
 import json
 
 
@@ -30,8 +31,14 @@ class GameScreen:
         # Player group spawn player in again if needed
         self.player_group = sprite.GroupSingle()
 
+        # Gumba group spawn gumba when apporiate
+        self.gumba_group = sprite.Group()
+
         # Add instances
         # Add floor collisions instances to the map
+
+        for gumba in self.json_levels["level_one"]["gumba_group"]:
+            self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
         for collision in self.json_levels["level_one"]["collision_group"]:
             self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
                                                           (collision["width"], collision["height"])))
@@ -68,7 +75,7 @@ class GameScreen:
 
     def run_update(self):
         self.update_player_group()
-
+        self.update_enemy_group()
         self.update_camera()
         self.update_collision()
 
@@ -77,6 +84,8 @@ class GameScreen:
         # Draw test collision boxes
         for collision in self.background_collisions:
             collision.draw()
+        for gumba in self.gumba_group:
+            gumba.draw()
         self.draw_player_group()
 
     def prep_bg_image(self):
@@ -87,23 +96,25 @@ class GameScreen:
 
     def update_collision(self):
         # Player has hit the ground or wall
-        try:
-            for collision in self.background_collisions:
-                if collision.rect.colliderect(self.player_group.sprite.rect):
-                    # check if the player is standing on top
-                    if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
-                        self.player_group.sprite.rect.bottom = collision.rect.top
-                        self.player_group.sprite.jump_left = 1
-                    else:
-                        # check if the player hits the left wall
-                        if self.player_group.sprite.rect.right < collision.rect.left + 20:
-                            self.player_group.sprite.rect.right = collision.rect.left
-                        # check if the player hits the right wall
-                        if self.player_group.sprite.rect.left > collision.rect.right - 20:
-                            self.player_group.sprite.rect.left = collision.rect.right
-        except Exception:
-            print("Player Rect error")
+        for collision in self.background_collisions:
+            if collision.rect.colliderect(self.player_group.sprite.rect):
+                # check if the player is standing on top
+                if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
+                    self.player_group.sprite.rect.bottom = collision.rect.top
+                    self.player_group.sprite.jump_left = 1
+                else:
+                    # check if the player hits the left wall
+                    if self.player_group.sprite.rect.right < collision.rect.left + 20:
+                        self.player_group.sprite.rect.right = collision.rect.left
+                    # check if the player hits the right wall
+                    if self.player_group.sprite.rect.left > collision.rect.right - 20:
+                        self.player_group.sprite.rect.left = collision.rect.right
 
+    def check_enemy_x_collide(self, enemy):
+        """ Checks the enemy colliding with Pipes"""
+        collide_bg = pygame.sprite.spritecollideany(enemy, self.background_collisions)
+        if collide_bg:
+            enemy.move = not enemy.move
 
     def update_camera(self):
         # update the bg image off set
@@ -129,3 +140,20 @@ class GameScreen:
     def draw_player_group(self):
         for player in self.player_group:
             player.draw()
+
+    def update_enemy_group(self):
+        for gumba in self.gumba_group:
+            self.check_enemy_x_collide(gumba)
+            gumba.update()
+            if gumba.kill:
+                try:
+                    self.gumba_group.remove(gumba)
+                    print("Gumba ded")
+                except AssertionError:
+                    print("ERROR: Remove Gumba does not exist")
+                    pass
+
+    def draw_enemy_group(self):
+        for gumba in self.gumba_group:
+            if gumba.rect.x <= self.screen.get_rect.right:
+                gumba.draw()
