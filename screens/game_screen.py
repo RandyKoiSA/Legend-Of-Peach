@@ -122,6 +122,10 @@ class GameScreen:
         if collide_bg:
             print(collide_bg.rect)
             enemy.move = not enemy.move
+            if enemy.rect.right > collide_bg.rect.left + 20 or enemy.rect.left < collide_bg.rect.right - 20:
+                enemy.move = not enemy.move
+            if enemy.rect.bottom < collide_bg.rect.top + 20:
+                enemy.rect.bottom = collide_bg.rect.top - 8
 
     def update_camera(self):
         # update the bg image off set
