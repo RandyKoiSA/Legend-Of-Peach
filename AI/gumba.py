@@ -11,7 +11,11 @@ class Gumba(Sprite):
         self.camera = hub.camera
         self.original_pos = [x, y]
 
-        self.rect = pygame.Rect((self.original_pos[0], self.original_pos[1]), (50, 50))
+        self.image = pygame.image.load("imgs/enemies/tile000.png")
+        self.image = pygame.transform.scale(self.image, (50, 100))
+        self.rect = self.image.get_rect()
+        self.rect.x = self.original_pos[0]
+        self.rect.y = self.original_pos[1]
         self.gravity = 9
         self.velocity = 5
 
@@ -40,7 +44,7 @@ class Gumba(Sprite):
         self.check_collision()
 
     def draw(self):
-        pygame.draw.rect(self.screen, (0, 255, 0), self.rect, 3)
+        self.screen.blit(self.image, self.rect)
 
     def checkrightedge(self):
         if self.rect.right >= self.screen_rect.right:

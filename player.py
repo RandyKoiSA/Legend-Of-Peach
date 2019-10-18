@@ -11,7 +11,11 @@ class Player(Sprite):
         self.controller = hub.controller
         self.camera = hub.camera
 
-        self.rect = pygame.Rect((50, 50), (50, 100))
+        self.image = pygame.image.load("imgs/character/tile000.png")
+        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.rect = self.image.get_rect()
+        self.rect.x = 50
+        self.rect.y = 50
         self.gravity = 9.8
         self.velocity = 10
         self.jump_left = 1
@@ -35,8 +39,8 @@ class Player(Sprite):
         self.check_collision()
 
     def draw(self):
-        pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 3)
-
+        self.screen.blit(self.image, self.rect)
+        
     def check_collision(self):
         # Checks if the player hits the left screen
         if self.rect.left < self.screen_rect.left:
