@@ -47,11 +47,13 @@ class GameScreen:
         self.player_group.add(Player(hub))
 
     def run(self):
+        """ Run through the loop process"""
         self.run_event()
         self.run_update()
         self.run_draw()
 
     def run_event(self):
+        """ Run events """
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -121,11 +123,12 @@ class GameScreen:
         collide_bg = pygame.sprite.spritecollideany(enemy, self.background_collisions)
         if collide_bg:
             print(collide_bg.rect)
-            enemy.move = not enemy.move
-            if enemy.rect.right > collide_bg.rect.left + 20 or enemy.rect.left < collide_bg.rect.right - 20:
-                enemy.move = not enemy.move
             if enemy.rect.bottom < collide_bg.rect.top + 20:
-                enemy.rect.bottom = collide_bg.rect.top - 8
+                enemy.rect.bottom = collide_bg.rect.top - 5
+            elif enemy.rect.right > collide_bg.rect.left + 20 or enemy.rect.left < collide_bg.rect.right - 20:
+                if enemy.rect.bottom > collide_bg.rect.top:
+                    enemy.move = not enemy.move
+
 
     def update_camera(self):
         # update the bg image off set
@@ -165,13 +168,17 @@ class GameScreen:
                     pass
 
     def draw_player_group(self):
+        """ Draw the player onto the screen """
         for player in self.player_group:
             player.draw()
 
     def draw_enemy_group(self):
+        """  Draw all enemies onto the screen"""
+        # Draw all the gumbas onto the screen
         for gumba in self.gumba_group:
             gumba.draw()
 
     def draw_world_collision_group(self):
+        """ Draw the collision lines """
         for collision in self.background_collisions:
             collision.draw()
