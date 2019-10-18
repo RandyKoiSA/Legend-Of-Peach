@@ -40,7 +40,7 @@ class Player(Sprite):
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
-        
+
     def check_collision(self):
         # Checks if the player hits the left screen
         if self.rect.left < self.screen_rect.left:
@@ -63,3 +63,12 @@ class Player(Sprite):
 
             # Move camera respective to player movement
             self.camera.moveCamera(self.velocity)
+
+    def jump(self):
+        pass
+
+    def shoot_fire_ball(self):
+        pass
+
+    def mario_upgrade(self):
+        pass
