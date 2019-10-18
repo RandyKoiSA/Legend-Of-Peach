@@ -123,11 +123,15 @@ class GameScreen:
         collide_bg = pygame.sprite.spritecollideany(enemy, self.background_collisions)
         if collide_bg:
             print(collide_bg.rect)
+            # Hits ground
             if enemy.rect.bottom < collide_bg.rect.top + 20:
                 enemy.rect.bottom = collide_bg.rect.top - 5
+            # Hit side walls
             elif enemy.rect.right > collide_bg.rect.left + 20 or enemy.rect.left < collide_bg.rect.right - 20:
+                # Checks if player is not on top
                 if enemy.rect.bottom > collide_bg.rect.top:
                     enemy.move = not enemy.move
+                    enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
 
 
     def update_camera(self):

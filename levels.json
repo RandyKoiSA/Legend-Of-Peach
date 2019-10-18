@@ -3,7 +3,7 @@
     "background_image": "imgs/background/level_one_map.png",
     "gumba_group":[
       {
-        "x": 500,
+        "x": 2000,
         "y": 540
       }
     ],
