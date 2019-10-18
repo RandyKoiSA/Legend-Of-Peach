@@ -109,7 +109,7 @@ class GameScreen:
                 # check if the player is standing on top
                 if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
                     self.player_group.sprite.rect.bottom = collision.rect.top
-                    self.player_group.sprite.jump_left = 1
+                    self.player_group.sprite.is_jumping = False
                 else:
                     # check if the player hits the left wall
                     if self.player_group.sprite.rect.right < collision.rect.left + 20:
@@ -122,7 +122,6 @@ class GameScreen:
         """ Checks the enemy colliding with Pipes"""
         collide_bg = pygame.sprite.spritecollideany(enemy, self.background_collisions)
         if collide_bg:
-            print(collide_bg.rect)
             # Hits ground
             if enemy.rect.bottom < collide_bg.rect.top + 20:
                 enemy.rect.bottom = collide_bg.rect.top - 5
