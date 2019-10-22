@@ -16,7 +16,7 @@ class Player(Sprite):
         self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.x = 50
-        self.rect.y = 50
+        self.rect.y = 550
 
         # player's fall rate, run velocity, jumping state
         self.gravity = 10
@@ -25,8 +25,8 @@ class Player(Sprite):
 
         # Get mario time when jumping
         self.jump_initial_time = 0
-        self.jump_max_air_time = 120    # How long the player will keep jumping
-        self.jump_velocity = 40     # How fast the player will jump
+        self.jump_max_air_time = 300    # How long the player will keep jumping
+        self.jump_velocity = 25     # How fast the player will jump
 
     def update(self):
         """ Update the player logic """
@@ -39,6 +39,7 @@ class Player(Sprite):
         if self.controller.move_left:
             self.rect.x -= self.velocity
         if self.controller.jump:
+            self.controller.jump = False
             if not self.is_jumping:
                 self.jump()
 
@@ -73,7 +74,7 @@ class Player(Sprite):
 
             # Move camera respective to player movement
             self.camera.moveCamera(self.velocity)
-            
+
     def jump(self):
         self.is_jumping = True
         self.jump_initial_time = pygame.time.get_ticks() + self.jump_max_air_time
