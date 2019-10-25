@@ -10,6 +10,7 @@ class Player(Sprite):
         self.screen_rect = self.screen.get_rect()
         self.controller = hub.controller
         self.camera = hub.camera
+        self.gamemode = hub.gamemode
 
         # players image and collision
         self.image = pygame.image.load("imgs/Cut-Sprites-For-Mario/Characters/219_mario_idle.png")
@@ -28,6 +29,7 @@ class Player(Sprite):
         self.jump_max_air_time = 300    # How long the player will keep jumping
         self.jump_velocity = 25     # How fast the player will jump
 
+        self.is_dead = False
     def update(self):
         """ Update the player logic """
         # Apply gravity
@@ -75,6 +77,10 @@ class Player(Sprite):
             # Move camera respective to player movement
             self.camera.moveCamera(self.velocity)
 
+        # Check if the player is fallen off the screen (mario is dead)
+        if self.rect.top > self.screen_rect.bottom:
+            self.die()
+
     def jump(self):
         self.is_jumping = True
         self.jump_initial_time = pygame.time.get_ticks() + self.jump_max_air_time
@@ -89,7 +95,12 @@ class Player(Sprite):
         pass
 
     def die(self):
-        pass
+        # play mario is dying animation
+        if not self.is_dead:
+            print("mario is dead")
+            self.gamemode.lives -= 1
+            self.gamemode.mario_is_dead = True
+            self.is_dead = True
 
     def become_fire_mario(self):
         pass

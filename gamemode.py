@@ -6,3 +6,5 @@ class GameMode:
         self.currentlevel = 1
         self.lives = 3
 
+        self.mario_is_dead = False
+
