@@ -12,10 +12,20 @@ class Player(Sprite):
         self.camera = hub.camera
         self.gamemode = hub.gamemode
 
+        self.mario_motion_state = "idle"
+        self.mario_upgrade_state = "regular"
+
         # players image and collision
-        self.image = pygame.image.load("imgs/Cut-Sprites-For-Mario/Characters/219_mario_idle.png")
-        self.image = pygame.transform.scale(self.image, (50, 50))
-        self.rect = self.image.get_rect()
+        self.image_idle = pygame.image.load("imgs/Mario/RegularMario/MarioStanding.png")
+        self.image_run = [pygame.image.load('imgs/Mario/RegularMario/MarioRun01.gif'),
+                          pygame.image.load('imgs/Mario/RegularMario/MarioRun02.gif'),
+                          pygame.image.load('imgs/Mario/RegularMario/MarioRun03.gif')]
+        self.image_jump = pygame.image.load('imgs/Mario/RegularMario/MarioJumping.png')
+
+        # prep mario image
+        self.prep_mario_images()
+        self.image_idle = pygame.transform.scale(self.image_idle, (50, 50))
+        self.rect = self.image_idle.get_rect()
         self.rect.x = 50
         self.rect.y = 550
 
@@ -30,8 +40,16 @@ class Player(Sprite):
         self.jump_velocity = 25     # How fast the player will jump
 
         self.is_dead = False
+
     def update(self):
         """ Update the player logic """
+        # Check if mario is jumping
+        if self.gamemode.mario_in_air is False:
+            if self.gamemode.mario_is_running:
+                self.mario_motion_state = "running"
+            else:
+                self.mario_motion_state = "idle"
+
         # Apply gravity
         self.rect.y += self.gravity
 
@@ -44,6 +62,8 @@ class Player(Sprite):
             self.controller.jump = False
             if not self.is_jumping:
                 self.jump()
+                self.gamemode.mario_in_air = True
+                self.mario_motion_state = "jumping"
 
         # Check if the player is jumping
         if self.is_jumping:
@@ -53,7 +73,13 @@ class Player(Sprite):
         self.check_collision()
 
     def draw(self):
-        self.screen.blit(self.image, self.rect)
+        # check what state mario is in to display proper image
+        if self.mario_motion_state is "idle":
+            self.screen.blit(self.image_idle, self.rect)
+        elif self.mario_motion_state is "running":
+            pass
+        elif self.mario_motion_state is "jumping":
+            self.screen.blit(self.image_jump, self.rect)
 
     def check_collision(self):
         # Checks if the player hits the left screen
@@ -104,3 +130,11 @@ class Player(Sprite):
 
     def become_fire_mario(self):
         pass
+
+    def prep_mario_images(self):
+        # Adjustment to mario images
+        # adjust regular mario images
+        self.image_idle = pygame.transform.scale(self.image_idle, (50, 50))
+        for i in range(len(self.image_run)):
+            self.image_run[i] = pygame.transform.scale(self.image_run[i], (50, 50))
+        self.image_jump = pygame.transform.scale(self.image_jump, (50, 50))

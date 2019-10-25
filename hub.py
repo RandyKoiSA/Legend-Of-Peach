@@ -22,6 +22,13 @@ class Hub:
         self.BG_COLOR = (135, 206, 235)
         self.FRATERATE = 60
 
+        # PHYSICS VALUES
+        self.GRAVITY = 9.8
+        self.velocityAI = 5
+
+        # DEBUG MODE
+        self.modeFreeze = False
+
         # Load mario levels from mario level
         self.game_levels = self.get_levels()
 

@@ -120,6 +120,7 @@ class GameScreen:
                 if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
                     self.player_group.sprite.rect.bottom = collision.rect.top
                     self.player_group.sprite.is_jumping = False
+                    self.gamemode.mario_in_air = False
                 else:
                     # check if the player hits the left wall
                     if self.player_group.sprite.rect.right < collision.rect.left + 20:
@@ -130,17 +131,18 @@ class GameScreen:
 
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""
-        collide_bg = pygame.sprite.spritecollideany(enemy, self.background_collisions)
-        if collide_bg:
-            # Hits ground
-            if enemy.rect.bottom < collide_bg.rect.top + 20:
-                enemy.rect.bottom = collide_bg.rect.top
-            # Hit side walls
-            elif enemy.rect.right > collide_bg.rect.left + 20 or enemy.rect.left < collide_bg.rect.right - 20:
-                # Checks if player is not on top
-                if enemy.rect.bottom > collide_bg.rect.top:
-                    enemy.move = not enemy.move
-                    enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
+        bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
+        if bg_collisions:
+            for collision in bg_collisions:
+                # Hits ground
+                if enemy.rect.bottom < collision.rect.top + 20:
+                    enemy.rect.bottom = collision.rect.top - 5
+                # Hit side walls
+                elif enemy.rect.right > collision.rect.left + 20 or enemy.rect.left < collision.rect.right - 20:
+                    # Checks if player is not on top
+                    if enemy.rect.bottom > collision.rect.top:
+                        enemy.flip_direction()
+                        enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
 
 
     def update_camera(self):
@@ -162,20 +164,18 @@ class GameScreen:
 
     def update_enemy_group(self):
         """ updating the gumba group """
-        for gumba in self.gumba_group:
-            bg_collisions = pygame.sprite.spritecollide(gumba, self.background_collisions, False)
-            if bg_collisions:
-                for collision in bg_collisions:
-                    # Hits ground
-                    if gumba.rect.bottom < collision.rect.top + 20:
-                        gumba.rect.bottom = collision.rect.top - 5
-                    # Hit side walls
-                    elif gumba.rect.right > collision.rect.left + 20 or gumba.rect.left < collision.rect.right - 20:
-                        # Checks if player is not on top
-                        if gumba.rect.bottom > collision.rect.top:
-                            gumba.move = not gumba.move
-                            gumba.rect.bottom = gumba.rect.bottom - gumba.gravity
-            gumba.update()
+        for enemy in self.gumba_group:
+            self.check_enemy_collision(enemy=enemy)
+
+            enemy.update()
+            if enemy.kill:
+                try:
+                    self.gumba_group.remove(enemy)
+                    print("Gumba ded")
+                except AssertionError:
+                    print("ERROR: Remove Gumba does not exist")
+                    pass
+            enemy.update()
 
     def draw_player_group(self):
         """ Draw the player onto the screen """
@@ -192,18 +192,3 @@ class GameScreen:
         """ Draw the collision lines """
         for collision in self.background_collisions:
             collision.draw()
-
-    def spawn_new_player(self):
-        # remove player from group and create new player in group
-        self.player_group.remove(self.current_player)
-        self.current_player = Player(self.hub)
-        self.player_group.add(self.current_player)
-
-        # reset world off set and player off set
-        self.camera.world_offset_x = 0
-        self.camera.player_offset_x = 0
-        self.camera.player_hit_right_screen = False
-
-        # reset death for mario
-        self.gamemode.mario_is_dead = False
-        print("mario is dead")
