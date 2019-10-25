@@ -29,6 +29,9 @@ class Hub:
         # DEBUG MODE
         self.modeFreeze = False
 
+        # Load mario levels from mario level
+        self.game_levels = self.get_levels()
+
         self.gamemode = GameMode(self)
         self.controller = Controller(self)
         self.camera = Camera(self)

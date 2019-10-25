@@ -39,7 +39,7 @@ class Enemy(Sprite):
         self.kill = False
 
     def check_direction(self):
-        if self.hub.modeFreeze == True:
+        if self.move == "STILL" or self.hub.modeFreeze == True:
             self.velocity = 0
         elif self.move == "LEFT":
             self.velocity = -self.hub.velocityAI
