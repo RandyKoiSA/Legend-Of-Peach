@@ -1,6 +1,12 @@
 {
   "level_one": {
-    "background_image": "imgs/level_one_map.png",
+    "background_image": "imgs/background/level_one_map.png",
+    "gumba_group":[
+      {
+        "x": 2200,
+        "y": 540
+      }
+    ],
     "collision_group": [
       {
         "x": 1350,

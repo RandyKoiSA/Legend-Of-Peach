@@ -6,3 +6,4 @@ class Controller:
         self.move_left = False
         self.move_right = False
         self.jump = False
+
