@@ -32,9 +32,6 @@ class Hub:
         # Load mario levels from mario level
         self.game_levels = self.get_levels()
 
-        """ Initialize gamemode, controller and camera
-        These gamemode, controller, and camera are temporary and can
-        be reinstance """
         self.gamemode = GameMode(self)
         self.controller = Controller(self)
         self.camera = Camera(self)
@@ -50,6 +47,8 @@ class Hub:
         # Screen selector chooses what screen to display
         self.screen_selector = 1
         self.level_name = ''
+
+
 
     def display_screen(self):
         if self.screen_selector is 1:

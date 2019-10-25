@@ -36,7 +36,7 @@ class Player(Sprite):
 
         # Get mario time when jumping
         self.jump_initial_time = 0
-        self.jump_max_air_time = 300    # How long the player will keep jumping
+        self.jump_max_air_time = 600    # How long the player will keep jumping
         self.jump_velocity = 25     # How fast the player will jump
 
         self.is_dead = False
