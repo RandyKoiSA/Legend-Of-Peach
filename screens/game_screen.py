@@ -11,6 +11,7 @@ import json
 class GameScreen:
     """ Game Screen runs the game. """
     def __init__(self, hub):
+        self.hub = hub
         self.screen = hub.main_screen
         self.controller = hub.controller
         self.camera = hub.camera
@@ -44,7 +45,8 @@ class GameScreen:
                                                           (collision["width"], collision["height"])))
 
         # Add player instance
-        self.player_group.add(Player(hub))
+        self.current_player = Player(hub)
+        self.player_group.add(self.current_player)
 
     def run(self):
         """ Run through the loop process"""
@@ -105,6 +107,14 @@ class GameScreen:
         self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
 
     def update_world_collision(self):
+        # Goomba collision with player
+        for gumba in self.gumba_group:
+            if gumba.rect.colliderect(self.player_group.sprite.rect):
+                if self.player_group.sprite.rect.bottom < gumba.rect.top + 20:
+                    self.player_group.sprite.rect.bottom = gumba.rect.top
+                    gumba.kill = True
+                    self.player_group.sprite.is_jumping = False
+
         # Player has hit the world's floor or wall such as pipes and stairs
         for collision in self.background_collisions:
             if collision.rect.colliderect(self.player_group.sprite.rect):
@@ -159,6 +169,10 @@ class GameScreen:
         for player in self.player_group:
             player.update()
 
+            if self.gamemode.mario_is_dead:
+                self.spawn_new_player()
+
+
     def update_enemy_group(self):
         """ updating the gumba group """
         for gumba in self.gumba_group:
@@ -176,7 +190,6 @@ class GameScreen:
                             gumba.rect.bottom = gumba.rect.bottom - gumba.gravity
             gumba.update()
 
-
     def draw_player_group(self):
         """ Draw the player onto the screen """
         for player in self.player_group:
@@ -192,3 +205,18 @@ class GameScreen:
         """ Draw the collision lines """
         for collision in self.background_collisions:
             collision.draw()
+
+    def spawn_new_player(self):
+        # remove player from group and create new player in group
+        self.player_group.remove(self.current_player)
+        self.current_player = Player(self.hub)
+        self.player_group.add(self.current_player)
+
+        # reset world off set and player off set
+        self.camera.world_offset_x = 0
+        self.camera.player_offset_x = 0
+        self.camera.player_hit_right_screen = False
+
+        # reset death for mario
+        self.gamemode.mario_is_dead = False
+        print("mario is dead")
