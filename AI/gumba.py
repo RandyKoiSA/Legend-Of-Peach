@@ -84,6 +84,7 @@ class Gumba(Enemy):
     def __init__(self, hub, x, y):
         self.name = "goomba"
         self.frame = 60
+        self.scale = (50, 50)
         self.direction = "LEFT"
         self.image_index = [pygame.image.load("imgs/Cut-Sprites-For-Mario/Characters/113_goomba.png")]
 

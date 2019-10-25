@@ -176,6 +176,17 @@ class GameScreen:
 
     def update_enemy_group(self):
         """ updating the gumba group """
+        for enemy in self.gumba_group:
+            self.check_enemy_collision(enemy=enemy)
+
+            enemy.update()
+            if enemy.kill:
+                try:
+                    self.gumba_group.remove(enemy)
+                    print("Gumba ded")
+                except AssertionError:
+                    print("ERROR: Remove Gumba does not exist")
+                    pass
 
     def draw_player_group(self):
         """ Draw the player onto the screen """
