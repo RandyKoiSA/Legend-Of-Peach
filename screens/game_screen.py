@@ -175,7 +175,6 @@ class GameScreen:
                 except AssertionError:
                     print("ERROR: Remove Gumba does not exist")
                     pass
-            enemy.update()
 
     def draw_player_group(self):
         """ Draw the player onto the screen """
