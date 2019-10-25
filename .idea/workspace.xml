@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="Added Gumba to game" />
+    <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="Added Gumba to game">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/gumba.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/gumba.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario - Shortcut.lnk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/113.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/114.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/206.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/207.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/208.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/209.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/210.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/211.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/214.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/215.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/216.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/217.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/218.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/Cut-Sprites-For-Mario/Characters/219.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

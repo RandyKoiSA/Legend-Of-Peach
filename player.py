@@ -12,7 +12,7 @@ class Player(Sprite):
         self.camera = hub.camera
 
         # players image and collision
-        self.image = pygame.image.load("imgs/character/tile000.png")
+        self.image = pygame.image.load("imgs/Cut-Sprites-For-Mario/Characters/219_mario_idle.png")
         self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.x = 50

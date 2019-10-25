@@ -11,8 +11,8 @@ class Gumba(Sprite):
         self.camera = hub.camera
         self.original_pos = [x, y]
 
-        self.image = pygame.image.load("imgs/enemies/tile000.png")
-        self.image = pygame.transform.scale(self.image, (50, 100))
+        self.image = pygame.image.load("imgs/Cut-Sprites-For-Mario/Characters/113_goomba.png")
+        self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.x = self.original_pos[0]
         self.rect.y = self.original_pos[1]
