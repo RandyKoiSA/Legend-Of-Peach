@@ -1,5 +1,9 @@
 import pygame
+import sys
+import json
 from screens.game_screen import GameScreen
+from screens.main_menu_screen import MainMenuScreen
+from screens.level_selection_screen import LevelSelectionScreen
 from controller import Controller
 from camera import Camera
 from gamemode import GameMode
@@ -29,13 +33,49 @@ class Hub:
         self.controller = Controller(self)
         self.camera = Camera(self)
 
+        """ Initialize the type of screen possible to display
+        game_screen is the only one that will probably be reinstance everytime a new level
+        opens. """
         self.main_screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
+        self.main_menu_screen = MainMenuScreen(self)
+        self.level_screen = LevelSelectionScreen(self)
         self.game_screen = GameScreen(self)
 
-        self.screen_selector = 0
+        # Screen selector chooses what screen to display
+        self.screen_selector = 1
+        self.level_name = ''
 
 
 
     def display_screen(self):
-        if self.screen_selector is 0:
+        if self.screen_selector is 1:
+            self.main_menu_screen.run()
+        elif self.screen_selector is 2:
+            self.level_screen.run()
+        elif self.screen_selector is 3:
+            # display gameover screen
+            pass
+        elif self.screen_selector is 0:
+            # runs the game screen
             self.game_screen.run()
+            if self.gamemode.mario_is_dead:
+                self.open_level(self.level_name)
+                self.gamemode.mario_is_dead = False
+
+
+    def exit_game(self):
+        pygame.quit()
+        sys.exit()
+
+    def get_levels(self):
+        """ Grab the level data from the JSON file"""
+        filename = 'levels.json'
+        with open(filename, 'r') as read_file:
+            data = json.load(read_file)
+            return data
+
+    def open_level(self, level_name):
+        print('new game_screen instantiated')
+        self.game_screen = GameScreen(self, level_name)
+        self.level_name = level_name
+        self.camera.reset_camera()

@@ -1,5 +1,5 @@
 {
-  "level_one": {
+  "1-1": {
     "background_image": "imgs/background/level_one_map.png",
     "gumba_group":[
       {
@@ -57,5 +57,26 @@
           "height": 75
       }
     ]
+  },
+  "1-2": {
+
+  },
+  "1-3": {
+
+  },
+  "1-4": {
+
+  },
+  "2-1": {
+
+  },
+  "2-2": {
+
+  },
+  "2-3": {
+
+  },
+  "2-4": {
+
   }
 }
