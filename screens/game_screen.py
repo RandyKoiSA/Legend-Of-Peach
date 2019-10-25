@@ -10,18 +10,16 @@ import json
 
 class GameScreen:
     """ Game Screen runs the game. """
-    def __init__(self, hub):
+    def __init__(self, hub, level_name="1-1"):
         self.hub = hub
         self.screen = hub.main_screen
         self.controller = hub.controller
         self.camera = hub.camera
         self.gamemode = hub.gamemode
-
-        # Load json level
-        self.json_levels = self.get_levels()
+        self.level_name = level_name
 
         # Set up background
-        self.bg_image = pygame.image.load(self.json_levels["level_one"]["background_image"])
+        self.bg_image = pygame.image.load(self.hub.game_levels[self.level_name]["background_image"])
         self.bg_rect = self.bg_image.get_rect()
         self.prep_bg_image()
 
@@ -34,13 +32,13 @@ class GameScreen:
 
         # Gumba group spawn gumba when apporiate
         self.gumba_group = sprite.Group()
-
+        #
         # Add gumba instances to the game
-        for gumba in self.json_levels["level_one"]["gumba_group"]:
+        for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
             self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
 
         # Add floor collision instances to the map
-        for collision in self.json_levels["level_one"]["collision_group"]:
+        for collision in self.hub.game_levels[self.level_name]["collision_group"]:
             self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
                                                           (collision["width"], collision["height"])))
 
@@ -158,20 +156,9 @@ class GameScreen:
         for collision in self.background_collisions:
             collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
 
-    def get_levels(self):
-        """ Grab the level data from the JSON file"""
-        filename = 'levels.json'
-        with open(filename, 'r') as read_file:
-            data = json.load(read_file)
-            return data
-
     def update_player_group(self):
         for player in self.player_group:
             player.update()
-
-            if self.gamemode.mario_is_dead:
-                self.spawn_new_player()
-
 
     def update_enemy_group(self):
         """ updating the gumba group """

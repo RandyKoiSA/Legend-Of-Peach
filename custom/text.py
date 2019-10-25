@@ -1,30 +1,31 @@
 import pygame.ftfont
-import pygame
-
-class Button:
-    def __init__(self, hub, msg):
-        """ Initialize button attributes. """
-        self.game_hub = hub
-
-        # Set the dimensions and properties of the button.
-        self.width, self.height = 200, 50
-        self.text_color = (255, 255, 255)
-        self.font = pygame.font.Font('imgs/UIpack/Font/kenvector_future.ttf', 20)
 
 
-        self.image = pygame.image.load('imgs/UIpack/PNG/blue_button00.png')
-        # Build the button's rect object and center
-        self.rect = self.image.get_rect()
-        self.rect.center = self.game_hub.main_screen.get_rect().center
+class Text:
+    """ Renders a text onto the screen """
+    def __init__(self, screen, message,
+                 text_color=(255, 255, 255), background_color=(125, 125, 125),
+                 pos_x=0, pos_y=0, font_size=48):
+        """ Initialize default values """
 
-        self.msg_image = self.font.render(msg, True, self.text_color)
+        self.screen = screen
+        self.message = message
+        self.text_color = text_color
+        self.background_color = background_color
+        self.font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
+
+        # Turn message into a rendered image and center on the button
+        self.msg_image = self.font.render(self.message, True, self.text_color)
         self.msg_image_rect = self.msg_image.get_rect()
-        self.msg_image_rect.center = self.rect.center
+
+        # Placement of the mesasge
+        self.msg_image_rect.centerx = pos_x
+        self.msg_image_rect.centery = pos_y
 
     def draw(self):
-        """ Draw button onto the screen """
-        self.game_hub.main_screen.blit(self.image, self.rect)
-        self.game_hub.main_screen.blit(self.msg_image, self.msg_image_rect)
+        """ Draw the text on the given screen """
+        self.screen.blit(self.msg_image, self.msg_image_rect)
 
-    def update_message_position(self):
-        self.msg_image_rect.center = self.rect.center
+    def update_message(self):
+        """ Updating the message if it ends up changing """
+        self.msg_image = self.font.render(self.message, True, self.text_color)
