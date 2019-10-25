@@ -18,6 +18,13 @@ class Hub:
         self.BG_COLOR = (135, 206, 235)
         self.FRATERATE = 60
 
+        # PHYSICS VALUES
+        self.GRAVITY = 9.8
+        self.velocityAI = 5
+
+        # DEBUG MODE
+        self.modeFreeze = False
+
         self.gamemode = GameMode(self)
         self.controller = Controller(self)
         self.camera = Camera(self)
@@ -26,6 +33,8 @@ class Hub:
         self.game_screen = GameScreen(self)
 
         self.screen_selector = 0
+
+
 
     def display_screen(self):
         if self.screen_selector is 0:
