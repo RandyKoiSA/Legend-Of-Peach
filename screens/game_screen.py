@@ -10,7 +10,7 @@ import json
 
 class GameScreen:
     """ Game Screen runs the game. """
-    def __init__(self, hub, level_name="1-1"):
+    def __init__(self, hub, level_name="1-1-1"):
         self.hub = hub
         self.screen = hub.main_screen
         self.controller = hub.controller
