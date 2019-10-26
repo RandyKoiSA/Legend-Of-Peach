@@ -22,7 +22,7 @@ def run_game():
 
         # Display the screen onto the window
         pygame.display.flip()
-        hub.CLOCK.tick(hub.FRATERATE)
+        hub.CLOCK.tick(hub.FRAMERATE)
 
 
 # If the console command runs this file, it will run the game
