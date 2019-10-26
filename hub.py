@@ -36,6 +36,13 @@ class Hub:
         self.controller = Controller(self)
         self.camera = Camera(self)
 
+        # STATES
+        self.WALK = 'WALK'
+        self.LEFT = 'LEFT'
+        self.RIGHT = 'RIGHT'
+        self.STOMPED = 'STOMPED'
+        self.STAND = 'STAND'
+
         """ Initialize the type of screen possible to display
         game_screen is the only one that will probably be reinstance everytime a new level
         opens. """
