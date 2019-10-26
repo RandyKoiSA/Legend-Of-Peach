@@ -10,7 +10,7 @@ import json
 
 class GameScreen:
     """ Game Screen runs the game. """
-    def __init__(self, hub, level_name="1-1"):
+    def __init__(self, hub, level_name="1-1-1"):
         self.hub = hub
         self.screen = hub.main_screen
         self.controller = hub.controller
@@ -120,8 +120,7 @@ class GameScreen:
                 # check if the player is standing on top
                 if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
                     self.player_group.sprite.rect.bottom = collision.rect.top
-                    self.player_group.sprite.is_jumping = False
-                    self.gamemode.mario_in_air = False
+                    self.player_group.sprite.reset_jump()
                 else:
                     # check if the player hits the left wall
                     if self.player_group.sprite.rect.right < collision.rect.left + 20:

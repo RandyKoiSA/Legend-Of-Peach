@@ -35,8 +35,8 @@ class Player(Sprite):
         self.is_jumping = False
 
         # Get mario time when jumping
-        self.jump_initial_time = 0
-        self.jump_max_air_time = 600    # How long the player will keep jumping
+        self.counter_jump = 0
+        self.jump_max_height = 400
         self.jump_velocity = 25     # How fast the player will jump
 
         self.is_dead = False
@@ -59,16 +59,18 @@ class Player(Sprite):
         if self.controller.move_left:
             self.rect.x -= self.velocity
         if self.controller.jump:
+            # turn off controller jump to prevent holding jump space bar
             self.controller.jump = False
             if not self.is_jumping:
                 self.jump()
-                self.gamemode.mario_in_air = True
-                self.mario_motion_state = "jumping"
 
         # Check if the player is jumping
         if self.is_jumping:
-            if pygame.time.get_ticks() < self.jump_initial_time:
+            if self.counter_jump < self.jump_max_height:
+                self.counter_jump += self.jump_velocity
                 self.rect.y -= self.jump_velocity
+            if self.counter_jump > self.jump_max_height:
+                self.is_jumping = False
 
         self.check_collision()
 
@@ -109,7 +111,8 @@ class Player(Sprite):
 
     def jump(self):
         self.is_jumping = True
-        self.jump_initial_time = pygame.time.get_ticks() + self.jump_max_air_time
+        self.gamemode.mario_in_air = True
+        self.mario_motion_state = "jumping"
 
     def throw(self):
         pass
@@ -138,3 +141,8 @@ class Player(Sprite):
         for i in range(len(self.image_run)):
             self.image_run[i] = pygame.transform.scale(self.image_run[i], (50, 50))
         self.image_jump = pygame.transform.scale(self.image_jump, (50, 50))
+
+    def reset_jump(self):
+        self.gamemode.mario_in_air = False
+        self.is_jumping = False
+        self.counter_jump = 0
