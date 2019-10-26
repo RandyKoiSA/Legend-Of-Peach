@@ -12,7 +12,9 @@ class Enemy(Sprite):
         self.hub = hub
         self.original_pos = [x, y]
         self.move = direction
-        self.velX = 0
+        self.velX = self.hub.velocityAI
+        self.velY = 0
+        self.state = hub.WALK
 
         # Screen Camera
         self.screen = hub.main_screen
@@ -39,12 +41,12 @@ class Enemy(Sprite):
         self.kill = False
 
     def check_direction(self):
-        if self.move == "STILL" or self.hub.modeFreeze == True:
-            self.velocity = 0
-        elif self.move == "LEFT":
-            self.velocity = -self.hub.velocityAI
-        elif self.move == "RIGHT":
-            self.velocity = self.hub.velocityAI
+        if self.move == self.hub.STAND or self.hub.modeFreeze == True:
+            self.velX = 0
+        elif self.move == self.hub.LEFT:
+            self.velX = -self.hub.velocityAI
+        elif self.move == self.hub.RIGHT:
+            self.velX = self.hub.velocityAI
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -53,23 +55,17 @@ class Enemy(Sprite):
         """ Update the Enemy Logic"""
         # Apply gravity
         self.rect.y += self.gravity
-
-        # Check if hit right wall, if so move left
-        if self.check_rightedge():
-            self.move = "LEFT"
-
-        self.check_direction()
-        # Apply movement
-        # Move Right
-        self.original_pos[0] += self.velocity
+        self.curr_state()
         self.rect.x = self.original_pos[0] - self.camera.world_offset_x
         self.check_collision()
+        print(self.name + " is " + self.state)
+        self.check_fell()
 
     def flip_direction(self):
-        if self.move == "LEFT":
-            self.move = "RIGHT"
+        if self.move == self.hub.LEFT:
+            self.move = self.hub.RIGHT
         else:
-            self.move = "LEFT"
+            self.move = self.hub.LEFT
 
     def check_rightedge(self):
         if self.rect.right >= self.screen_rect.right:
@@ -79,13 +75,56 @@ class Enemy(Sprite):
         if self.rect.left <= 0:
             self.kill = True
 
+    def check_fell(self):
+        if self.rect.top == self.screen_rect.bottom:
+            self.kill = True
+
+    def curr_state(self):
+        """Enemy State Behavior"""
+        if self.state == self.hub.WALK:
+            self.walking()
+        if self.state == self.hub.STOMPED:
+            self.stomped()
+
+    def stomped(self):
+        """Placeholder for when enemy stomped"""
+        pass
+
+    def walking(self):
+        # Check if hit right wall, if so move left
+        if self.check_rightedge():
+            self.move = self.hub.LEFT
+
+        self.check_direction()
+        # Apply movement
+        # Move Right
+        self.original_pos[0] += self.velX
+
+
+    def death_fall(self, direction):
+        """Death Jump State"""
+        self.velY = -10
+        self.index = 3
+        self.image = self.image_index[self.index]
+        self.state = self.hub.STOMPED
+
+    def death_fall(self, direction):
+        """Death falling"""
+        self.rect.y += self.velY
+        self.rect.x += self.velX
+
+
+    def next_frame(self):
+        """Frame change"""
+        self.image = self.image_index[self.index]
+
 
 class Gumba(Enemy):
     def __init__(self, hub, x, y):
         self.name = "goomba"
         self.frame = 60
         self.scale = (50, 50)
-        self.direction = "LEFT"
+        self.direction = hub.RIGHT
         self.image_index = [pygame.image.load("imgs/Cut-Sprites-For-Mario/Characters/113_goomba.png")]
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
