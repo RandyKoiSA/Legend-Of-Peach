@@ -110,7 +110,8 @@ class GameScreen:
             if gumba.rect.colliderect(self.player_group.sprite.rect):
                 if self.player_group.sprite.rect.bottom < gumba.rect.top + 20:
                     self.player_group.sprite.rect.bottom = gumba.rect.top
-                    gumba.kill = True
+                    gumba.state = self.hub.STOMPED
+                    gumba.death_timer = pygame.time.get_ticks()
                     self.player_group.sprite.is_jumping = False
 
         # Player has hit the world's floor or wall such as pipes and stairs
