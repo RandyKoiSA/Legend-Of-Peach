@@ -176,7 +176,6 @@ class GameScreen:
                     print("ERROR: Remove Gumba does not exist")
                     pass
 
-
     def draw_player_group(self):
         """ Draw the player onto the screen """
         for player in self.player_group:

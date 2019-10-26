@@ -20,7 +20,7 @@ class Hub:
         self.WINDOW_TITLE = "Legend of Peach"
         self.WINDOW_ICON = pygame.image.load('imgs/WINDOW_ICON.png')
         self.BG_COLOR = (135, 206, 235)
-        self.FRATERATE = 30
+        self.FRATERATE = 60
 
         # PHYSICS VALUES
         self.GRAVITY = 9.8
