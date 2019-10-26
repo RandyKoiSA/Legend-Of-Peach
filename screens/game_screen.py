@@ -119,8 +119,7 @@ class GameScreen:
                 # check if the player is standing on top
                 if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
                     self.player_group.sprite.rect.bottom = collision.rect.top
-                    self.player_group.sprite.is_jumping = False
-                    self.gamemode.mario_in_air = False
+                    self.player_group.sprite.reset_jump()
                 else:
                     # check if the player hits the left wall
                     if self.player_group.sprite.rect.right < collision.rect.left + 20:
