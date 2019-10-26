@@ -15,6 +15,7 @@ class Enemy(Sprite):
         self.velX = self.hub.velocityAI
         self.velY = 0
         self.state = hub.WALK
+        self.scale = scale
 
         # Screen Camera
         self.screen = hub.main_screen
@@ -31,6 +32,8 @@ class Enemy(Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.original_pos[0]
         self.rect.y = self.original_pos[1]
+
+        self.death_timer = 0
 
         # Physics Values
         self.gravity = 9.8
@@ -83,12 +86,10 @@ class Enemy(Sprite):
         """Enemy State Behavior"""
         if self.state == self.hub.WALK:
             self.walking()
-        if self.state == self.hub.STOMPED:
+        elif self.state == self.hub.STOMPED:
             self.stomped()
-
-    def stomped(self):
-        """Placeholder for when enemy stomped"""
-        pass
+        elif self.state == self.hub.DEATHFALL:
+            self.death_falling()
 
     def walking(self):
         # Check if hit right wall, if so move left
@@ -100,18 +101,35 @@ class Enemy(Sprite):
         # Move Right
         self.original_pos[0] += self.velX
 
+        if pygame.time.get_ticks() > self.clock:
+            self.index = (self.index + 1) % (len(self.image_index) - 1)
+            self.image = self.image_index[self.index]
+            self.image = pygame.transform.scale(self.image, self.scale)
+            self.clock = pygame.time.get_ticks() + self.frameRate
 
-    def death_fall(self, direction):
+    def stomped(self):
+        """Placeholder for when enemy stomped"""
+        pass
+
+    def start_death_falling(self, direction):
         """Death Jump State"""
         self.velY = -10
-        self.index = 3
-        self.image = self.image_index[self.index]
-        self.state = self.hub.STOMPED
+        if direction == self.hub.RIGHT:
+            self.velX = 5
+        else:
+            self.velX = -5
+        # self.index = 3
+        # self.image = self.image_index[self.index]
+        self.state = self.hub.DEATHFALL
 
-    def death_fall(self, direction):
+    def death_falling(self, direction):
         """Death falling"""
         self.rect.y += self.velY
         self.rect.x += self.velX
+        self.velY += self.gravity
+
+        if self.rect.y > self.screen_rect.bottom:
+            self.kill = True
 
 
     def next_frame(self):
@@ -125,10 +143,22 @@ class Gumba(Enemy):
         self.frame = 60
         self.scale = (50, 50)
         self.direction = hub.RIGHT
-        self.image_index = [pygame.image.load("imgs/Cut-Sprites-For-Mario/Characters/113_goomba.png")]
+        self.image_index = [pygame.image.load("imgs/Cut-Sprites-For-Mario/Enemies/72.png"),
+                            pygame.image.load("imgs/Cut-Sprites-For-Mario/Enemies/76.png"),
+                            pygame.image.load("imgs/Cut-Sprites-For-Mario/Enemies/73.png")]
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)
+
+    def stomped(self):
+        """When Mario stomps him"""
+        self.index = 2
+        self.image = self.image_index[self.index]
+        self.image = pygame.transform.scale(self.image, (50, 25))
+        self.rect.y -= 25
+
+        if(pygame.time.get_ticks() - self.death_timer) > 5000:
+            self.kill = True
 
 
 class Paratroops(Enemy):

@@ -42,6 +42,7 @@ class Hub:
         self.RIGHT = 'RIGHT'
         self.STOMPED = 'STOMPED'
         self.STAND = 'STAND'
+        self.DEATHFALL = 'DEATHFALL'
 
         """ Initialize the type of screen possible to display
         game_screen is the only one that will probably be reinstance everytime a new level
