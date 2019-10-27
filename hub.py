@@ -21,6 +21,7 @@ class Hub:
         self.WINDOW_ICON = pygame.image.load('imgs/WINDOW_ICON.png')
         self.BG_COLOR = (135, 206, 235)
         self.FRAMERATE = 60
+        self.speed = 0
 
         # PHYSICS VALUES
         self.GRAVITY = 9.8

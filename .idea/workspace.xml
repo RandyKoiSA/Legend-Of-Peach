@@ -2,32 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="Added Gumba to game">
+      <change afterPath="$PROJECT_DIR$/obstacles/teleporter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AI/gumba.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/gumba.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hub.py" beforeDir="false" afterPath="$PROJECT_DIR$/hub.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/Bloober.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/Bowser.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/BulletBill.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/BuzzyBeetle.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/CheepCheepRed.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/Hammer.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaParatroopaGreen.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaParatroopaGreenDark.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaParatroopaRed.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaTroopaGreen.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaTroopaGreenDark.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaTroopaRed.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/Lakitu.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/LittleGoomba.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/PiranaPlant.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/Podoboo.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/Spiny.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/SpinysEggs.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/TheHammerBrothers.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/TheHammerBrothersDark.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/TheHammerBrothersWithHammer.gif" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/legend_of_peach.py" beforeDir="false" afterPath="$PROJECT_DIR$/legend_of_peach.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/levels.json" beforeDir="false" afterPath="$PROJECT_DIR$/levels.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/game_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/screens/game_screen.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,6 +40,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">

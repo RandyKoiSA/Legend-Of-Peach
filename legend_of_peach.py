@@ -22,8 +22,8 @@ def run_game():
 
         # Display the screen onto the window
         pygame.display.flip()
-        hub.CLOCK.tick(hub.FRAMERATE)
-
+        dt = hub.CLOCK.tick(hub.FRAMERATE)
+        hub.speed = 1 / float(dt)
 
 # If the console command runs this file, it will run the game
 if __name__ == '__main__':

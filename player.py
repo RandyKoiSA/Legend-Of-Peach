@@ -3,7 +3,7 @@ from pygame.sprite import Sprite
 
 class Player(Sprite):
     """ Player class, where the player will control """
-    def __init__(self, hub):
+    def __init__(self, hub, pos_x= 50, pos_y=50):
         """ Initialize default values """
         super().__init__()
         self.hub = hub
@@ -36,8 +36,8 @@ class Player(Sprite):
         self.rect = self.current_image.get_rect()
 
         # Set initial position
-        self.rect.x = 50
-        self.rect.y = 550
+        self.rect.x = pos_x
+        self.rect.y = pos_y
 
         # player's fall rate, run velocity, jumping state
         self.gravity = 10
@@ -46,7 +46,7 @@ class Player(Sprite):
 
         # Get mario time when jumping
         self.counter_jump = 0
-        self.jump_max_height = 400
+        self.jump_max_height = 350
         self.jump_velocity = 25     # How fast the player will jump
 
         self.is_dead = False
@@ -63,12 +63,15 @@ class Player(Sprite):
         if self.controller.move_right:
             self.rect.x += self.velocity
             self.mario_motion_state = "running"
+
         if self.controller.move_left:
             self.rect.x -= self.velocity
             self.mario_motion_state = "running"
+
         if not self.controller.move_left and not self.controller.move_right:
             if not self.gamemode.mario_in_air:
                 self.mario_motion_state = "idle"
+
                 self.reset_animations()
         if self.controller.jump:
             # turn off controller jump to prevent holding jump space bar
