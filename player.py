@@ -41,7 +41,7 @@ class Player(Sprite):
 
         # player's fall rate, run velocity, jumping state
         self.gravity = 10
-        self.velocity = 10
+        self.velocity = 25
         self.is_jumping = False
 
         # Get mario time when jumping

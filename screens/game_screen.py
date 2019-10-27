@@ -41,20 +41,33 @@ class GameScreen:
         # Enemies set to die
         self.death_group = sprite.Group()
 
-        # Add gumba instances to the game
-        for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
-            self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
+        try:
+            for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
+                self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
+        except Exception:
+            print('no gumba exist within this level')
 
-        for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
-            self.gumba_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
+        try:
+            for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
+                self.gumba_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
+        except Exception:
+            print('no koopatroop exist within this level')
+
         # Add floor collision instances to the map
-        for collision in self.hub.game_levels[self.level_name]["collision_group"]:
-            self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
-                                                          (collision["width"], collision["height"])))
+        try:
+            for collision in self.hub.game_levels[self.level_name]["collision_group"]:
+                self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
+                                                              (collision["width"], collision["height"])))
+        except Exception:
+            print('no collision found in within this level')
 
         # Add teleport instances
-        for teleporter in self.hub.game_levels[self.level_name]["teleporter"]:
-            self.teleporter_group.add(Teleport(hub, teleporter["x"], teleporter["y"], teleporter["level_name"]))
+        try:
+            for teleporter in self.hub.game_levels[self.level_name]["teleporter"]:
+                self.teleporter_group.add(Teleport(hub, teleporter["x"], teleporter["y"], teleporter["level_name"],
+                                                   teleporter["world_offset"]))
+        except Exception:
+            print('no teleporter found within this level')
 
         # Add player instance
         self.player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
@@ -199,6 +212,8 @@ class GameScreen:
         if self.screen.get_rect().right > self.bg_rect.right:
             self.bg_rect.right = self.screen.get_rect().right
             self.camera.camera_hit_right_screen = True
+        else:
+            self.camera.camera_hit_right_screen = False
 
         # update the collisions off set
         for collision in self.background_collisions:
