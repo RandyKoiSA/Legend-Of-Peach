@@ -76,6 +76,12 @@
       }
 
     ],
+    "koopatroop_group": [
+       {
+        "x": 1700,
+        "y": 570
+      }
+    ],
     "collision_group": [
       {
         "_comment": "pipe one",

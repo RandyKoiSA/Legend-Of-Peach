@@ -6,6 +6,7 @@ from obstacles.teleporter import Teleport
 from player import Player
 from pygame import sprite
 from AI.gumba import Gumba
+from AI.gumba import Koopatroops
 import json
 
 
@@ -44,6 +45,8 @@ class GameScreen:
         for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
             self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
 
+        for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
+            self.gumba_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
         # Add floor collision instances to the map
         for collision in self.hub.game_levels[self.level_name]["collision_group"]:
             self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),

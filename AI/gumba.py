@@ -44,6 +44,7 @@ class Enemy(Sprite):
         # AI booleans
         self.killed = False
         self.isstomped = False
+        self.isflipped = False
 
     def check_direction(self):
         if self.state == self.hub.STAND:
@@ -114,6 +115,8 @@ class Enemy(Sprite):
             self.image = self.image_index[self.index]
             self.image = pygame.transform.scale(self.image, self.scale)
             self.clock = pygame.time.get_ticks() + self.frameRate
+            if self.move == self.hub.LEFT and not self.isflipped:
+                self.image = pygame.transform.flip(self.image, True, False)
 
     def stomped(self):
         """Placeholder for when enemy stomped"""
@@ -170,28 +173,45 @@ class Gumba(Enemy):
             self.killed = True
 
 
-class Paratroops(Enemy):
-    def __init__(self, hub, x, y):
-        self.name = "paratroop"
-        self.frame = 60
-        self.scale = (50, 50)
-        self.direction = "LEFT"
-        self.image_index = [pygame.image.load("")]
-
-        super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
-                         images=self.image_index, frame=self.frame, scale=self.scale)
-
-
 class Koopatroops(Enemy):
     def __init__(self, hub, x, y):
         self.name = "koopatroop"
         self.frame = 60
         self.scale = (50, 50)
-        self.direction = "LEFT"
+        self.direction = hub.RIGHT
+        self.image_index = [pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT00.gif"),
+                            pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT01.gif"),
+                            pygame.image.load("imgs/Enemies/KoopaTroopa/ShellGreen.png")]
+
+        super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
+                         images=self.image_index, frame=self.frame, scale=self.scale)
+
+    def stomped(self):
+        self.velX = 0
+        self.gravity = 0
+        if self.isstomped:
+            self.isstomped = False
+            shelly = self.rect.bottom - 20
+            shellx = self.rect.x
+            self.index = 2
+            self.image = self.image_index[self.index]
+            self.image = pygame.transform.scale(self.image, (40,35))
+            self.rect = self.image.get_rect()
+            self.rect.x = shellx
+            self.rect.bottom = shelly
+
+
+class Paratroops(Enemy):
+    def __init__(self, hub, x, y):
+        self.name = "paratroop"
+        self.frame = 60
+        self.scale = (50, 50)
+        self.direction = hub.RIGHT
         self.image_index = [pygame.image.load("")]
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)
+
 
 
 class Piranhaplant(Enemy):
