@@ -16,6 +16,9 @@ class Enemy(Sprite):
         self.velY = 0
         self.state = hub.STAND
         self.scale = scale
+        self.counter_bounce = 0
+        self.bounce_max_height = 100
+        self.bounce_velocity = 35
 
         # Screen Camera
         self.screen = hub.main_screen
@@ -45,19 +48,22 @@ class Enemy(Sprite):
         self.killed = False
         self.isstomped = False
         self.isflipped = False
+        self.isbouncing = False
+        self.checked = False
 
     def check_direction(self):
         if self.state == self.hub.STAND:
             self.velX = 0
         elif self.move == self.hub.LEFT:
-            self.velX = -self.hub.velocityAI
+            self.velX = - self.hub.velocityAI
         elif self.move == self.hub.RIGHT:
             self.velX = self.hub.velocityAI
 
     def check_cam(self):
-        if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0]:
+        if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0] and\
+         not self.checked:
             self.state = self.hub.WALK
-
+            self.checked = True
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -81,9 +87,15 @@ class Enemy(Sprite):
         if self.rect.right >= self.screen_rect.right:
             return True
 
-    def check_collision(self):
-        if self.rect.left <= 0:
+    def check_rightedgekill(self):
+        if self.rect.left >= self.screen_rect.right:
             self.kill()
+            print(self.name + " is Ded")
+
+    def check_collision(self):
+        if self.rect.right <= 0:
+            self.kill()
+            print(self.name + " is Ded")
 
     def check_fell(self):
         if self.rect.top == self.screen_rect.bottom:
@@ -97,6 +109,8 @@ class Enemy(Sprite):
             self.walking()
         elif self.state == self.hub.STOMPED:
             self.stomped()
+        elif self.state == self.hub.HIT:
+            self.start_death_falling()
         elif self.state == self.hub.DEATHFALL:
             self.death_falling()
         elif self.state == self.hub.SLIDE:
@@ -108,8 +122,12 @@ class Enemy(Sprite):
         self.velX = 0
 
     def slide(self):
-        self.velX = 30
-        self.check_direction()
+        if self.move == self.hub.RIGHT or self.hub.STAND:
+            self.velX = 20
+        if self.move == self.hub.LEFT:
+            self.velX = -20
+        self.check_rightedgekill()
+        self.check_collision()
         self.original_pos[0] += self.velX
 
     def walking(self):
@@ -123,7 +141,7 @@ class Enemy(Sprite):
         self.original_pos[0] += self.velX
 
         if pygame.time.get_ticks() > self.clock:
-            self.index = (self.index + 1) % (len(self.image_index) - 1)
+            self.index = (self.index + 1) % 2
             self.image = self.image_index[self.index]
             self.image = pygame.transform.scale(self.image, self.scale)
             self.clock = pygame.time.get_ticks() + self.frameRate
@@ -134,25 +152,46 @@ class Enemy(Sprite):
         """Placeholder for when enemy stomped"""
         pass
 
-    def start_death_falling(self, direction):
+    def start_death_falling(self):
         """Death Jump State"""
-        self.velY = -10
-        if direction == self.hub.RIGHT:
-            self.velX = 5
+        self.isbouncing = True
+        if self.move == self.hub.RIGHT or self.move == self.hub.STAND:
+            self.velX = 10
         else:
-            self.velX = -5
+            self.velX = -10
         # self.index = 3
         # self.image = self.image_index[self.index]
         self.state = self.hub.DEATHFALL
 
-    def death_falling(self, direction):
+        if pygame.time.get_ticks() > self.clock:
+            self.index = (self.index + 1) % (2)
+            self.image = self.image_index[self.index]
+            self.image = pygame.transform.scale(self.image, self.scale)
+            self.clock = pygame.time.get_ticks() + self.frameRate
+            self.image = pygame.transform.flip(self.image, False, True)
+
+    def death_falling(self):
         """Death falling"""
-        self.rect.y += self.velY
-        self.rect.x += self.velX
-        self.velY += self.gravity
+
+        if self.isbouncing:
+            if self.counter_bounce < self.bounce_max_height:
+                self.counter_bounce += self.bounce_velocity
+                self.rect.y -= self.bounce_velocity
+            if self.counter_bounce > self.bounce_max_height:
+                self.isbouncing = False
+        else:
+            self.rect.y += self.velY
+            self.rect.x += self.velX
+            self.velY += self.gravity
+        if pygame.time.get_ticks() > self.clock:
+            self.index = (self.index + 1) % (len(self.image_index) - 1)
+            self.image = self.image_index[self.index]
+            self.image = pygame.transform.scale(self.image, self.scale)
+            self.clock = pygame.time.get_ticks() + self.frameRate
+            self.image = pygame.transform.flip(self.image, False, True)
 
         if self.rect.y > self.screen_rect.bottom:
-            self.killed = True
+            self.kill()
 
     def next_frame(self):
         """Frame change"""
@@ -162,7 +201,7 @@ class Enemy(Sprite):
 class Gumba(Enemy):
     def __init__(self, hub, x, y):
         self.name = "goomba"
-        self.frame = 60
+        self.frame = 100
         self.scale = (50, 50)
         self.direction = hub.RIGHT
         self.image_index = [pygame.image.load("imgs/Enemies/LittleGoomba/goomba_01.gif"),
@@ -187,7 +226,7 @@ class Gumba(Enemy):
 class Koopatroops(Enemy):
     def __init__(self, hub, x, y):
         self.name = "koopatroop"
-        self.frame = 60
+        self.frame = 100
         self.scale = (50, 50)
         self.direction = hub.RIGHT
         self.image_index = [pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT00.gif"),
@@ -201,6 +240,7 @@ class Koopatroops(Enemy):
         self.velX = 0
         self.gravity = 0
         if self.isstomped:
+            self.name = "shell"
             self.isstomped = False
             shelly = self.rect.bottom - 20
             shellx = self.rect.x
@@ -215,7 +255,7 @@ class Koopatroops(Enemy):
 class Paratroops(Enemy):
     def __init__(self, hub, x, y):
         self.name = "paratroop"
-        self.frame = 60
+        self.frame = 100
         self.scale = (50, 50)
         self.direction = hub.RIGHT
         self.image_index = [pygame.image.load("")]

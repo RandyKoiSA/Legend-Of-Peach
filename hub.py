@@ -24,7 +24,7 @@ class Hub:
         self.speed = 0
 
         # PHYSICS VALUES
-        self.GRAVITY = 9.8
+        self.GRAVITY = 10
         self.velocityAI = 5
 
         # DEBUG MODE
@@ -46,6 +46,7 @@ class Hub:
         self.STAND = 'STAND'
         self.SHELL = 'SHELL'
         self.SLIDE = 'SLIDE'
+        self.HIT = 'HIT'
         self.DEATHFALL = 'DEATHFALL'
 
         """ Initialize the type of screen possible to display
