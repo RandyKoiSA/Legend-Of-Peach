@@ -15,6 +15,8 @@ class Player(Sprite):
 
         self.mario_motion_state = "idle"
         self.mario_upgrade_state = "regular"
+        self.mario_facing_direction = hub.RIGHT
+        self.mario_image_flipped = False
 
         # keep track on what image of multiple images
         self.index = 0
@@ -43,11 +45,15 @@ class Player(Sprite):
         self.gravity = 10
         self.velocity = 25
         self.is_jumping = False
+        self.is_bouncing = False
 
         # Get mario time when jumping
         self.counter_jump = 0
         self.jump_max_height = 350
         self.jump_velocity = 25     # How fast the player will jump
+        self.counter_bounce = 0
+        self.bounce_max_height = 100
+        self.bounce_velocity = 35
 
         self.is_dead = False
 
@@ -63,10 +69,12 @@ class Player(Sprite):
         if self.controller.move_right:
             self.rect.x += self.velocity
             self.mario_motion_state = "running"
+            self.mario_facing_direction = self.hub.RIGHT
 
         if self.controller.move_left:
             self.rect.x -= self.velocity
             self.mario_motion_state = "running"
+            self.mario_facing_direction = self.hub.LEFT
 
         if not self.controller.move_left and not self.controller.move_right:
             if not self.gamemode.mario_in_air:
@@ -76,7 +84,7 @@ class Player(Sprite):
         if self.controller.jump:
             # turn off controller jump to prevent holding jump space bar
             self.controller.jump = False
-            if not self.is_jumping:
+            if not self.is_jumping or not self.is_bouncing:
                 self.jump()
 
         # Check if the player is jumping
@@ -86,6 +94,13 @@ class Player(Sprite):
                 self.rect.y -= self.jump_velocity
             if self.counter_jump > self.jump_max_height:
                 self.is_jumping = False
+
+        if self.is_bouncing:
+            if self.counter_bounce < self.bounce_max_height:
+                self.counter_bounce += self.bounce_velocity
+                self.rect.y -= self.bounce_velocity
+            if self.counter_bounce > self.bounce_max_height:
+                self.is_bouncing = False
 
         self.check_collision()
 
@@ -125,6 +140,12 @@ class Player(Sprite):
         self.gamemode.mario_in_air = True
         self.mario_motion_state = "jumping"
 
+    def bounce(self):
+        self.is_bouncing = True
+        self.gamemode.mario_in_air = True
+        self.mario_motion_state = "jumping"
+        print("Mario Bounced off AI")
+
     def throw(self):
         pass
 
@@ -145,6 +166,10 @@ class Player(Sprite):
     def become_fire_mario(self):
         pass
 
+    def set_image_direction(self):
+        if self.mario_facing_direction == self.hub.LEFT:
+            self.current_image = pygame.transform.flip(self.current_image, True, False)
+
     def prep_mario_images(self):
         # Adjustment to mario images
         # adjust regular mario images
@@ -159,14 +184,22 @@ class Player(Sprite):
         self.is_jumping = False
         self.counter_jump = 0
 
+    def reset_bounce(self):
+        """Reset Mario's bounce when mario hits the ground or enemy"""
+        self.gamemode.mario_in_air = False
+        self.is_bouncing = False
+        self.counter_bounce = 0
+
     def update_state(self):
         """ Update state determine what state the player is in """
 
         if self.mario_motion_state is "jumping" or self.gamemode.mario_in_air:
             self.current_image = self.image_jump
+            self.set_image_direction()
         else:
             if self.mario_motion_state is "idle":
                 self.current_image = self.image_idle
+                self.set_image_direction()
             if self.mario_motion_state is "running":
                 # start timer
                 if pygame.time.get_ticks() > self.player_clock:
@@ -174,6 +207,9 @@ class Player(Sprite):
                     self.index += 1
                     self.index %= len(self.image_run)
                     self.current_image = self.image_run[self.index]
+                    self.set_image_direction()
+
+
 
         # self.rect = self.current_image.get_rect()
 

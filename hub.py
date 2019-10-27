@@ -44,6 +44,8 @@ class Hub:
         self.RIGHT = 'RIGHT'
         self.STOMPED = 'STOMPED'
         self.STAND = 'STAND'
+        self.SHELL = 'SHELL'
+        self.SLIDE = 'SLIDE'
         self.DEATHFALL = 'DEATHFALL'
 
         """ Initialize the type of screen possible to display
