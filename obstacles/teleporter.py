@@ -3,7 +3,7 @@ from pygame.sprite import Sprite
 
 class Teleport(Sprite):
     """ Teleporter that teleports the player to the next level """
-    def __init__(self, hub, pos_x, pos_y, level_name):
+    def __init__(self, hub, pos_x, pos_y, level_name, world_offset):
         """ initialize default values """
         super().__init__()
         self.hub = hub
@@ -13,6 +13,7 @@ class Teleport(Sprite):
         self.height = 100
         self.original_pos = (pos_x, pos_y)
         self.level_name = level_name
+        self.world_offset = world_offset
 
         self.rect = pygame.Rect((pos_x, pos_y), (self.width, self.height))
         self.color = (255, 0, 0, 128)
@@ -23,6 +24,6 @@ class Teleport(Sprite):
     def update(self, player_rect):
         if self.rect.colliderect(player_rect):
             if self.hub.controller.up is True:
-                self.hub.open_level(self.level_name)
+                self.hub.open_level(self.level_name, self.world_offset)
 
         self.rect.x = self.original_pos[0] - self.camera.world_offset_x

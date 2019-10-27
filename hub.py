@@ -19,7 +19,7 @@ class Hub:
         self.WINDOW_HEIGHT = 720
         self.WINDOW_TITLE = "Legend of Peach"
         self.WINDOW_ICON = pygame.image.load('imgs/WINDOW_ICON.png')
-        self.BG_COLOR = (135, 206, 235)
+        self.BG_COLOR = (0, 0, 0)
         self.FRAMERATE = 30
         self.speed = 0
 
@@ -87,8 +87,9 @@ class Hub:
             data = json.load(read_file)
             return data
 
-    def open_level(self, level_name):
+    def open_level(self, level_name, world_offset=0):
         print('new game_screen instantiated')
         self.game_screen = GameScreen(self, level_name)
         self.level_name = level_name
         self.camera.reset_camera()
+        self.camera.world_offset_x = world_offset
