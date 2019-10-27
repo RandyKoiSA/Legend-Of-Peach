@@ -168,6 +168,14 @@ class GameScreen:
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
+        enemy_collisions = pygame.sprite.spritecollide(enemy, self.gumba_group, False)
+        if enemy_collisions:
+            for enemies in enemy_collisions:
+                if enemy.rect.right > enemies.rect.left + 20 or enemy.rect.left < enemies.rect.right - 20:
+                    if enemy != enemies:
+                        # Checks if enemy colliding with other enemy
+                        enemy.flip_direction()
+
         if bg_collisions:
             for collision in bg_collisions:
                 # Hits ground
@@ -178,7 +186,7 @@ class GameScreen:
                     # Checks if player is not on top
                     if enemy.rect.bottom > collision.rect.top:
                         enemy.flip_direction()
-                        enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
+                        # enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
 
     def update_camera(self):
         # update the bg image off set

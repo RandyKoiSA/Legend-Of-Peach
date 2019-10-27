@@ -14,7 +14,7 @@ class Enemy(Sprite):
         self.move = direction
         self.velX = self.hub.velocityAI
         self.velY = 0
-        self.state = hub.WALK
+        self.state = hub.STAND
         self.scale = scale
 
         # Screen Camera
@@ -37,21 +37,26 @@ class Enemy(Sprite):
         self.death_timer = 0
 
         # Physics Values
-        self.gravity = 9.8
+        self.gravity = self.hub.GRAVITY
         self.velocity = 0
         self.check_direction()
 
-        # AI BOOLS
+        # AI booleans
         self.killed = False
         self.isstomped = False
 
     def check_direction(self):
-        if self.move == self.hub.STAND:
+        if self.state == self.hub.STAND:
             self.velX = 0
         elif self.move == self.hub.LEFT:
             self.velX = -self.hub.velocityAI
         elif self.move == self.hub.RIGHT:
             self.velX = self.hub.velocityAI
+
+    def check_cam(self):
+        if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0]:
+            self.state = self.hub.WALK
+
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -77,14 +82,16 @@ class Enemy(Sprite):
 
     def check_collision(self):
         if self.rect.left <= 0:
-            self.killed = True
+            self.kill()
 
     def check_fell(self):
         if self.rect.top == self.screen_rect.bottom:
-            self.killed = True
+            self.kill()
 
     def curr_state(self):
         """Enemy State Behavior"""
+        if self.state == self.hub.STAND:
+            self.check_cam()
         if self.state == self.hub.WALK:
             self.walking()
         elif self.state == self.hub.STOMPED:

@@ -20,7 +20,7 @@ class Hub:
         self.WINDOW_TITLE = "Legend of Peach"
         self.WINDOW_ICON = pygame.image.load('imgs/WINDOW_ICON.png')
         self.BG_COLOR = (135, 206, 235)
-        self.FRAMERATE = 60
+        self.FRAMERATE = 30
         self.speed = 0
 
         # PHYSICS VALUES
@@ -29,6 +29,7 @@ class Hub:
 
         # DEBUG MODE
         self.modeFreeze = False
+        self.modePlace = False
 
         # Load mario levels from mario level
         self.game_levels = self.get_levels()
