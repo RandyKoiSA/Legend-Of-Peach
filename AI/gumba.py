@@ -30,6 +30,7 @@ class Enemy(Sprite):
         self.image = self.image_index[self.index]
         self.image = pygame.transform.scale(self.image, scale)
         self.rect = self.image.get_rect()
+
         self.rect.x = self.original_pos[0]
         self.rect.y = self.original_pos[1]
 
@@ -41,10 +42,11 @@ class Enemy(Sprite):
         self.check_direction()
 
         # AI BOOLS
-        self.kill = False
+        self.killed = False
+        self.isstomped = False
 
     def check_direction(self):
-        if self.move == self.hub.STAND or self.hub.modeFreeze == True:
+        if self.move == self.hub.STAND:
             self.velX = 0
         elif self.move == self.hub.LEFT:
             self.velX = -self.hub.velocityAI
@@ -59,7 +61,6 @@ class Enemy(Sprite):
         # Apply gravity
         self.rect.y += self.gravity
         self.curr_state()
-        self.rect.x = self.original_pos[0] - self.camera.world_offset_x
         self.check_collision()
         # print(self.name + " is " + self.state)
         self.check_fell()
@@ -76,11 +77,11 @@ class Enemy(Sprite):
 
     def check_collision(self):
         if self.rect.left <= 0:
-            self.kill = True
+            self.killed = True
 
     def check_fell(self):
         if self.rect.top == self.screen_rect.bottom:
-            self.kill = True
+            self.killed = True
 
     def curr_state(self):
         """Enemy State Behavior"""
@@ -129,7 +130,7 @@ class Enemy(Sprite):
         self.velY += self.gravity
 
         if self.rect.y > self.screen_rect.bottom:
-            self.kill = True
+            self.killed = True
 
 
     def next_frame(self):
@@ -151,13 +152,15 @@ class Gumba(Enemy):
 
     def stomped(self):
         """When Mario stomps him"""
-        self.index = 1
         self.image = self.image_index[self.index]
         self.image = pygame.transform.scale(self.image, (50, 25))
-        self.rect.y -= 25
+        if self.isstomped:
+            self.isstomped = False
+            self.rect.y += 10
+            self.gravity = 0
 
-        if(pygame.time.get_ticks() - self.death_timer) > 5000:
-            self.kill = True
+        if(pygame.time.get_ticks() - self.death_timer) > 500:
+            self.killed = True
 
 
 class Paratroops(Enemy):
