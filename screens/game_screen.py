@@ -6,6 +6,7 @@ from obstacles.teleporter import Teleport
 from player import Player
 from pygame import sprite
 from AI.gumba import Gumba
+from AI.gumba import Koopatroops
 import json
 
 
@@ -37,10 +38,15 @@ class GameScreen:
         # Gumba group spawn gumba when apporiate
         self.gumba_group = sprite.Group()
 
+        # Enemies set to die
+        self.death_group = sprite.Group()
+
         # Add gumba instances to the game
         for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
             self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
 
+        for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
+            self.gumba_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
         # Add floor collision instances to the map
         for collision in self.hub.game_levels[self.level_name]["collision_group"]:
             self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
@@ -93,10 +99,13 @@ class GameScreen:
 
     def run_update(self):
         self.update_player_group()
-        self.update_enemy_group()
         self.update_teleporter_group()
         self.update_camera()
         self.update_world_collision()
+        if not self.hub.modeFreeze:
+            self.update_enemy_group()
+            self.update_death_group()
+
 
     def run_draw(self):
 
@@ -115,6 +124,9 @@ class GameScreen:
         # Draw player
         self.draw_player_group()
 
+        # Draw the Death Enemies
+        self.draw_death_group()
+
     def prep_bg_image(self):
         # Scale the background image
         self.bg_image = pygame.transform.scale(self.bg_image, (self.bg_rect.width * 3 + 50,
@@ -123,14 +135,23 @@ class GameScreen:
         self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
 
     def update_world_collision(self):
-        # Goomba collision with player
-        for gumba in self.gumba_group:
-            if gumba.rect.colliderect(self.player_group.sprite.rect):
-                if self.player_group.sprite.rect.bottom < gumba.rect.top + 20:
-                    self.player_group.sprite.rect.bottom = gumba.rect.top
-                    gumba.state = self.hub.STOMPED
-                    gumba.death_timer = pygame.time.get_ticks()
+        # Enemy collision with player
+        for enemy in self.gumba_group:
+            if enemy.rect.colliderect(self.player_group.sprite.rect):
+                if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
+                    self.player_group.sprite.rect.bottom = enemy.rect.top
+                    enemy.state = self.hub.STOMPED
+                    enemy.isstomped = True
+                    enemy.death_timer = pygame.time.get_ticks()
+                    enemy.kill()
+                    self.death_group.add(enemy)
                     self.player_group.sprite.is_jumping = False
+                else:
+                    # If Mario collides in x direction
+                    if self.player_group.sprite.rect.right < enemy.rect.left + 20:
+                        self.player_group.sprite.die()
+                    elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
+                        self.player_group.sprite.die()
 
         # Player has hit the world's floor or wall such as pipes and stairs
         for collision in self.background_collisions:
@@ -150,6 +171,14 @@ class GameScreen:
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
+        enemy_collisions = pygame.sprite.spritecollide(enemy, self.gumba_group, False)
+        if enemy_collisions:
+            for enemies in enemy_collisions:
+                if enemy.rect.right > enemies.rect.left + 20 or enemy.rect.left < enemies.rect.right - 20:
+                    if enemy != enemies:
+                        # Checks if enemy colliding with other enemy
+                        enemy.flip_direction()
+
         if bg_collisions:
             for collision in bg_collisions:
                 # Hits ground
@@ -160,8 +189,7 @@ class GameScreen:
                     # Checks if player is not on top
                     if enemy.rect.bottom > collision.rect.top:
                         enemy.flip_direction()
-                        enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
-
+                        # enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
 
     def update_camera(self):
         # update the bg image off set
@@ -176,6 +204,12 @@ class GameScreen:
         for collision in self.background_collisions:
             collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
 
+        for enemy in self.gumba_group:
+            enemy.rect.x = enemy.original_pos[0] - self.camera.world_offset_x
+
+        for dead in self.death_group:
+            dead.rect.x = dead.original_pos[0] - self.camera.world_offset_x
+
     def update_player_group(self):
         for player in self.player_group:
             player.update()
@@ -184,15 +218,20 @@ class GameScreen:
         """ updating the gumba group """
         for enemy in self.gumba_group:
             self.check_enemy_collision(enemy=enemy)
-
             enemy.update()
-            if enemy.kill:
+
+    def update_death_group(self):
+        """ Updating the soon to die Enemy Group"""
+        for enemy in self.death_group:
+            enemy.update()
+            if enemy.killed:
                 try:
-                    self.gumba_group.remove(enemy)
-                    print("Gumba ded")
+                    self.death_group.remove(enemy)
+                    print(enemy.name + " is ded")
                 except AssertionError:
                     print("ERROR: Remove Gumba does not exist")
                     pass
+
 
     def draw_player_group(self):
         """ Draw the player onto the screen """
@@ -204,6 +243,11 @@ class GameScreen:
         # Draw all the gumbas onto the screen
         for gumba in self.gumba_group:
             gumba.draw()
+
+    def draw_death_group(self):
+        """ Draw all the soon to die enemies"""
+        for enemy in self.death_group:
+            enemy.draw()
 
     def draw_world_collision_group(self):
         """ Draw the collision lines """
