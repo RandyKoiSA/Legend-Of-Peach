@@ -99,6 +99,18 @@ class Enemy(Sprite):
             self.stomped()
         elif self.state == self.hub.DEATHFALL:
             self.death_falling()
+        elif self.state == self.hub.SLIDE:
+            self.slide()
+        elif self.state == self.hub.SHELL:
+            self.shell()
+
+    def shell(self):
+        self.velX = 0
+
+    def slide(self):
+        self.velX = 30
+        self.check_direction()
+        self.original_pos[0] += self.velX
 
     def walking(self):
         # Check if hit right wall, if so move left
@@ -141,7 +153,6 @@ class Enemy(Sprite):
 
         if self.rect.y > self.screen_rect.bottom:
             self.killed = True
-
 
     def next_frame(self):
         """Frame change"""
@@ -193,12 +204,12 @@ class Koopatroops(Enemy):
             self.isstomped = False
             shelly = self.rect.bottom - 20
             shellx = self.rect.x
-            self.index = 2
-            self.image = self.image_index[self.index]
+            self.image = self.image_index[2]
             self.image = pygame.transform.scale(self.image, (40,35))
             self.rect = self.image.get_rect()
             self.rect.x = shellx
             self.rect.bottom = shelly
+        self.state = self.hub.SHELL
 
 
 class Paratroops(Enemy):

@@ -35,21 +35,27 @@ class GameScreen:
         # Player group spawn player in again if needed
         self.player_group = sprite.GroupSingle()
 
-        # Gumba group spawn gumba when apporiate
-        self.gumba_group = sprite.Group()
+        # Gumba group spawn gumba when appropriate
+        self.enemy_group = sprite.Group()
+
+        # For red or green shells
+        self.shells_group = sprite.Group()
+
+        # Projectiles (Shell, Fire, Bullet bills)
+        self.projectile_group = sprite.Group()
 
         # Enemies set to die
         self.death_group = sprite.Group()
 
         try:
             for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
-                self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
+                self.enemy_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
         except Exception:
             print('no gumba exist within this level')
 
         try:
             for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
-                self.gumba_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
+                self.enemy_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
         except Exception:
             print('no koopatroop exist within this level')
 
@@ -118,10 +124,11 @@ class GameScreen:
         if not self.hub.modeFreeze:
             self.update_enemy_group()
             self.update_death_group()
+            self.update_projectile_group()
+            self.update_shell_group()
 
 
     def run_draw(self):
-
         # Draw background image
         self.screen.blit(self.bg_image, self.bg_rect)
 
@@ -140,6 +147,12 @@ class GameScreen:
         # Draw the Death Enemies
         self.draw_death_group()
 
+        # Draw the Shells
+        self.draw_shell_group()
+
+        # Draw the Projectiles
+        self.draw_projectile_group()
+
     def prep_bg_image(self):
         # Scale the background image
         self.bg_image = pygame.transform.scale(self.bg_image, (self.bg_rect.width * 3 + 50,
@@ -149,16 +162,30 @@ class GameScreen:
 
     def update_world_collision(self):
         # Enemy collision with player
-        for enemy in self.gumba_group:
+        for shell in self.shells_group:
+            if shell.rect.colliderect(self.player_group.sprite.rect):
+                shell.move = self.player_group.sprite.mario_facing_direction
+                shell.state = self.hub.SLIDE
+                if self.player_group.sprite.rect.bottom < shell.rect.top + 20:
+                    self.player_group.sprite.reset_bounce()
+                    self.player_group.sprite.bounce()
+                shell.kill()
+                self.projectile_group.add(shell)
+
+        for enemy in self.enemy_group:
             if enemy.rect.colliderect(self.player_group.sprite.rect):
                 if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
-                    self.player_group.sprite.rect.bottom = enemy.rect.top
+                    self.player_group.sprite.reset_bounce()
+                    self.player_group.sprite.bounce()
                     enemy.state = self.hub.STOMPED
                     enemy.isstomped = True
                     enemy.death_timer = pygame.time.get_ticks()
                     enemy.kill()
-                    self.death_group.add(enemy)
-                    self.player_group.sprite.is_jumping = False
+                    if enemy.name == "koopatroop":
+                        self.shells_group.add(enemy)
+                    else:
+                        self.death_group.add(enemy)
+                    #self.player_group.sprite.is_jumping = False
                 else:
                     # If Mario collides in x direction
                     if self.player_group.sprite.rect.right < enemy.rect.left + 20:
@@ -173,6 +200,7 @@ class GameScreen:
                 if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
                     self.player_group.sprite.rect.bottom = collision.rect.top
                     self.player_group.sprite.reset_jump()
+                    self.player_group.sprite.reset_bounce()
                 else:
                     # check if the player hits the left wall
                     if self.player_group.sprite.rect.right < collision.rect.left + 20:
@@ -184,7 +212,7 @@ class GameScreen:
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
-        enemy_collisions = pygame.sprite.spritecollide(enemy, self.gumba_group, False)
+        enemy_collisions = pygame.sprite.spritecollide(enemy, self.enemy_group, False)
         if enemy_collisions:
             for enemies in enemy_collisions:
                 if enemy.rect.right > enemies.rect.left + 20 or enemy.rect.left < enemies.rect.right - 20:
@@ -219,8 +247,14 @@ class GameScreen:
         for collision in self.background_collisions:
             collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
 
-        for enemy in self.gumba_group:
+        for enemy in self.enemy_group:
             enemy.rect.x = enemy.original_pos[0] - self.camera.world_offset_x
+
+        for shell in self.shells_group:
+            shell.rect.x = shell.original_pos[0] - self.camera.world_offset_x
+
+        for projectile in self.projectile_group:
+            projectile.rect.x = projectile.original_pos[0] - self.camera.world_offset_x
 
         for dead in self.death_group:
             dead.rect.x = dead.original_pos[0] - self.camera.world_offset_x
@@ -231,7 +265,7 @@ class GameScreen:
 
     def update_enemy_group(self):
         """ updating the gumba group """
-        for enemy in self.gumba_group:
+        for enemy in self.enemy_group:
             self.check_enemy_collision(enemy=enemy)
             enemy.update()
 
@@ -247,6 +281,13 @@ class GameScreen:
                     print("ERROR: Remove Gumba does not exist")
                     pass
 
+    def update_shell_group(self):
+        for shell in self.shells_group:
+            shell.update()
+
+    def update_projectile_group(self):
+        for projectile in self.projectile_group:
+            projectile.update()
 
     def draw_player_group(self):
         """ Draw the player onto the screen """
@@ -256,13 +297,21 @@ class GameScreen:
     def draw_enemy_group(self):
         """  Draw all enemies onto the screen"""
         # Draw all the gumbas onto the screen
-        for gumba in self.gumba_group:
+        for gumba in self.enemy_group:
             gumba.draw()
 
     def draw_death_group(self):
         """ Draw all the soon to die enemies"""
         for enemy in self.death_group:
             enemy.draw()
+
+    def draw_shell_group(self):
+        for shell in self.shells_group:
+            shell.draw()
+
+    def draw_projectile_group(self):
+        for projectile in self.projectile_group:
+            projectile.draw()
 
     def draw_world_collision_group(self):
         """ Draw the collision lines """
