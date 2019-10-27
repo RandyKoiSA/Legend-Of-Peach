@@ -61,7 +61,7 @@ class Enemy(Sprite):
         self.curr_state()
         self.rect.x = self.original_pos[0] - self.camera.world_offset_x
         self.check_collision()
-        print(self.name + " is " + self.state)
+        # print(self.name + " is " + self.state)
         self.check_fell()
 
     def flip_direction(self):
@@ -143,16 +143,15 @@ class Gumba(Enemy):
         self.frame = 60
         self.scale = (50, 50)
         self.direction = hub.RIGHT
-        self.image_index = [pygame.image.load("imgs/Cut-Sprites-For-Mario/Enemies/72.png"),
-                            pygame.image.load("imgs/Cut-Sprites-For-Mario/Enemies/76.png"),
-                            pygame.image.load("imgs/Cut-Sprites-For-Mario/Enemies/73.png")]
+        self.image_index = [pygame.image.load("imgs/Enemies/LittleGoomba/goomba_01.gif"),
+                            pygame.image.load("imgs/Enemies/LittleGoomba/goomba_02.gif")]
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)
 
     def stomped(self):
         """When Mario stomps him"""
-        self.index = 2
+        self.index = 1
         self.image = self.image_index[self.index]
         self.image = pygame.transform.scale(self.image, (50, 25))
         self.rect.y -= 25

@@ -2,6 +2,7 @@ import pygame
 import sys
 from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
+from obstacles.teleporter import Teleport
 from player import Player
 from pygame import sprite
 from AI.gumba import Gumba
@@ -27,12 +28,15 @@ class GameScreen:
         # This does not include brick collision.
         self.background_collisions = sprite.Group()
 
+        # Teleporter Group
+        self.teleporter_group = sprite.Group()
+
         # Player group spawn player in again if needed
         self.player_group = sprite.GroupSingle()
 
         # Gumba group spawn gumba when apporiate
         self.gumba_group = sprite.Group()
-        #
+
         # Add gumba instances to the game
         for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
             self.gumba_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
@@ -42,8 +46,13 @@ class GameScreen:
             self.background_collisions.add(FloorCollision(hub, (collision["x"], collision["y"]),
                                                           (collision["width"], collision["height"])))
 
+        # Add teleport instances
+        for teleporter in self.hub.game_levels[self.level_name]["teleporter"]:
+            self.teleporter_group.add(Teleport(hub, teleporter["x"], teleporter["y"], teleporter["level_name"]))
+
         # Add player instance
-        self.current_player = Player(hub)
+        self.player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
+        self.current_player = Player(hub, self.player_spawn_point[0], self.player_spawn_point[1])
         self.player_group.add(self.current_player)
 
     def run(self):
@@ -69,6 +78,8 @@ class GameScreen:
                     self.controller.move_left = True
                 if event.key == K_RIGHT or event.key == K_d:
                     self.controller.move_right = True
+                if event.key == K_UP or event.key == K_w:
+                    self.controller.up = True
             if event.type == KEYUP:
                 if event.key == K_SPACE:
                     self.controller.jump = False
@@ -77,19 +88,26 @@ class GameScreen:
                     self.controller.move_left = False
                 if event.key == K_RIGHT or event.key == K_d:
                     self.controller.move_right = False
+                if event.key == K_UP or event.key == K_w:
+                    self.controller.up = False
 
     def run_update(self):
         self.update_player_group()
         self.update_enemy_group()
+        self.update_teleporter_group()
         self.update_camera()
         self.update_world_collision()
 
     def run_draw(self):
+
         # Draw background image
         self.screen.blit(self.bg_image, self.bg_rect)
 
         # Draw test collision boxes
         self.draw_world_collision_group()
+
+        # Draw teleporter collision boxes
+        self.draw_teleporter_group()
 
         # Draw gumba
         self.draw_enemy_group()
@@ -191,3 +209,11 @@ class GameScreen:
         """ Draw the collision lines """
         for collision in self.background_collisions:
             collision.draw()
+
+    def update_teleporter_group(self):
+        for teleporter in self.teleporter_group:
+            teleporter.update(self.player_group.sprite.rect)
+
+    def draw_teleporter_group(self):
+        for teleporter in self.teleporter_group:
+            teleporter.draw()

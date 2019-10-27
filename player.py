@@ -3,9 +3,10 @@ from pygame.sprite import Sprite
 
 class Player(Sprite):
     """ Player class, where the player will control """
-    def __init__(self, hub):
+    def __init__(self, hub, pos_x= 50, pos_y=50):
         """ Initialize default values """
         super().__init__()
+        self.hub = hub
         self.screen = hub.main_screen
         self.screen_rect = self.screen.get_rect()
         self.controller = hub.controller
@@ -15,7 +16,12 @@ class Player(Sprite):
         self.mario_motion_state = "idle"
         self.mario_upgrade_state = "regular"
 
-        # players image and collision
+        # keep track on what image of multiple images
+        self.index = 0
+        self.change_freq = 120
+        self.player_clock = pygame.time.get_ticks() + self.change_freq
+
+        # regular mario image and collision
         self.image_idle = pygame.image.load("imgs/Mario/RegularMario/MarioStanding.png")
         self.image_run = [pygame.image.load('imgs/Mario/RegularMario/MarioRun01.gif'),
                           pygame.image.load('imgs/Mario/RegularMario/MarioRun02.gif'),
@@ -24,10 +30,14 @@ class Player(Sprite):
 
         # prep mario image
         self.prep_mario_images()
-        self.image_idle = pygame.transform.scale(self.image_idle, (50, 50))
-        self.rect = self.image_idle.get_rect()
-        self.rect.x = 50
-        self.rect.y = 550
+
+        # get current image and rect
+        self.current_image = self.image_idle
+        self.rect = self.current_image.get_rect()
+
+        # Set initial position
+        self.rect.x = pos_x
+        self.rect.y = pos_y
 
         # player's fall rate, run velocity, jumping state
         self.gravity = 10
@@ -36,7 +46,7 @@ class Player(Sprite):
 
         # Get mario time when jumping
         self.counter_jump = 0
-        self.jump_max_height = 400
+        self.jump_max_height = 350
         self.jump_velocity = 25     # How fast the player will jump
 
         self.is_dead = False
@@ -44,11 +54,7 @@ class Player(Sprite):
     def update(self):
         """ Update the player logic """
         # Check if mario is jumping
-        if self.gamemode.mario_in_air is False:
-            if self.gamemode.mario_is_running:
-                self.mario_motion_state = "running"
-            else:
-                self.mario_motion_state = "idle"
+        self.update_state()
 
         # Apply gravity
         self.rect.y += self.gravity
@@ -56,8 +62,17 @@ class Player(Sprite):
         # Apply movement
         if self.controller.move_right:
             self.rect.x += self.velocity
+            self.mario_motion_state = "running"
+
         if self.controller.move_left:
             self.rect.x -= self.velocity
+            self.mario_motion_state = "running"
+
+        if not self.controller.move_left and not self.controller.move_right:
+            if not self.gamemode.mario_in_air:
+                self.mario_motion_state = "idle"
+
+                self.reset_animations()
         if self.controller.jump:
             # turn off controller jump to prevent holding jump space bar
             self.controller.jump = False
@@ -75,15 +90,11 @@ class Player(Sprite):
         self.check_collision()
 
     def draw(self):
-        # check what state mario is in to display proper image
-        if self.mario_motion_state is "idle":
-            self.screen.blit(self.image_idle, self.rect)
-        elif self.mario_motion_state is "running":
-            pass
-        elif self.mario_motion_state is "jumping":
-            self.screen.blit(self.image_jump, self.rect)
+        # draw current image
+        self.screen.blit(self.current_image, self.rect)
 
     def check_collision(self):
+        """ Check player's collision with actor and other objects """
         # Checks if the player hits the left screen
         if self.rect.left < self.screen_rect.left:
             self.rect.left = self.screen_rect.left
@@ -143,6 +154,30 @@ class Player(Sprite):
         self.image_jump = pygame.transform.scale(self.image_jump, (50, 50))
 
     def reset_jump(self):
+        """ Reset mario's jump when mario hits the ground"""
         self.gamemode.mario_in_air = False
         self.is_jumping = False
         self.counter_jump = 0
+
+    def update_state(self):
+        """ Update state determine what state the player is in """
+
+        if self.mario_motion_state is "jumping" or self.gamemode.mario_in_air:
+            self.current_image = self.image_jump
+        else:
+            if self.mario_motion_state is "idle":
+                self.current_image = self.image_idle
+            if self.mario_motion_state is "running":
+                # start timer
+                if pygame.time.get_ticks() > self.player_clock:
+                    self.player_clock = pygame.time.get_ticks() + self.change_freq
+                    self.index += 1
+                    self.index %= len(self.image_run)
+                    self.current_image = self.image_run[self.index]
+
+        # self.rect = self.current_image.get_rect()
+
+    def reset_animations(self):
+        self.index = 0
+        self.player_clock = pygame.time.get_ticks()
+
