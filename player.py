@@ -42,8 +42,8 @@ class Player(Sprite):
         self.rect.y = pos_y
 
         # player's fall rate, run velocity, jumping state
-        self.gravity = 10
-        self.velocity = 25
+        self.gravity = self.hub.GRAVITY
+        self.velocity = 10
         self.is_jumping = False
         self.is_bouncing = False
 

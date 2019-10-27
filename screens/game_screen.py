@@ -20,6 +20,11 @@ class GameScreen:
         self.gamemode = hub.gamemode
         self.level_name = level_name
 
+        # Bounce physics
+        self.counter_bounce = 0
+        self.bounce_max_height = 100
+        self.bounce_velocity = 35
+
         # Set up background
         self.bg_image = pygame.image.load(self.hub.game_levels[self.level_name]["background_image"])
         self.bg_rect = self.bg_image.get_rect()
@@ -230,6 +235,31 @@ class GameScreen:
                     # Checks if player is not on top
                     if enemy.rect.bottom > collision.rect.top:
                         enemy.flip_direction()
+
+    def check_projectile_collision(self, projectile):
+        bg_collisions = pygame.sprite.spritecollide(projectile, self.background_collisions, False)
+        enemy_collisions = pygame.sprite.spritecollide(projectile, self.enemy_group, False)
+
+        if enemy_collisions:
+            for enemies in enemy_collisions:
+                if projectile.rect.right > enemies.rect.left + 20 or projectile.rect.left < enemies.rect.right - 20:
+                    projectile.flip_direction()
+                    enemies.state = self.hub.HIT
+                    enemies.kill()
+                    self.death_group.add(enemies)
+
+        if bg_collisions:
+            for collision in bg_collisions:
+                # Hits ground
+                if projectile.rect.bottom < collision.rect.top + 20:
+                    projectile.rect.bottom = collision.rect.top - 5
+                # Hit side walls
+                elif projectile.rect.right > collision.rect.left + 20\
+                        or projectile.rect.left < collision.rect.right - 20:
+                    # Checks if player is not on top
+                    if projectile.rect.bottom > collision.rect.top:
+                        if projectile.name == "shell":
+                            projectile.flip_direction()
                         # enemy.rect.bottom = enemy.rect.bottom - enemy.gravity
 
     def update_camera(self):
@@ -287,6 +317,7 @@ class GameScreen:
 
     def update_projectile_group(self):
         for projectile in self.projectile_group:
+            self.check_projectile_collision(projectile)
             projectile.update()
 
     def draw_player_group(self):
