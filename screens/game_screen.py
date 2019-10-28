@@ -5,8 +5,8 @@ from obstacles.floor_collision import FloorCollision
 from obstacles.teleporter import Teleport
 from player import Player
 from pygame import sprite
-from AI.gumba import Gumba
-from AI.gumba import Koopatroops
+from AI.enemy import Gumba
+from AI.enemy import Koopatroops
 import json
 
 
@@ -177,10 +177,15 @@ class GameScreen:
             if shell.rect.colliderect(self.player_group.sprite.rect):
                 shell.move = self.player_group.sprite.mario_facing_direction
                 shell.state = self.hub.SLIDE
+                if shell.move == self.hub.LEFT:
+                    shell.rect.right = self.player_group.sprite.rect.left
+                else:
+                    shell.rect.left = self.player_group.sprite.rect.right
                 if self.player_group.sprite.rect.bottom < shell.rect.top + 20:
                     self.player_group.sprite.reset_bounce()
                     self.player_group.sprite.bounce()
                 shell.kill()
+
                 self.projectile_group.add(shell)
 
         for enemy in self.enemy_group:
@@ -245,11 +250,16 @@ class GameScreen:
     def check_projectile_collision(self, projectile):
         bg_collisions = pygame.sprite.spritecollide(projectile, self.background_collisions, False)
         enemy_collisions = pygame.sprite.spritecollide(projectile, self.enemy_group, False)
+        player_collision = pygame.sprite.spritecollide(projectile, self.player_group, False)
+
+        if player_collision:
+            for player in player_collision:
+                if projectile.rect.right > player.rect.left or projectile.rect.left < player.rect.right:
+                    player.die()
 
         if enemy_collisions:
             for enemies in enemy_collisions:
                 if projectile.rect.right > enemies.rect.left + 20 or projectile.rect.left < enemies.rect.right - 20:
-                    projectile.flip_direction()
                     enemies.state = self.hub.HIT
                     enemies.kill()
                     self.death_group.add(enemies)

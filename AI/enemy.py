@@ -164,7 +164,7 @@ class Enemy(Sprite):
         self.state = self.hub.DEATHFALL
 
         if pygame.time.get_ticks() > self.clock:
-            self.index = (self.index + 1) % (2)
+            self.index = (self.index + 1) % 2
             self.image = self.image_index[self.index]
             self.image = pygame.transform.scale(self.image, self.scale)
             self.clock = pygame.time.get_ticks() + self.frameRate
@@ -203,7 +203,7 @@ class Gumba(Enemy):
         self.name = "goomba"
         self.frame = 100
         self.scale = (50, 50)
-        self.direction = hub.RIGHT
+        self.direction = hub.LEFT
         self.image_index = [pygame.image.load("imgs/Enemies/LittleGoomba/goomba_01.gif"),
                             pygame.image.load("imgs/Enemies/LittleGoomba/goomba_02.gif")]
 
@@ -228,7 +228,7 @@ class Koopatroops(Enemy):
         self.name = "koopatroop"
         self.frame = 100
         self.scale = (50, 50)
-        self.direction = hub.RIGHT
+        self.direction = hub.LEFT
         self.image_index = [pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT00.gif"),
                             pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT01.gif"),
                             pygame.image.load("imgs/Enemies/KoopaTroopa/ShellGreen.png")]
@@ -245,7 +245,7 @@ class Koopatroops(Enemy):
             shelly = self.rect.bottom - 20
             shellx = self.rect.x
             self.image = self.image_index[2]
-            self.image = pygame.transform.scale(self.image, (40,35))
+            self.image = pygame.transform.scale(self.image, (40, 35))
             self.rect = self.image.get_rect()
             self.rect.x = shellx
             self.rect.bottom = shelly
@@ -262,7 +262,6 @@ class Paratroops(Enemy):
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)
-
 
 
 class Piranhaplant(Enemy):
