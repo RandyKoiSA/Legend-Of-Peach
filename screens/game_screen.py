@@ -7,6 +7,7 @@ from player import Player
 from pygame import sprite
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops
+from obstacles.bricks import Bricks
 import json
 
 
@@ -52,6 +53,9 @@ class GameScreen:
         # Enemies set to die
         self.death_group = sprite.Group()
 
+        # Bricks to be spawned
+        self.brick_group = sprite.Group()
+
         try:
             for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
                 self.enemy_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
@@ -79,6 +83,15 @@ class GameScreen:
                                                    teleporter["world_offset"]))
         except Exception:
             print('no teleporter found within this level')
+
+        # Add Brick Instance
+        try:
+            print(len(self.hub.game_levels[self.level_name]["bricks"]))
+            for brick in self.hub.game_levels[self.level_name]["bricks"]:
+                self.brick_group.add(Bricks(hub=hub, x=brick["x"], y=brick["y"], insides=brick["inside"],
+                                            powerup_group=brick["powerup"], name=brick["name"]))
+        except Exception:
+            print('no bricks exist within this level')
 
         # Add player instance
         self.player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
@@ -137,6 +150,7 @@ class GameScreen:
             self.update_death_group()
             self.update_projectile_group()
             self.update_shell_group()
+            self.update_brick_group()
 
 
     def run_draw(self):
@@ -163,6 +177,9 @@ class GameScreen:
 
         # Draw the Projectiles
         self.draw_projectile_group()
+
+        # Draw the Bricks
+        self.draw_brick_group()
 
     def prep_bg_image(self):
         # Scale the background image
@@ -305,6 +322,9 @@ class GameScreen:
         for dead in self.death_group:
             dead.rect.x = dead.original_pos[0] - self.camera.world_offset_x
 
+        for brick in self.brick_group:
+            brick.rect.x = brick.original_pos[0] - self.camera.world_offset_x
+
     def update_player_group(self):
         for player in self.player_group:
             player.update()
@@ -335,6 +355,10 @@ class GameScreen:
         for projectile in self.projectile_group:
             self.check_projectile_collision(projectile)
             projectile.update()
+
+    def update_brick_group(self):
+        for brick in self.brick_group:
+            brick.update()
 
     def draw_player_group(self):
         """ Draw the player onto the screen """
@@ -372,6 +396,10 @@ class GameScreen:
     def draw_teleporter_group(self):
         for teleporter in self.teleporter_group:
             teleporter.draw()
+
+    def draw_brick_group(self):
+        for brick in self.brick_group:
+            brick.draw()
 
     def move_player(self, mouse_x, mouse_y):
         """ This is for developer use only """
