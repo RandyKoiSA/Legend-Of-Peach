@@ -145,6 +145,8 @@ class GameScreen:
                     self.get_coordinates()
                 if event.key == K_7:
                     self.controller.toggle_grid = not self.controller.toggle_grid
+                if event.key == K_6:
+                    self.controller.toggle_mouse_coordinates = not self.controller.toggle_mouse_coordinates
             if event.type == KEYUP:
                 if event.key == K_SPACE:
                     self.controller.jump = False
@@ -203,6 +205,9 @@ class GameScreen:
 
         if self.controller.toggle_grid:
             self.draw_debug_line()
+
+        if self.controller.toggle_mouse_coordinates:
+            self.draw_mouse_coordinates()
 
 
     def prep_bg_image(self):
@@ -479,4 +484,15 @@ class GameScreen:
         message_rect.y = self.player_group.sprite.rect.top
         message_rect.x = self.player_group.sprite.rect.right
         pygame.draw.line(self.screen, (255, 255, 255), (player_rect.right, 0), (player_rect.right, self.screen.get_rect().height))
+        self.screen.blit(message_image, message_rect)
+
+    def draw_mouse_coordinates(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        world_x_coordinates = mouse_x + self.camera.world_offset_x
+        msg = "(" + str(world_x_coordinates) + ", " + str(mouse_y) + ")"
+        font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
+        message_image = font.render(msg, True, (255, 255, 255))
+        message_rect = message_image.get_rect()
+        message_rect.x = mouse_x + 25
+        message_rect.y = mouse_y
         self.screen.blit(message_image, message_rect)

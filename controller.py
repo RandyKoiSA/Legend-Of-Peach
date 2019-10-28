@@ -8,6 +8,8 @@ class Controller:
         self.jump = False
         self.up = False
 
-        self.developer_mode = True
 
+        # Developer use only
+        self.developer_mode = True
         self.toggle_grid = False
+        self.toggle_mouse_coordinates = False
