@@ -92,6 +92,21 @@ class GameScreen:
                                             powerup_group=brick["powerup"], name=brick["name"]))
         except Exception:
             print('no bricks exist within this level')
+        # Add Brick Group Instance
+        try:
+            print(len(self.hub.game_levels[self.level_name]["brick_group"]))
+            for brickset in self.hub.game_levels[self.level_name]["brick_group"]:
+                for i in range(0, brickset["Row"]):
+                    print(str(i))
+                    for j in range(0, brickset["Col"]):
+                        print(str(j))
+                        row = i * 50
+                        col = j * 50
+                        print(str(row) + " equals" + str(col))
+                        self.brick_group.add(Bricks(hub=hub, x=row, y=col, insides="None",
+                                                    powerup_group="Brick", name="Brick"))
+        except Exception:
+            print('no brickset exist within this level')
 
         # Add player instance
         self.player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
@@ -189,6 +204,26 @@ class GameScreen:
         self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
 
     def update_world_collision(self):
+        # Brick Collision with player
+        for brick in self.brick_group:
+            if brick.rect.colliderect(self.player_group.sprite.rect):
+                if self.player_group.sprite.rect.bottom <= brick.rect.top + 25:
+                    self.player_group.sprite.rect.bottom = brick.rect.top
+                    self.player_group.sprite.reset_jump()
+                    self.player_group.sprite.reset_bounce()
+                # check if the player hits the left wall
+                elif self.player_group.sprite.rect.right < brick.rect.left + 20:
+                    self.player_group.sprite.rect.right = brick.rect.left
+                # check if the player hits the right wall
+                elif self.player_group.sprite.rect.left > brick.rect.right - 20:
+                    self.player_group.sprite.rect.left = brick.rect.right
+
+                else:
+                    self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
+                    if brick.state == self.hub.RESTING:
+                        brick.state = self.hub.BUMPED
+
+
         # Enemy collision with player
         for shell in self.shells_group:
             if shell.rect.colliderect(self.player_group.sprite.rect):
