@@ -8,3 +8,5 @@ class Controller:
         self.jump = False
         self.up = False
 
+        self.developer_mode = True
+
