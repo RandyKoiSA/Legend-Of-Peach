@@ -724,32 +724,60 @@
         "height": 98
       },
       {
-        "_comment": "block",
+        "_comment": "block 01",
         "x": 815,
         "y": 565,
         "width": 45,
         "height": 45
       },
       {
-        "_comment": "block",
+        "_comment": "block 02",
         "x": 915,
-        "y": 565,
+        "y": 510,
         "width": 45,
-        "height": 45
+        "height": 100
       },
       {
-        "_comment": "block",
+        "_comment": "block 03",
         "x": 1015,
-        "y": 565,
+        "y": 460,
         "width": 45,
-        "height": 45
+        "height": 150
       },
       {
-        "_comment": "block",
-        "x": 1115,
-        "y": 565,
+        "_comment": "block 04",
+        "x": 1110,
+        "y": 410,
+        "width": 40,
+        "height": 200
+      },
+      {
+        "_comment": "block 05",
+        "x": 1209,
+        "y": 410,
         "width": 45,
-        "height": 45
+        "height": 200
+      },
+      {
+        "_comment": "block 06",
+        "x": 1308,
+        "y": 460,
+        "width": 45,
+        "height": 150
+      },
+      {
+        "_comment": "block 07",
+        "x": 1500,
+        "y": 460,
+        "width": 45,
+        "height": 150
+      },
+      {
+        "_comment": "block 08",
+        "x": 1600,
+        "y": 510,
+        "width": 45,
+        "height": 100
       }
     ]
   },
