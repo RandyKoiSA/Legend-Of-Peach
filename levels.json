@@ -429,7 +429,7 @@
   },
   "1-2-2": {
     "background_image": "imgs/background/1-2/1-2-2.jpg",
-    "spawn_point": [100, 0],
+    "spawn_point": [50, 500],
     "teleporter": [
       {
         "_comment": "enter into 1-2-3 teleporter",
@@ -467,14 +467,76 @@
         "y": 620,
         "width": 550,
         "height": 100
+      },
+      {
+        "_comment": "base floor 5",
+        "x": 7000,
+        "y": 620,
+        "width": 390,
+        "height": 100
+      },
+      {
+        "_comment": "base floor 6",
+        "x": 7720,
+        "y": 460,
+        "width": 300,
+        "height": 600
+      },
+      {
+        "_comment": "wall 01",
+        "x": 0,
+        "y": 0,
+        "width": 49,
+        "height": 720
+      },
+      {
+        "_comment": "roof",
+        "x": 300,
+        "y": 0,
+        "width": 10000,
+        "height": 98
+      },
+      {
+        "_comment": "block",
+        "x": 815,
+        "y": 565,
+        "width": 45,
+        "height": 45
+      },
+      {
+        "_comment": "block",
+        "x": 915,
+        "y": 565,
+        "width": 45,
+        "height": 45
+      },
+      {
+        "_comment": "block",
+        "x": 1015,
+        "y": 565,
+        "width": 45,
+        "height": 45
+      },
+      {
+        "_comment": "block",
+        "x": 1115,
+        "y": 565,
+        "width": 45,
+        "height": 45
       }
     ]
   },
   "1-2-3": {
     "background_image": "imgs/background/1-2/1-2-3.png",
     "spawn_point": [70, 0],
-    "teleporter": [],
-    "gumba_group": [],
+    "teleporter": [
+      {
+        "x": 550,
+        "y": 530,
+        "level_name": "1-2-2",
+        "world_offset": 5500
+      }
+    ],
     "collision_group": [
       {
         "_comment": "base floor 1",

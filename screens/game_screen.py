@@ -110,6 +110,8 @@ class GameScreen:
                     self.controller.move_right = True
                 if event.key == K_UP or event.key == K_w:
                     self.controller.up = True
+                if event.key == K_9:
+                    self.hub.screen_selector = 1
             if event.type == KEYUP:
                 if event.key == K_SPACE:
                     self.controller.jump = False
@@ -120,6 +122,10 @@ class GameScreen:
                     self.controller.move_right = False
                 if event.key == K_UP or event.key == K_w:
                     self.controller.up = False
+            if event.type == MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                if self.controller.developer_mode:
+                    self.move_player(mouse_x, mouse_y)
 
     def run_update(self):
         self.update_player_group()
@@ -356,3 +362,8 @@ class GameScreen:
     def draw_teleporter_group(self):
         for teleporter in self.teleporter_group:
             teleporter.draw()
+
+    def move_player(self, mouse_x, mouse_y):
+        """ This is for developer use only """
+        self.camera.moveCamera(200)
+        self.player_group.sprite.rect.y = 0
