@@ -459,6 +459,8 @@ class GameScreen:
     def draw_debug_line(self):
         increment = 50
         line_total = int(self.screen.get_rect().height / increment) + 1
+
+        # Draw horizontal y axis lines
         for i in range(0,line_total):
             msg = str(i*increment)
             font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
@@ -467,3 +469,14 @@ class GameScreen:
             message_rect.y = i*increment
             pygame.draw.line(self.screen, (255, 255, 255), (0, i*increment), (self.screen.get_rect().width, i*increment))
             self.screen.blit(message_image, message_rect)
+
+        # Draw vertical x axis line
+        player_rect = self.player_group.sprite.rect
+        msg = str(self.camera.world_offset_x + self.player_group.sprite.rect.right)
+        font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
+        message_image = font.render(msg, True, (255, 255, 255))
+        message_rect = message_image.get_rect()
+        message_rect.y = self.player_group.sprite.rect.top
+        message_rect.x = self.player_group.sprite.rect.right
+        pygame.draw.line(self.screen, (255, 255, 255), (player_rect.right, 0), (player_rect.right, self.screen.get_rect().height))
+        self.screen.blit(message_image, message_rect)
