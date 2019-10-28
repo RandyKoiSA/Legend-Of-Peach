@@ -113,6 +113,7 @@ class GameScreen:
         self.current_player = Player(hub, self.player_spawn_point[0], self.player_spawn_point[1])
         self.player_group.add(self.current_player)
 
+
     def run(self):
         """ Run through the loop process"""
         self.run_event()
@@ -140,6 +141,10 @@ class GameScreen:
                     self.controller.up = True
                 if event.key == K_9:
                     self.hub.screen_selector = 1
+                if event.key == K_8:
+                    self.get_coordinates()
+                if event.key == K_7:
+                    self.controller.toggle_grid = not self.controller.toggle_grid
             if event.type == KEYUP:
                 if event.key == K_SPACE:
                     self.controller.jump = False
@@ -195,6 +200,10 @@ class GameScreen:
 
         # Draw the Bricks
         self.draw_brick_group()
+
+        if self.controller.toggle_grid:
+            self.draw_debug_line()
+
 
     def prep_bg_image(self):
         # Scale the background image
@@ -440,3 +449,21 @@ class GameScreen:
         """ This is for developer use only """
         self.camera.moveCamera(200)
         self.player_group.sprite.rect.y = 0
+
+    def get_coordinates(self):
+        x_coordinates = self.player_group.sprite.rect.right + self.camera.world_offset_x
+        print("x_coordinates based on player's right side: " + str(x_coordinates))
+        x_coordinates = self.player_group.sprite.rect.left + self.camera.world_offset_x
+        print("x_coordinates based on player's left side: " + str(x_coordinates))
+
+    def draw_debug_line(self):
+        increment = 50
+        line_total = int(self.screen.get_rect().height / increment) + 1
+        for i in range(0,line_total):
+            msg = str(i*increment)
+            font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
+            message_image = font.render(msg, True, (255, 255, 255))
+            message_rect = message_image.get_rect()
+            message_rect.y = i*increment
+            pygame.draw.line(self.screen, (255, 255, 255), (0, i*increment), (self.screen.get_rect().width, i*increment))
+            self.screen.blit(message_image, message_rect)

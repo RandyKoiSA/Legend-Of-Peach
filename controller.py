@@ -10,3 +10,4 @@ class Controller:
 
         self.developer_mode = True
 
+        self.toggle_grid = False
