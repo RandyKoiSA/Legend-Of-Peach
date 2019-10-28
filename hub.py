@@ -49,6 +49,11 @@ class Hub:
         self.HIT = 'HIT'
         self.DEATHFALL = 'DEATHFALL'
 
+        # Brick States
+        self.RESTING = 'RESTING'
+        self.BUMPED = 'BUMPED'
+        self.OPENED = 'OPENED'
+
         """ Initialize the type of screen possible to display
         game_screen is the only one that will probably be reinstance everytime a new level
         opens. """
