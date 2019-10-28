@@ -94,10 +94,17 @@
       }
     ],
     "bricks": [
+           {
+        "x": 100,
+        "y": 422,
+        "inside": "coins",
+        "powerup": "Coins",
+        "name": "brick"
+      },
       {
         "x": 965,
         "y": 422,
-        "inside": "None",
+        "inside": "coins",
         "powerup": "Brick",
         "name": "brick"
       },
@@ -209,15 +216,15 @@
                   {
         "x": 4540,
         "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
+        "inside": "coins",
+        "powerup": "Coin",
         "name": "brick"
       },
                   {
         "x": 4823,
         "y": 422,
-        "inside": "coins",
-        "powerup": "Coin",
+        "inside": "None",
+        "powerup": "Brick",
         "name": "brick"
       },
                   {
@@ -305,6 +312,13 @@
         "name": "brick"
       }
 
+    ],
+    "brick_group":[
+      { "startX": 0,
+        "startY": 0,
+        "Row": 5,
+        "Col": 5
+      }
     ],
     "collision_group": [
       {

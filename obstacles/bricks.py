@@ -59,58 +59,62 @@ class Bricks(Sprite):
         if self.state == self.hub.RESTING:
             self.resting()
         elif self.state == self.hub.BUMPED:
-            self.bumped()
+            self.start_bump()
         elif self.state == self.hub.OPENED:
             self.opened()
 
     def resting(self):
         """State when not moving"""
         if self.insides == 'coins':
-            if self.coin_total == 0:
-                self.state = self.hub.OPENED
-
-    def start_bump(self):
-        """Start of bumped state"""
-        self.velY = -6
-        if self.insides == 'coins':
-
-            if self.coin_total > 0:
-                # Spawn coin
-                print("Spawn a coin")
-                self.coin_total -= 1
-                if self.coin_total == 0:
-                    self.index = 1
-                    self.image = self.image_index[self.index]
-                    self.image = pygame.transform.scale(self.image, self.scale)
-        elif self.insides == 'star':
-            self.index = 1
-            self.image = self.image_index[self.index]
-            self.image = pygame.transform.scale(self.image, self.scale)
-
-        self.state = self.hub.BUMPED
-
-    def bumped(self):
-        """Bump state actions"""
-        self.rect.y += self.velY
-        self.velY += self.hub.GRAVITY
-
-        if self.rect.y >= (self.rest_height + 5):
-            self.rect.y = self.rest_height
-            if self.insides == 'coins':
-                if self.coin_total == 0:
-                    print("Spawn a coin")
-                    self.state = self.hub.OPENED
-                else:
-                    self.state = self.hub.RESTING
-            elif self.insides == 'star':
+            if self.coin_total <= 0:
                 self.state = self.hub.OPENED
             else:
                 self.state = self.hub.RESTING
 
+    def start_bump(self):
+        """Start of bumped state"""
+        self.velY = -5
+        self.rect.y += self.velY
+        if self.insides == 'coins' and not self.bumped_up:
+            self.bumped_up = True
+            if self.coin_total > 0:
+                print("Spawn a coin" + str(self.coin_total))
+                self.coin_total -= 1
+                if self.coin_total <= 0:
+                    self.index = 1
+        elif self.insides == 'star' and not self.bumped_up:
+            self.bumped_up = True
+            self.index = 1
+            self.image = self.image_index[self.index]
+            self.image = pygame.transform.scale(self.image, self.scale)
+        else:
+            self.bumped_up = True
+        if self.rect.y <= (self.rest_height - 20) or self.rect.y >= (self.rest_height + 20):
+            self.bumped()
+
+    def bumped(self):
+        """Bump state actions"""
+        if self.rect.y <= (self.rest_height - 20) or self.rect.y >= (self.rest_height + 20):
+            self.rect.y = self.rest_height
+            self.bumped_up = False
+            self.velY = 0
+        if self.insides == 'coins':
+            if self.coin_total == 0:
+                self.state = self.hub.OPENED
+            else:
+                self.state = self.hub.RESTING
+        elif self.insides == 'star':
+            self.state = self.hub.OPENED
+        else:
+            self.kill()
+        self.state = self.hub.RESTING
+
     def opened(self):
         """Action during Opened State"""
-        self.index = 1
-        self.image = self.image_index[self.index]
+        if self.rect.y <= (self.rest_height - 10) or self.rect.y >= (self.rest_height + 10):
+            self.rect.y = self.rest_height
+        self.image = self.image_index[1]
+        self.image = pygame.transform.scale(self.image, self.scale)
         if self.powerup_in_box and self.insides == 'star':
             print("Spawn a Star")
             self.powerup_in_box = False
