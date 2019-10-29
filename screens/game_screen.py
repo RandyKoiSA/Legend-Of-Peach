@@ -432,19 +432,19 @@ class GameScreen:
         try:
             for mushroom in self.hub.game_levels[self.level_name]["magic_mushroom_group"]:
                 self.magic_mushroom_group.add(Magic(hub=hub, x=mushroom["x"], y =mushroom["y"]))
-        except Exception:
+        except LookupError:
             print('no magic mushrooms exist within this level')
 
         try:
             for mushroom in self.hub.game_levels[self.level_name]["oneup_mushroom_group"]:
                 self.oneup_mushroom_group.add(Oneup(hub=hub, x=mushroom["x"], y=mushroom["y"]))
-        except Exception:
+        except LookupError:
             print('no oneup mushrooms exist within this level')
 
         try:
             for flower in self.hub.game_levels[self.level_name]["fireflower_group"]:
                 self.fireflower_group.add(Fireflower(hub=hub, x=flower["x"], y=flower["y"], name=flower["name"]))
-        except Exception:
+        except LookupError:
             print('no fireflowers exist within this level')
 
         # Add player instance
