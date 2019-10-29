@@ -13,7 +13,7 @@ class Fireflower(Sprite):
 
         self.rest_height = y
 
-        self.velY = 0
+        self.velY = 5
 
         self.scale = (50, 50)
 
@@ -48,7 +48,6 @@ class Fireflower(Sprite):
 
     def start_anim(self):
         """Starts flower rising animation"""
-        self.velY = 5
 
         if self.rect.y > (self.rest_height - 50):
             self.rect.y -= self.velY
