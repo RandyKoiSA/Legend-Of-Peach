@@ -381,10 +381,9 @@ class GameScreen:
         bg_collisions = pygame.sprite.spritecollide(mushroom, self.background_collisions, False)
         if bg_collisions:
             for collision in bg_collisions:
-                if mushroom.rect.bottom < collision.rect.top + 20:
+                if mushroom.rect.bottom < collision.rect.top + 50:
                     mushroom.rect.bottom = collision.rect.top - 5
                 elif mushroom.rect.right > collision.rect.left + 20 or mushroom.rect.left < collision.rect.right - 20:
-                    if mushroom.rect.bottom > collision.rect.top:
                         mushroom.flip_direction()
 
     def check_enemy_collision(self, enemy):
