@@ -13,3 +13,5 @@ class Controller:
         self.developer_mode = True
         self.toggle_grid = False
         self.toggle_mouse_coordinates = False
+        self.point_a = [0, 0]
+        self.point_b = [0, 0]

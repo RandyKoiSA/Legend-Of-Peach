@@ -147,6 +147,17 @@ class GameScreen:
                     self.controller.toggle_grid = not self.controller.toggle_grid
                 if event.key == K_6:
                     self.controller.toggle_mouse_coordinates = not self.controller.toggle_mouse_coordinates
+                if event.key == K_1:
+                    # Get point A
+                    self.set_point_a()
+                if event.key == K_2:
+                    # Get point B
+                    self.set_point_b()
+                if event.key == K_3:
+                    # Print description
+                    self.print_description()
+                    pass
+
             if event.type == KEYUP:
                 if event.key == K_SPACE:
                     self.controller.jump = False
@@ -355,24 +366,25 @@ class GameScreen:
         else:
             self.camera.camera_hit_right_screen = False
 
-        # update the collisions off set
-        for collision in self.background_collisions:
-            collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
+        if not self.camera.camera_hit_right_screen:
+            # update the collisions off set
+            for collision in self.background_collisions:
+                collision.rect.x = collision.original_pos[0] - self.camera.world_offset_x
 
-        for enemy in self.enemy_group:
-            enemy.rect.x = enemy.original_pos[0] - self.camera.world_offset_x
+            for enemy in self.enemy_group:
+                enemy.rect.x = enemy.original_pos[0] - self.camera.world_offset_x
 
-        for shell in self.shells_group:
-            shell.rect.x = shell.original_pos[0] - self.camera.world_offset_x
+            for shell in self.shells_group:
+                shell.rect.x = shell.original_pos[0] - self.camera.world_offset_x
 
-        for projectile in self.projectile_group:
-            projectile.rect.x = projectile.original_pos[0] - self.camera.world_offset_x
+            for projectile in self.projectile_group:
+                projectile.rect.x = projectile.original_pos[0] - self.camera.world_offset_x
 
-        for dead in self.death_group:
-            dead.rect.x = dead.original_pos[0] - self.camera.world_offset_x
+            for dead in self.death_group:
+                dead.rect.x = dead.original_pos[0] - self.camera.world_offset_x
 
-        for brick in self.brick_group:
-            brick.rect.x = brick.original_pos[0] - self.camera.world_offset_x
+            for brick in self.brick_group:
+                brick.rect.x = brick.original_pos[0] - self.camera.world_offset_x
 
     def update_player_group(self):
         for player in self.player_group:
@@ -493,6 +505,28 @@ class GameScreen:
         font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
         message_image = font.render(msg, True, (255, 255, 255))
         message_rect = message_image.get_rect()
+
+        # Display top right
+        self.screen.blit(message_image, message_rect)
+        # Display on mouse cursor
         message_rect.x = mouse_x + 25
         message_rect.y = mouse_y
         self.screen.blit(message_image, message_rect)
+
+    def set_point_a(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        self.controller.point_a[0] = mouse_x + self.camera.world_offset_x
+        self.controller.point_a[1] = mouse_y
+
+    def set_point_b(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        self.controller.point_b[0] = mouse_x + self.camera.world_offset_x
+        self.controller.point_b[1] = mouse_y
+
+    def print_description(self):
+        print('      {')
+        print('         "x": ' + str(self.controller.point_a[0]) + ",")
+        print('         "y": ' + str(self.controller.point_a[1]) + ",")
+        print('         "width": ' + str(self.controller.point_b[0] - self.controller.point_a[0]) + ",")
+        print('         "height": ' + str(self.controller.point_b[1] - self.controller.point_a[1]))
+        print('      },')

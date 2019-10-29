@@ -655,6 +655,7 @@
     ]
   },
   "1-2-2": {
+    "_comment": "main 1-2 level",
     "background_image": "imgs/background/1-2/1-2-2.jpg",
     "spawn_point": [50, 500],
     "teleporter": [
@@ -663,6 +664,13 @@
         "x": 4980,
         "y": 400,
         "level_name": "1-2-3",
+        "world_offset": 0
+      },
+      {
+        "_comment": "enter into 1-2-4 teleporter",
+        "x": 7950,
+        "y": 361,
+        "level_name": "1-2-4",
         "world_offset": 0
       }
     ],
@@ -704,10 +712,10 @@
       },
       {
         "_comment": "base floor 6",
-        "x": 7720,
-        "y": 460,
-        "width": 300,
-        "height": 600
+        "x": 7728,
+        "y": 465,
+        "width": 552,
+        "height": 255
       },
       {
         "_comment": "wall 01",
@@ -778,10 +786,74 @@
         "y": 510,
         "width": 45,
         "height": 100
+      },
+      {
+        "_comment": "pipe 01",
+        "x": 4976,
+        "y": 464,
+        "width": 89,
+        "height": 152
+      },
+      {
+        "_comment": "pipe 02",
+        "x": 5264,
+        "y": 411,
+        "width": 95,
+        "height": 205
+      },
+      {
+        "_comment": "pipe 03",
+        "x": 5557,
+        "y": 512,
+        "width": 93,
+        "height": 104
+      },
+      {
+        "_comment": "block_stair 1",
+        "x": 6425,
+        "y": 571,
+        "width": 239,
+        "height": 46
+      },
+      {
+        "_comment": "block_stair 2",
+        "x": 6472,
+        "y": 514,
+        "width": 192,
+        "height": 52
+      },
+      {
+        "_comment": "block_stair 3",
+        "x": 6523,
+        "y": 463,
+        "width": 141,
+        "height": 49
+      },
+      {
+        "_comment": "block_stair 4",
+        "x": 6569,
+        "y": 410,
+        "width": 95,
+        "height": 49
+      },
+      {
+        "_comment": "right_wall",
+        "x": 8137,
+        "y": 0,
+        "width": 163,
+        "height": 720
+      },
+      {
+        "_comment": "side_pipe",
+        "x": 8017,
+        "y": 361,
+        "width": 190,
+        "height": 99
       }
     ]
   },
   "1-2-3": {
+    "_comment": "dungeon level",
     "background_image": "imgs/background/1-2/1-2-3.png",
     "spawn_point": [70, 0],
     "teleporter": [
@@ -814,6 +886,66 @@
         "y": 620,
         "width": 3860,
         "height": 100
+      },
+      {
+         "x": 252,
+         "y": 570,
+         "width": 45,
+         "height": 47
+      },
+      {
+         "x": 300,
+         "y": 518,
+         "width": 47,
+         "height": 99
+      },
+      {
+         "x": 348,
+         "y": 466,
+         "width": 47,
+         "height": 151
+      },
+      {
+         "x": 397,
+         "y": 414,
+         "width": 49,
+         "height": 205
+      },
+      {
+         "x": 447,
+         "y": 361,
+         "width": 47,
+         "height": 258
+      },
+      {
+         "x": 496,
+         "y": 311,
+         "width": 48,
+         "height": 307
+      },
+      {
+         "x": 546,
+         "y": 261,
+         "width": 49,
+         "height": 358
+      },
+      {
+         "x": 596,
+         "y": 210,
+         "width": 96,
+         "height": 408
+      },
+      {
+         "x": 151,
+         "y": 518,
+         "width": 96,
+         "height": 103
+      },
+      {
+         "x": 1086,
+         "y": 567,
+         "width": 48,
+         "height": 51
       }
     ]
   },
@@ -824,11 +956,148 @@
     "gumba_group": [],
     "collision_group": [
       {
-        "_comment": "base floor 1",
-        "x": 0,
-        "y": 620,
-        "width": 3860,
-        "height": 100
+         "x": 1,
+         "y": 622,
+         "width": 771,
+         "height": 97
+      },
+      {
+         "x": 872,
+         "y": 573,
+         "width": 191,
+         "height": 47
+      },
+      {
+         "x": 917,
+         "y": 624,
+         "width": 97,
+         "height": 94
+      },
+      {
+         "x": 1258,
+         "y": 211,
+         "width": 240,
+         "height": 53
+      },
+      {
+         "x": 1306,
+         "y": 263,
+         "width": 145,
+         "height": 154
+      },
+      {
+         "x": 1161,
+         "y": 418,
+         "width": 386,
+         "height": 50
+      },
+      {
+         "x": 1207,
+         "y": 469,
+         "width": 291,
+         "height": 249
+      },
+      {
+         "x": 1550,
+         "y": 574,
+         "width": 140,
+         "height": 47
+      },
+      {
+         "x": 1594,
+         "y": 622,
+         "width": 49,
+         "height": 95
+      },
+      {
+         "x": 1692,
+         "y": 368,
+         "width": 239,
+         "height": 48
+      },
+      {
+         "x": 1739,
+         "y": 420,
+         "width": 143,
+         "height": 298
+      },
+      {
+         "x": 1936,
+         "y": 162,
+         "width": 334,
+         "height": 48
+      },
+      {
+         "x": 1981,
+         "y": 212,
+         "width": 242,
+         "height": 507
+      },
+      {
+         "x": 2418,
+         "y": 623,
+         "width": 192,
+         "height": 50
+      },
+      {
+         "x": 2463,
+         "y": 674,
+         "width": 98,
+         "height": 44
+      },
+      {
+         "x": 2901,
+         "y": 211,
+         "width": 191,
+         "height": 51
+      },
+      {
+         "x": 2854,
+         "y": 623,
+         "width": 236,
+         "height": 49
+      },
+      {
+         "x": 2899,
+         "y": 674,
+         "width": 144,
+         "height": 43
+      },
+      {
+         "x": 3143,
+         "y": 624,
+         "width": 238,
+         "height": 48
+      },
+      {
+         "x": 3190,
+         "y": 675,
+         "width": 144,
+         "height": 43
+      },
+      {
+         "x": 3384,
+         "y": 418,
+         "width": 141,
+         "height": 48
+      },
+      {
+         "x": 3430,
+         "y": 471,
+         "width": 47,
+         "height": 245
+      },
+      {
+         "x": 3674,
+         "y": 266,
+         "width": 284,
+         "height": 48
+      },
+      {
+         "x": 3718,
+         "y": 315,
+         "width": 194,
+         "height": 403
       }
     ]
   },

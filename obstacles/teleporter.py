@@ -26,4 +26,5 @@ class Teleport(Sprite):
             if self.hub.controller.up is True:
                 self.hub.open_level(self.level_name, self.world_offset)
 
-        self.rect.x = self.original_pos[0] - self.camera.world_offset_x
+        if not self.camera.camera_hit_right_screen:
+            self.rect.x = self.original_pos[0] - self.camera.world_offset_x
