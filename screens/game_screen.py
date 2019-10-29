@@ -8,6 +8,7 @@ from pygame import sprite
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops
 from obstacles.bricks import Bricks
+from items.coins import Coins
 import json
 
 
@@ -56,6 +57,9 @@ class GameScreen:
         # Bricks to be spawned
         self.brick_group = sprite.Group()
 
+        # Coins to be spawned
+        self.coin_group = sprite.Group()
+
         try:
             for gumba in self.hub.game_levels[self.level_name]["gumba_group"]:
                 self.enemy_group.add(Gumba(hub=hub, x=gumba["x"], y=gumba["y"]))
@@ -92,6 +96,15 @@ class GameScreen:
                                             powerup_group=brick["powerup"], name=brick["name"]))
         except Exception:
             print('no bricks exist within this level')
+
+        # Add Coin Instance
+        try:
+            print(len(self.hub.game_levels[self.level_name]["coins"]))
+            for coin in self.hub.game_levels[self.level_name]["coins"]:
+                self.coin_group.add(Coins(hub=hub, x=coin["x"], y=coin["y"], name=coin["name"], state="resting"))
+        except Exception:
+            print('no coins exist within this level')
+
         # Add Brick Group Instance
         try:
             print(len(self.hub.game_levels[self.level_name]["brick_group"]))
@@ -173,6 +186,7 @@ class GameScreen:
             self.update_projectile_group()
             self.update_shell_group()
             self.update_brick_group()
+            self.update_coin_group()
 
 
     def run_draw(self):
@@ -202,6 +216,9 @@ class GameScreen:
 
         # Draw the Bricks
         self.draw_brick_group()
+
+        # Draw the Coins
+        self.draw_coin_group()
 
         if self.controller.toggle_grid:
             self.draw_debug_line()
@@ -237,6 +254,10 @@ class GameScreen:
                     if brick.state == self.hub.RESTING:
                         brick.state = self.hub.BUMPED
 
+        # Coin Collision with player
+        for coin in self.coin_group:
+            if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
+                coin.kill()
 
         # Enemy collision with player
         for shell in self.shells_group:
@@ -409,6 +430,10 @@ class GameScreen:
         for brick in self.brick_group:
             brick.update()
 
+    def update_coin_group(self):
+        for coin in self.coin_group:
+            coin.update()
+
     def draw_player_group(self):
         """ Draw the player onto the screen """
         for player in self.player_group:
@@ -449,6 +474,10 @@ class GameScreen:
     def draw_brick_group(self):
         for brick in self.brick_group:
             brick.draw()
+
+    def draw_coin_group(self):
+        for coin in self.coin_group:
+            coin.draw()
 
     def move_player(self, mouse_x, mouse_y):
         """ This is for developer use only """
