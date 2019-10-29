@@ -10,6 +10,10 @@ from AI.enemy import Koopatroops
 from obstacles.bricks import Bricks
 from items.coins import Coins
 from custom import developer_tool as dt
+from items.mushroom import Magic
+from items.mushroom import Oneup
+from items.fire_flower import Fireflower
+import json
 
 
 class GameScreen:
@@ -47,6 +51,15 @@ class GameScreen:
 
         # Gumba group spawn gumba when appropriate
         self.enemy_group = sprite.Group()
+
+        # Magic mushroom group
+        self.magic_mushroom_group = sprite.Group()
+
+        # Oneup mushroom group
+        self.oneup_mushroom_group = sprite.Group()
+
+        # Fireflower group
+        self.fireflower_group = sprite.Group()
 
         # For red or green shells
         self.shells_group = sprite.Group()
@@ -149,6 +162,8 @@ class GameScreen:
             self.update_shell_group()
             self.update_brick_group()
             self.update_coin_group()
+            self.update_mushroom_group()
+            self.update_fireflower_group()
 
     def run_draw(self):
         """ Draw all instances onto the screen """
@@ -172,6 +187,10 @@ class GameScreen:
         self.draw_brick_group()
         # Draw the Coins
         self.draw_coin_group()
+        # Draw the mushrooms
+        self.draw_mushroom_group()
+        # Draw the fireflowers
+        self.draw_fireflower_group()
 
         if self.controller.toggle_grid:
             # Developer tool, Display grid coordinates if toggled
@@ -252,6 +271,21 @@ class GameScreen:
                     elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
                         self.player_group.sprite.die()
 
+        for mushroom in self.magic_mushroom_group:
+            if mushroom.rect.colliderect(self.player_group.sprite.rect):
+                # code for mario expanding
+                mushroom.kill()
+
+        for mushroom in self.oneup_mushroom_group:
+            if mushroom.rect.colliderect(self.player_group.sprite.rect):
+                mushroom.kill()
+                self.hub.lives = self.hub.lives + 1
+
+        for flower in self.fireflower_group:
+            if flower.rect.colliderect(self.player_group.sprite.rect):
+                # fire mario code goes here
+                flower.kill()
+
         # Player has hit the world's floor or wall such as pipes and stairs
         for collision in self.background_collisions:
             if collision.rect.colliderect(self.player_group.sprite.rect):
@@ -267,6 +301,16 @@ class GameScreen:
                     # check if the player hits the right wall
                     if self.player_group.sprite.rect.left > collision.rect.right - 20:
                         self.player_group.sprite.rect.left = collision.rect.right
+
+    def check_mushroom_collision(self, mushroom):
+        bg_collisions = pygame.sprite.spritecollide(mushroom, self.background_collisions, False)
+        if bg_collisions:
+            for collision in bg_collisions:
+                if mushroom.rect.bottom < collision.rect.top + 20:
+                    mushroom.rect.bottom = collision.rect.top - 5
+                elif mushroom.rect.right > collision.rect.left + 20 or mushroom.rect.left < collision.rect.right - 20:
+                    if mushroom.rect.bottom > collision.rect.top:
+                        mushroom.flip_direction()
 
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""
@@ -386,6 +430,24 @@ class GameScreen:
         except LookupError:
             print('no brickset exist within this level')
 
+        try:
+            for mushroom in self.hub.game_levels[self.level_name]["magic_mushroom_group"]:
+                self.magic_mushroom_group.add(Magic(hub=hub, x=mushroom["x"], y =mushroom["y"]))
+        except Exception:
+            print('no magic mushrooms exist within this level')
+
+        try:
+            for mushroom in self.hub.game_levels[self.level_name]["oneup_mushroom_group"]:
+                self.oneup_mushroom_group.add(Oneup(hub=hub, x=mushroom["x"], y=mushroom["y"]))
+        except Exception:
+            print('no oneup mushrooms exist within this level')
+
+        try:
+            for flower in self.hub.game_levels[self.level_name]["fireflower_group"]:
+                self.fireflower_group.add(Fireflower(hub=hub, x=flower["x"], y=flower["y"], name=flower["name"]))
+        except Exception:
+            print('no fireflowers exist within this level')
+
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
         current_player = Player(hub, player_spawn_point[0], player_spawn_point[1])
@@ -436,6 +498,21 @@ class GameScreen:
         for enemy in self.enemy_group:
             self.check_enemy_collision(enemy=enemy)
             enemy.update()
+
+    def update_mushroom_group(self):
+        """ updating the mushroom group """
+        for mushroom in self.magic_mushroom_group:
+            self.check_mushroom_collision(mushroom=mushroom)
+            mushroom.update()
+
+        for mushroom in self.oneup_mushroom_group:
+            self.check_mushroom_collision(mushroom=mushroom)
+            mushroom.update()
+
+    def update_fireflower_group(self):
+        """ updating the fireflower group """
+        for flower in self.fireflower_group:
+            flower.update()
 
     def update_death_group(self):
         """ Updating the soon to die Enemy Group"""
@@ -502,6 +579,17 @@ class GameScreen:
         # Draw all the gumbas onto the screen
         for gumba in self.enemy_group:
             gumba.draw()
+
+    def draw_mushroom_group(self):
+        for mushroom in self.magic_mushroom_group:
+            mushroom.draw()
+
+        for mushroom in self.oneup_mushroom_group:
+            mushroom.draw()
+
+    def draw_fireflower_group(self):
+        for flower in self.fireflower_group:
+            flower.draw()
 
     def draw_death_group(self):
         """ Draw all the soon to die enemies"""
