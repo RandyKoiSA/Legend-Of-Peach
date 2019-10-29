@@ -294,6 +294,8 @@ class GameScreen:
                     self.player_group.sprite.rect.bottom = collision.rect.top
                     self.player_group.sprite.reset_jump()
                     self.player_group.sprite.reset_bounce()
+                elif self.player_group.sprite.rect.top > collision.rect.bottom - 20:
+                    self.player_group.sprite.rect.top = collision.rect.bottom
                 else:
                     # check if the player hits the left wall
                     if self.player_group.sprite.rect.right < collision.rect.left + 20:
