@@ -14,7 +14,7 @@ class Player(Sprite):
         self.gamemode = hub.gamemode
 
         self.mario_motion_state = "idle"
-        self.mario_upgrade_state = "regular"
+        self.mario_upgrade_state = "super"
         self.mario_facing_direction = hub.RIGHT
         self.mario_image_flipped = False
 
@@ -23,18 +23,33 @@ class Player(Sprite):
         self.change_freq = 120
         self.player_clock = pygame.time.get_ticks() + self.change_freq
 
-        # regular mario image and collision
-        self.image_idle = pygame.image.load("imgs/Mario/RegularMario/MarioStanding.png")
-        self.image_run = [pygame.image.load('imgs/Mario/RegularMario/MarioRun01.gif'),
+        # regular mario image
+        self.regular_image_idle = [pygame.image.load("imgs/Mario/RegularMario/MarioStanding.png")]
+        self.regular_image_run = [pygame.image.load('imgs/Mario/RegularMario/MarioRun01.gif'),
                           pygame.image.load('imgs/Mario/RegularMario/MarioRun02.gif'),
                           pygame.image.load('imgs/Mario/RegularMario/MarioRun03.gif')]
-        self.image_jump = pygame.image.load('imgs/Mario/RegularMario/MarioJumping.png')
+        self.regular_image_jump = [pygame.image.load('imgs/Mario/RegularMario/MarioJumping.png')]
+
+        # super mario image
+        self.super_image_idle = [pygame.image.load("imgs/Mario/SuperMario/SuperMarioStanding.png")]
+        self.super_image_run = [pygame.image.load("imgs/Mario/SuperMario/SM_run_01.gif"),
+                                pygame.image.load("imgs/Mario/SuperMario/SM_run_02.gif"),
+                                pygame.image.load("imgs/Mario/SuperMario/SM_run_03.gif")]
+        self.super_image_jump = [pygame.image.load("imgs/Mario/SuperMario/SuperMarioJumping.png")]
+
+        # fiery mario image
+        self.fiery_image_idle = [pygame.image.load('imgs/Mario/FieryMario/FieryMarioStanding.png')]
+        self.fiery_image_run = [pygame.image.load('imgs/Mario/FieryMario/FieryMarioRunning_01.gif'),
+                                pygame.image.load('imgs/Mario/FieryMario/FieryMarioRunning_02.gif'),
+                                pygame.image.load('imgs/Mario/FieryMario/FieryMarioRunning_03.gif')]
+        self.fiery_image_jump = [pygame.image.load('imgs/Mario/FieryMario/FieryMarioJumping.png')]
 
         # prep mario image
         self.prep_mario_images()
 
-        # get current image and rect
-        self.current_image = self.image_idle
+        # get current list, image, and rect using
+        self.current_list = self.regular_image_idle
+        self.current_image = self.current_list[self.index]
         self.rect = self.current_image.get_rect()
 
         # Set initial position
@@ -171,12 +186,30 @@ class Player(Sprite):
             self.current_image = pygame.transform.flip(self.current_image, True, False)
 
     def prep_mario_images(self):
-        # Adjustment to mario images
-        # adjust regular mario images
-        self.image_idle = pygame.transform.scale(self.image_idle, (50, 50))
-        for i in range(len(self.image_run)):
-            self.image_run[i] = pygame.transform.scale(self.image_run[i], (50, 50))
-        self.image_jump = pygame.transform.scale(self.image_jump, (50, 50))
+        """ Adjustment images """
+        # Adjusting regular mario images
+        for i in range(len(self.regular_image_idle)):
+            self.regular_image_idle[i] = pygame.transform.scale(self.regular_image_idle[i], (50, 50))
+        for i in range(len(self.regular_image_run)):
+            self.regular_image_run[i] = pygame.transform.scale(self.regular_image_run[i], (50, 50))
+        for i in range(len(self.regular_image_jump)):
+            self.regular_image_jump[i] = pygame.transform.scale(self.regular_image_jump[i], (50, 50))
+
+        # Adjusting super mario images
+        for i in range(len(self.super_image_idle)):
+            self.super_image_idle[i] = pygame.transform.scale(self.super_image_idle[i], (50, 100))
+        for i in range(len(self.super_image_run)):
+            self.super_image_run[i] = pygame.transform.scale(self.super_image_run[i], (50, 100))
+        for i in range(len(self.super_image_jump)):
+            self.super_image_jump[i] = pygame.transform.scale(self.super_image_jump[i], (50, 100))
+
+        # Adjusting fiery mario images
+        for i in range(len(self.fiery_image_idle)):
+            self.fiery_image_idle[i] = pygame.transform.scale(self.fiery_image_idle[i], (50, 100))
+        for i in range(len(self.fiery_image_jump)):
+            self.fiery_image_jump[i] = pygame.transform.scale(self.fiery_image_jump[i], (50, 100))
+        for i in range(len(self.fiery_image_run)):
+            self.fiery_image_run[i] = pygame.transform.scale(self.fiery_image_run[i], (50, 100))
 
     def reset_jump(self):
         """ Reset mario's jump when mario hits the ground"""
@@ -192,26 +225,42 @@ class Player(Sprite):
 
     def update_state(self):
         """ Update state determine what state the player is in """
+        if pygame.time.get_ticks() > self.player_clock:
+            self.player_clock = pygame.time.get_ticks() + self.change_freq
+            self.index += 1
+            self.index %= len(self.current_list)
+            self.current_image = self.current_list[self.index]
+            self.set_image_direction()
 
         if self.mario_motion_state is "jumping" or self.gamemode.mario_in_air:
-            self.current_image = self.image_jump
-            self.set_image_direction()
+            # jumping as regular
+            if self.mario_upgrade_state is "regular":
+                self.current_list = self.regular_image_jump
+            # jumping as super
+            elif self.mario_upgrade_state is "super":
+                self.current_list = self.super_image_jump
+            # jumping as fiery
+            elif self.mario_upgrade_state is "fiery":
+                self.current_list = self.fiery_image_jump
         else:
             if self.mario_motion_state is "idle":
-                self.current_image = self.image_idle
-                self.set_image_direction()
+                if self.mario_upgrade_state is "regular":
+                    self.current_list = self.regular_image_idle
+                elif self.mario_upgrade_state is "super":
+                    self.current_list = self.super_image_idle
+                elif self.mario_upgrade_state is "fiery":
+                    self.current_list = self.fiery_image_idle
+                else:
+                    print('ERROR: mario upgrade state does not exist. ')
             if self.mario_motion_state is "running":
-                # start timer
-                if pygame.time.get_ticks() > self.player_clock:
-                    self.player_clock = pygame.time.get_ticks() + self.change_freq
-                    self.index += 1
-                    self.index %= len(self.image_run)
-                    self.current_image = self.image_run[self.index]
-                    self.set_image_direction()
-
-
-
-        # self.rect = self.current_image.get_rect()
+                if self.mario_upgrade_state is "regular":
+                    self.current_list = self.regular_image_run
+                elif self.mario_upgrade_state is "super":
+                    self.current_list = self.super_image_run
+                elif self.mario_upgrade_state is "fiery":
+                    self.current_list = self.fiery_image_run
+                else:
+                    print('ERROR: mario upgrade stats does not exist. ')
 
     def reset_animations(self):
         self.index = 0
