@@ -1,6 +1,5 @@
-import pygame
 from custom.text import Text
-from custom.button import Button
+
 
 class HudScreen:
     """ HUD screen showing data such as points and lives """
@@ -91,7 +90,6 @@ class HudScreen:
 
         self.world_name_text.msg_image_rect.left = self.world_text.msg_image_rect.left
         self.world_name_text.msg_image_rect.y += 40
-
 
     def prep_score(self):
         self.score_text.msg_image_rect.x = 50

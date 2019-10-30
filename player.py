@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
+from time import sleep
 
 class Player(Sprite):
     """ Player class, where the player will control """
@@ -191,6 +192,8 @@ class Player(Sprite):
             self.gamemode.lives -= 1
             self.gamemode.mario_is_dead = True
             self.is_dead = True
+
+        sleep(0.5)
 
     def become_fire_mario(self):
         # if mario is regular, turn into super mario

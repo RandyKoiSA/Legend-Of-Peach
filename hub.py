@@ -83,9 +83,11 @@ class Hub:
             # runs the game screen
             self.game_screen.run()
             if self.gamemode.mario_is_dead:
-                self.open_level(self.level_name)
-                self.gamemode.mario_is_dead = False
-                # TODO check if there is any more lives to continue
+                if self.gamemode.lives == 0:
+                    self.screen_selector = 1
+                else:
+                    self.open_level(self.level_name)
+                    self.gamemode.mario_is_dead = False
 
         self.hud_screen.run()
 
