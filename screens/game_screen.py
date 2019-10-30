@@ -219,6 +219,7 @@ class GameScreen:
         # Brick Collision with player
         for brick in self.brick_group:
             if brick.rect.colliderect(self.player_group.sprite.rect):
+                print(brick.name + " " + brick.insides + " State: " + brick.state)
                 if self.player_group.sprite.rect.bottom <= brick.rect.top + 25:
                     self.player_group.sprite.rect.bottom = brick.rect.top
                     self.player_group.sprite.reset_jump()
@@ -237,6 +238,8 @@ class GameScreen:
                 if brick.coin_total > 0:
                     self.coin_group.add(Coins(hub=self.hub, x=brick.rect.x + 10, y=brick.rect.y - 50,
                                               name="Coin"+str(brick.coin_total), state="floating"))
+                elif brick.insides == 'star':
+                    self.starman_group.add(Starman(hub=self.hub, x=brick.rect.x + 10, y=brick.rect.y-50, name="Starman"))
 
         # Coin Collision with player
         for coin in self.coin_group:
@@ -336,6 +339,7 @@ class GameScreen:
                     starman.rect.bottom = collision.rect.top - 5
                 elif starman.rect.right > collision.rect.left + 20 or starman.rect.left < collision.rect.right - 20:
                     starman.flip_direction()
+
 
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""

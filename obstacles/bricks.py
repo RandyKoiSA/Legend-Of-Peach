@@ -85,8 +85,6 @@ class Bricks(Sprite):
         elif self.insides == 'star' and not self.bumped_up:
             self.bumped_up = True
             self.index = 1
-            self.image = self.image_index[self.index]
-            self.image = pygame.transform.scale(self.image, self.scale)
         else:
             self.bumped_up = True
         if self.rect.y <= (self.rest_height - 20) or self.rect.y >= (self.rest_height + 20):
@@ -107,7 +105,6 @@ class Bricks(Sprite):
             self.state = self.hub.OPENED
         else:
             self.kill()
-        self.state = self.hub.RESTING
 
     def opened(self):
         """Action during Opened State"""
@@ -116,7 +113,7 @@ class Bricks(Sprite):
         self.image = self.image_index[1]
         self.image = pygame.transform.scale(self.image, self.scale)
         if self.powerup_in_box and self.insides == 'star':
-            print("Spawn a Star")
+            self.insides = "None"
             self.powerup_in_box = False
 
 

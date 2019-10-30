@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/levels.json" beforeDir="false" afterPath="$PROJECT_DIR$/levels.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obstacles/bricks.py" beforeDir="false" afterPath="$PROJECT_DIR$/obstacles/bricks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/game_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/screens/game_screen.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -165,7 +167,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572247564368</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Coins spawn in bricks">
+      <created>1572401881097</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1572401881097</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -210,6 +219,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added Gumba to game" />
     <MESSAGE value="Bricks added and mapped to level 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bricks added and mapped to level 1" />
+    <MESSAGE value="Coins spawn in bricks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coins spawn in bricks" />
   </component>
 </project>
