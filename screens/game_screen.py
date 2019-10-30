@@ -29,6 +29,7 @@ class GameScreen:
         self.camera = hub.camera
         self.gamemode = hub.gamemode
         self.level_name = level_name
+        self.time_seconds = pygame.time.get_ticks() + 1000
 
         # Bounce physics
         self.counter_bounce = 0
@@ -83,6 +84,8 @@ class GameScreen:
         # Spawn all instances from the JSON File
         self.spawn_objects(hub)
 
+        self.CLOCK = pygame.time.Clock()
+
     def run(self):
         """ Run through the loop process"""
         self.run_event()
@@ -93,59 +96,78 @@ class GameScreen:
         """ Run events """
         for event in pygame.event.get():
             if event.type == QUIT:
+                # quit game
                 self.hub.exit_game()
+
             if event.type == KEYDOWN:
+
                 if event.key == K_ESCAPE:
                     self.hub.exit_game()
+
                 if event.key == K_SPACE:
                     # Jumping key
                     self.controller.jump = True
                     self.controller.jump_pressed = True
+
                 if event.key == K_LEFT or event.key == K_a:
                     # Move left key
                     self.controller.move_left = True
                     self.controller.move_right = False
+
                 if event.key == K_RIGHT or event.key == K_d:
                     # Move right key
                     self.controller.move_right = True
                     self.controller.move_left = False
+
                 if event.key == K_UP or event.key == K_w:
                     # Open level, if inside teleporter
                     self.controller.up = True
+
                 if event.key == K_9:
                     # Go back to main menu
                     self.hub.screen_selector = 1
+
                 if event.key == K_8:
                     # Developer tool, print x coordinates
                     dt.get_coordinates(self, self.player_group, self.camera)
+
                 if event.key == K_7:
                     # Developer tool, toggle grid coordinates
                     self.controller.toggle_grid = not self.controller.toggle_grid
+
                 if event.key == K_6:
                     # Developer tool, toggle mouse coordinates
                     self.controller.toggle_mouse_coordinates = not self.controller.toggle_mouse_coordinates
+
                 if event.key == K_1:
                     # Developer tool, set point A coordinates
                     dt.set_point_a(self, self.controller, self.camera)
+
                 if event.key == K_2:
                     # Developer tool, set point B coordinates
                     dt.set_point_b(self, self.controller, self.camera)
+
                 if event.key == K_3:
                     # Developer tool, find location, width, and height based on point A and point B
                     dt.print_description(self, self.controller)
 
             if event.type == KEYUP:
+
                 if event.key == K_SPACE:
                     # Stop mario from jumping
                     self.controller.jump = False
                     self.controller.jump_pressed = False
+
                 if event.key == K_LEFT or event.key == K_a:
                     # Stop moving mario to the left
                     self.controller.move_left = False
+
                 if event.key == K_RIGHT or event.key == K_d:
                     self.controller.move_right = False
+
                 if event.key == K_UP or event.key == K_w:
                     self.controller.up = False
+
             if event.type == MOUSEBUTTONDOWN:
                 # Developer tool, move player through the sky
                 mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -169,6 +191,9 @@ class GameScreen:
             self.update_mushroom_group()
             self.update_fireflower_group()
             self.update_starman_group()
+
+        self.update_timer()
+
 
     def run_draw(self):
         """ Draw all instances onto the screen """
@@ -216,6 +241,13 @@ class GameScreen:
 
     def update_world_collision(self):
         """ update world collisions"""
+
+        # Remove collisions that are no longer needed
+        for collision in self.background_collisions:
+            past_screen = collision.update()
+            if past_screen:
+                self.background_collisions.remove(collision)
+
         # Brick Collision with player
         for brick in self.brick_group:
             if brick.rect.colliderect(self.player_group.sprite.rect):
@@ -344,7 +376,6 @@ class GameScreen:
                 elif starman.rect.right > collision.rect.left + 20 or starman.rect.left < collision.rect.right - 20:
                     starman.flip_direction()
 
-
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
@@ -465,7 +496,7 @@ class GameScreen:
 
         try:
             for mushroom in self.hub.game_levels[self.level_name]["magic_mushroom_group"]:
-                self.magic_mushroom_group.add(Magic(hub=hub, x=mushroom["x"], y =mushroom["y"]))
+                self.magic_mushroom_group.add(Magic(hub=hub, x=mushroom["x"], y=mushroom["y"]))
         except LookupError:
             print('no magic mushrooms exist within this level')
 
@@ -671,3 +702,9 @@ class GameScreen:
         """ Draw the collision lines """
         for collision in self.background_collisions:
             collision.draw()
+
+    def update_timer(self):
+        """ Update timer, calculates the seconds passed and added it onto the time hud text. """
+        if pygame.time.get_ticks() >= self.time_seconds:
+            self.gamemode.time += 1
+            self.time_seconds = pygame.time.get_ticks() + 1000

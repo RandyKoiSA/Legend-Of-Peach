@@ -6,7 +6,20 @@ class GameMode:
         self.currentlevel = 1
         self.lives = 3
         self.score = 0
+        self.coins = 0
         self.mario_is_dead = False
         self.mario_in_air = False
         self.mario_is_running = False
 
+        self.time = 0
+
+    def reset_gamemode(self):
+        self.currentlevel = 1
+        self.lives = 3
+        self.score = 0
+        self.coins = 0
+        self.mario_is_dead = False
+        self.mario_in_air = False
+        self.mario_is_running = False
+
+        self.time = 0
