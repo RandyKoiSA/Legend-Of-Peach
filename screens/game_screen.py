@@ -477,6 +477,12 @@ class GameScreen:
             for enemy in self.enemy_group:
                 enemy.rect.x = enemy.original_pos[0] - self.camera.world_offset_x
 
+            for mushroom in self.magic_mushroom_group:
+                mushroom.rect.x = mushroom.original_pos[0] - self.camera.world_offset_x
+
+            for mushroom in self.oneup_mushroom_group:
+                mushroom.rect.x = mushroom.original_pos[0] - self.camera.world_offset_x
+
             for shell in self.shells_group:
                 shell.rect.x = shell.original_pos[0] - self.camera.world_offset_x
 

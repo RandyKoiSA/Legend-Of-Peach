@@ -50,12 +50,6 @@ class Mushroom(Sprite):
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
-    def check_cam(self):
-        if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0] and\
-         not self.checked:
-            self.state = self.hub.WALK
-            self.checked = True
-
     def update(self):
         """ Update the Mushroom Logic"""
         if self.state == self.hub.STAND:
@@ -74,7 +68,7 @@ class Mushroom(Sprite):
             self.check_direction()
             # Apply movement
             # Move Right
-            self.rect.x += self.velX
+            self.original_pos[0] += self.velX
 
         self.check_collision()
         self.check_fell()
