@@ -325,6 +325,15 @@ class GameScreen:
                 elif mushroom.rect.right > collision.rect.left + 20 or mushroom.rect.left < collision.rect.right - 20:
                         mushroom.flip_direction()
 
+    def check_starman_collision(self, starman):
+        bg_collisions = pygame.sprite.spritecollide(starman, self.background_collisions, False)
+        if bg_collisions:
+            for collision in bg_collisions:
+                if starman.rect.bottom < collision.rect.top + 50:
+                    starman.rect.bottom = collision.rect.top - 5
+                elif starman.rect.right > collision.rect.left + 20 or starman.rect.left < collision.rect.right - 20:
+                    starman.flip_direction()
+
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
@@ -543,6 +552,7 @@ class GameScreen:
     def update_starman_group(self):
         """ updating the starman group """
         for starman in self.starman_group:
+            self.check_starman_collision(starman=starman)
             starman.update()
 
     def update_fireflower_group(self):

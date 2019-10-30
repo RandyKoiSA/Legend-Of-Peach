@@ -13,7 +13,7 @@ class Starman(Sprite):
         self.original_pos = [x, y]
         self.move = self.hub.RIGHT
         self.velX = self.hub.velocityStar
-        self.velY = 1
+        self.velY = 5
         self.state = self.hub.STAND
         self.scale = (50, 50)
         self.rest_height = y
