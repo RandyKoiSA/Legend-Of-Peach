@@ -13,6 +13,7 @@ from custom import developer_tool as dt
 from items.mushroom import Magic
 from items.mushroom import Oneup
 from items.fire_flower import Fireflower
+from items.starman import Starman
 import json
 
 
@@ -60,6 +61,9 @@ class GameScreen:
 
         # Fireflower group
         self.fireflower_group = sprite.Group()
+
+        #Starman group
+        self.starman_group = sprite.Group()
 
         # For red or green shells
         self.shells_group = sprite.Group()
@@ -164,6 +168,7 @@ class GameScreen:
             self.update_coin_group()
             self.update_mushroom_group()
             self.update_fireflower_group()
+            self.update_starman_group()
 
     def run_draw(self):
         """ Draw all instances onto the screen """
@@ -191,6 +196,8 @@ class GameScreen:
         self.draw_mushroom_group()
         # Draw the fireflowers
         self.draw_fireflower_group()
+        # Draw the starmans
+        self.draw_starman_group()
 
         if self.controller.toggle_grid:
             # Developer tool, Display grid coordinates if toggled
@@ -285,6 +292,11 @@ class GameScreen:
             if flower.rect.colliderect(self.player_group.sprite.rect):
                 # fire mario code goes here
                 flower.kill()
+
+        for starman in self.starman_group:
+            if starman.rect.colliderect(self.player_group.sprite.rect):
+                # invincible mario code goes here
+                starman.kill()
 
         # Player has hit the world's floor or wall such as pipes and stairs
         for collision in self.background_collisions:
@@ -449,6 +461,12 @@ class GameScreen:
         except LookupError:
             print('no fireflowers exist within this level')
 
+        try:
+            for starman in self.hub.game_levels[self.level_name]["starman_group"]:
+                self.starman_group.add(Starman(hub=hub, x=starman["x"], y=starman["y"], name=starman["name"]))
+        except LookupError:
+            print('no starmen exist within this level')
+
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
         current_player = Player(hub, player_spawn_point[0], player_spawn_point[1])
@@ -483,6 +501,12 @@ class GameScreen:
             for mushroom in self.oneup_mushroom_group:
                 mushroom.rect.x = mushroom.original_pos[0] - self.camera.world_offset_x
 
+            for starman in self.starman_group:
+                starman.rect.x = starman.original_pos[0] - self.camera.world_offset_x
+
+            for flower in self.fireflower_group:
+                flower.rect.x = flower.original_pos[0] - self.camera.world_offset_x
+
             for shell in self.shells_group:
                 shell.rect.x = shell.original_pos[0] - self.camera.world_offset_x
 
@@ -515,6 +539,11 @@ class GameScreen:
         for mushroom in self.oneup_mushroom_group:
             self.check_mushroom_collision(mushroom=mushroom)
             mushroom.update()
+
+    def update_starman_group(self):
+        """ updating the starman group """
+        for starman in self.starman_group:
+            starman.update()
 
     def update_fireflower_group(self):
         """ updating the fireflower group """
@@ -597,6 +626,10 @@ class GameScreen:
     def draw_fireflower_group(self):
         for flower in self.fireflower_group:
             flower.draw()
+
+    def draw_starman_group(self):
+        for starman in self.starman_group:
+            starman.draw()
 
     def draw_death_group(self):
         """ Draw all the soon to die enemies"""

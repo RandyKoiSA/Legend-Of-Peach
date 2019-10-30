@@ -31,6 +31,7 @@ class Hub:
         self.GRAVITY = 10
         self.velocityAI = 5
         self.velocityMushroom = 5
+        self.velocityStar = 10
 
         # DEBUG MODE
         self.modeFreeze = False
