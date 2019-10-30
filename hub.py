@@ -10,7 +10,7 @@ from gamemode import GameMode
 
 
 class Hub:
-    """ Hub class, provides a central module to hold all the propertie that are constantly being accessed """
+    """ Hub class, provides a central module to hold all the properties that are constantly being accessed """
 
     def __init__(self):
         """ Initialize default values """
@@ -23,9 +23,15 @@ class Hub:
         self.FRAMERATE = 30
         self.speed = 0
 
+        # Score tracking
+        self.score = 0
+        self.lives = 3
+
         # PHYSICS VALUES
         self.GRAVITY = 10
         self.velocityAI = 5
+        self.velocityMushroom = 5
+        self.velocityStar = 10
 
         # DEBUG MODE
         self.modeFreeze = False
@@ -65,8 +71,6 @@ class Hub:
         # Screen selector chooses what screen to display
         self.screen_selector = 1
         self.level_name = ''
-
-
 
     def display_screen(self):
         if self.screen_selector is 1:
