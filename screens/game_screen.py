@@ -62,7 +62,7 @@ class GameScreen:
         # Fireflower group
         self.fireflower_group = sprite.Group()
 
-        #Starman group
+        # Starman group
         self.starman_group = sprite.Group()
 
         # For red or green shells
@@ -234,6 +234,9 @@ class GameScreen:
                     self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
                     if brick.state == self.hub.RESTING:
                         brick.state = self.hub.BUMPED
+                if brick.coin_total > 0:
+                    self.coin_group.add(Coins(hub=self.hub, x=brick.rect.x + 10, y=brick.rect.y - 50,
+                                              name="Coin"+str(brick.coin_total), state="floating"))
 
         # Coin Collision with player
         for coin in self.coin_group:
