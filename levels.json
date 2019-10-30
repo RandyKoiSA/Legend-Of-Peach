@@ -97,14 +97,21 @@
            {
         "x": 100,
         "y": 422,
+        "inside": "star",
+        "powerup": "Star",
+        "name": "brick"
+      },
+                 {
+        "x": 153,
+        "y": 422,
         "inside": "coins",
-        "powerup": "Coins",
+        "powerup": "coin",
         "name": "brick"
       },
       {
         "x": 965,
         "y": 422,
-        "inside": "coins",
+        "inside": "None",
         "powerup": "Brick",
         "name": "brick"
       },
