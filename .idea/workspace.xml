@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Points.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/player/player_fire_ball.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/screens/main_menu_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/screens/main_menu_screen.py" afterDir="false" />
-
+      <change beforePath="$PROJECT_DIR$/items/coins.py" beforeDir="false" afterPath="$PROJECT_DIR$/items/coins.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/game_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/screens/game_screen.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +43,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Users\Randy\Desktop\Legend-Of-Peach\player" />
       <recent name="$PROJECT_DIR$/AI" />
     </key>
   </component>
