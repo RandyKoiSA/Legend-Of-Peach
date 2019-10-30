@@ -14,7 +14,7 @@ class Player(Sprite):
         self.gamemode = hub.gamemode
 
         self.mario_motion_state = "idle"
-        self.mario_upgrade_state = "super"
+        self.mario_upgrade_state = "regular"
         self.mario_facing_direction = hub.RIGHT
         self.mario_image_flipped = False
 
@@ -165,10 +165,24 @@ class Player(Sprite):
         pass
 
     def get_bigger(self):
-        pass
+        # if mario is regular change to super
+        if self.mario_upgrade_state is "regular":
+            self.mario_upgrade_state = "super"
+        # if mario is super or fiery, add points to score
+        elif self.mario_upgrade_state is "super" or self.mario_upgrade_state is "fiery":
+            # TODO add score to gamemode
+            pass
 
     def get_smaller(self):
-        pass
+        # if mario is regular, mario dies
+        if self.mario_upgrade_state is "regular":
+            self.die()
+        # if mario is super, change to regular mario
+        elif self.mario_upgrade_state is "super":
+            self.mario_upgrade_state = "regular"
+        # if mario is fiery, change to super mario
+        elif self.mario_upgrade_state is "fiery":
+            self.mario_upgrade_state = "fiery"
 
     def die(self):
         # play mario is dying animation
@@ -179,7 +193,18 @@ class Player(Sprite):
             self.is_dead = True
 
     def become_fire_mario(self):
-        pass
+        # if mario is regular, turn into super mario
+        if self.mario_upgrade_state is "regular":
+            self.mario_upgrade_state = "super"
+        # if mario is super, turn into fiery mario
+        elif self.mario_upgrade_state is "super":
+            self.mario_upgrade_state = "fiery"
+        # if mario is fiery, add points to score
+        elif self.mario_upgrade_state is "fiery":
+            # add points to score
+            pass
+        else:
+            print('ERROR: become_fire_mario(), mario upgrades state does not exist. ')
 
     def set_image_direction(self):
         if self.mario_facing_direction == self.hub.LEFT:
@@ -262,7 +287,16 @@ class Player(Sprite):
                 else:
                     print('ERROR: mario upgrade stats does not exist. ')
 
+        self.update_rect()
+
     def reset_animations(self):
         self.index = 0
         self.player_clock = pygame.time.get_ticks()
+
+    def update_rect(self):
+        position_x = self.rect.x
+        position_y = self.rect.y
+        self.rect = self.current_image.get_rect()
+        self.rect.x = position_x
+        self.rect.y = position_y
 
