@@ -1,9 +1,7 @@
 import pygame
-import sys
 from pygame.locals import *
 from custom.text import Text
 from custom.button import Button
-from screens.game_screen import GameScreen
 
 class MainMenuScreen:
     """ Main Menu Screen showing exit button and play button """
