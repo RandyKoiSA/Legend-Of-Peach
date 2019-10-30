@@ -287,6 +287,8 @@ class GameScreen:
         for mushroom in self.magic_mushroom_group:
             if mushroom.rect.colliderect(self.player_group.sprite.rect):
                 # code for mario expanding
+                for player in self.player_group:
+                    player.get_bigger()
                 mushroom.kill()
 
         for mushroom in self.oneup_mushroom_group:
@@ -297,6 +299,8 @@ class GameScreen:
         for flower in self.fireflower_group:
             if flower.rect.colliderect(self.player_group.sprite.rect):
                 # fire mario code goes here
+                for player in self.player_group:
+                    player.become_fire_mario()
                 flower.kill()
 
         for starman in self.starman_group:
