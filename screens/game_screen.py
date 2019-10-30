@@ -245,7 +245,7 @@ class GameScreen:
         for coin in self.coin_group:
             if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
                 coin.kill()
-                self.hub.score += 200
+                self.gamemode.score += 200
 
         # Enemy collision with player
         for shell in self.shells_group:
@@ -292,7 +292,7 @@ class GameScreen:
         for mushroom in self.oneup_mushroom_group:
             if mushroom.rect.colliderect(self.player_group.sprite.rect):
                 mushroom.kill()
-                self.hub.lives = self.hub.lives + 1
+                self.gamemode.lives += 1
 
         for flower in self.fireflower_group:
             if flower.rect.colliderect(self.player_group.sprite.rect):

@@ -23,10 +23,6 @@ class Hub:
         self.FRAMERATE = 30
         self.speed = 0
 
-        # Score tracking
-        self.score = 0
-        self.lives = 3
-
         # PHYSICS VALUES
         self.GRAVITY = 10
         self.velocityAI = 5
