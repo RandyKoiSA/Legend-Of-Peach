@@ -295,8 +295,8 @@ class Player(Sprite):
 
     def update_rect(self):
         position_x = self.rect.x
-        position_y = self.rect.y
+        position_y = self.rect.bottom
         self.rect = self.current_image.get_rect()
         self.rect.x = position_x
-        self.rect.y = position_y
+        self.rect.bottom = position_y
 
