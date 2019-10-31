@@ -4,7 +4,6 @@ import json
 from screens.game_screen import GameScreen
 from screens.main_menu_screen import MainMenuScreen
 from screens.level_selection_screen import LevelSelectionScreen
-from screens.HUD_screen import HudScreen
 from controller import Controller
 from camera import Camera
 from gamemode import GameMode
@@ -24,6 +23,10 @@ class Hub:
         self.FRAMERATE = 30
         self.speed = 0
 
+        # Score tracking
+        self.score = 0
+        self.lives = 3
+
         # PHYSICS VALUES
         self.GRAVITY = 10
         self.velocityAI = 5
@@ -40,10 +43,6 @@ class Hub:
         self.gamemode = GameMode(self)
         self.controller = Controller(self)
         self.camera = Camera(self)
-
-        # Screen selector chooses what screen to display
-        self.screen_selector = 1
-        self.level_name = ''
 
         # STATES
         self.WALK = 'WALK'
@@ -66,11 +65,13 @@ class Hub:
         game_screen is the only one that will probably be reinstance everytime a new level
         opens. """
         self.main_screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
-        self.hud_screen = HudScreen(self)
         self.main_menu_screen = MainMenuScreen(self)
         self.level_screen = LevelSelectionScreen(self)
         self.game_screen = GameScreen(self)
 
+        # Screen selector chooses what screen to display
+        self.screen_selector = 1
+        self.level_name = ''
 
     def display_screen(self):
         if self.screen_selector is 1:
@@ -84,13 +85,9 @@ class Hub:
             # runs the game screen
             self.game_screen.run()
             if self.gamemode.mario_is_dead:
-                if self.gamemode.lives == 0:
-                    self.screen_selector = 1
-                else:
-                    self.open_level(self.level_name)
-                    self.gamemode.mario_is_dead = False
+                self.open_level(self.level_name)
+                self.gamemode.mario_is_dead = False
 
-        self.hud_screen.run()
 
     def exit_game(self):
         pygame.quit()
@@ -104,7 +101,6 @@ class Hub:
             return data
 
     def open_level(self, level_name, world_offset=0):
-        """ Opens new gamee_screen and level"""
         print('new game_screen instantiated')
         self.game_screen = GameScreen(self, level_name)
         self.level_name = level_name
