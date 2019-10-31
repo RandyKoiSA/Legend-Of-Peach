@@ -139,6 +139,7 @@ class Enemy(Sprite):
             self.rise_counter = 0
             self.state = self.hub.FALL
         elif pygame.time.get_ticks() - self.wait_timer > 500:
+
             self.rect.y += self.velY
             print(self.name + " going up!"+ str(self.rect.y))
             self.rise_counter += self.velY
