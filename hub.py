@@ -54,7 +54,8 @@ class Hub:
         self.SLIDE = 'SLIDE'
         self.HIT = 'HIT'
         self.DEATHFALL = 'DEATHFALL'
-
+        self.RISE = "RISE"
+        self.FALL = "FALL"
         # Brick States
         self.RESTING = 'RESTING'
         self.BUMPED = 'BUMPED'

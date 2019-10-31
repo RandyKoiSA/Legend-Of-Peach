@@ -38,6 +38,8 @@ class Enemy(Sprite):
         self.rect.y = self.original_pos[1]
 
         self.death_timer = 0
+        self.rise_counter = 100
+        self.wait_timer = 0
 
         # Physics Values
         self.gravity = self.hub.GRAVITY
@@ -62,7 +64,10 @@ class Enemy(Sprite):
     def check_cam(self):
         if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0] and\
          not self.checked:
-            self.state = self.hub.WALK
+            if self.name == "piranhaplant":
+                self.state = self.hub.FALL
+            else:
+                self.state = self.hub.WALK
             self.checked = True
 
     def draw(self):
@@ -117,9 +122,39 @@ class Enemy(Sprite):
             self.slide()
         elif self.state == self.hub.SHELL:
             self.shell()
+        elif self.state == self.hub.RISE:
+            self.rise()
+        elif self.state == self.hub.FALL:
+            self.fall()
 
     def shell(self):
         self.velX = 0
+
+    def rise(self):
+        self.gravity = 0
+        self.velY = -5
+        self.update_image()
+        if self.rise_counter < 0:
+            self.rect.y = self.original_pos[1]
+            self.rise_counter = 0
+            self.state = self.hub.FALL
+        elif pygame.time.get_ticks() - self.wait_timer > 500:
+            self.rect.y += self.velY
+            print(self.name + " going up!"+ str(self.rect.y))
+            self.rise_counter += self.velY
+
+    def fall(self):
+        self.gravity = 0
+        self.velY = 5
+        self.update_image()
+        if self.rise_counter > 100:
+            self.wait_timer = pygame.time.get_ticks()
+            self.rise_counter = 100
+            self.state = self.hub.RISE
+        else:
+            self.rect.y += self.velY
+            self.rise_counter += self.velY
+            print(self.name + " going DOWN!" + str(self.rect.y))
 
     def slide(self):
         if self.move == self.hub.RIGHT or self.hub.STAND:
@@ -139,7 +174,9 @@ class Enemy(Sprite):
         # Apply movement
         # Move Right
         self.original_pos[0] += self.velX
+        self.update_image()
 
+    def update_image(self):
         if pygame.time.get_ticks() > self.clock:
             self.index = (self.index + 1) % 2
             self.image = self.image_index[self.index]
@@ -267,10 +304,11 @@ class Paratroops(Enemy):
 class Piranhaplant(Enemy):
     def __init__(self, hub, x, y):
         self.name = "piranhaplant"
-        self.frame = 60
-        self.scale = (50, 50)
+        self.frame = 110
+        self.scale = (50, 100)
         self.direction = "STILL"
-        self.image_index = [pygame.image.load("")]
+        self.image_index = [pygame.image.load("imgs/Enemies/PiranhaPlant/Plant000.gif"),
+                            pygame.image.load("imgs/Enemies/PiranhaPlant/Plant001.gif")]
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)

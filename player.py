@@ -159,7 +159,7 @@ class Player(Sprite):
         self.is_bouncing = True
         self.gamemode.mario_in_air = True
         self.mario_motion_state = "jumping"
-        print("Mario Bounced off AI")
+
 
     def throw(self):
         pass
