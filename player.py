@@ -1,12 +1,9 @@
 import pygame
 from pygame.sprite import Sprite
-from time import sleep
-from player.player_fire_ball import Player_FireBall
-
 
 class Player(Sprite):
     """ Player class, where the player will control """
-    def __init__(self, hub, fireball_group, pos_x= 50, pos_y=50):
+    def __init__(self, hub, pos_x= 50, pos_y=50):
         """ Initialize default values """
         super().__init__()
         self.hub = hub
@@ -15,9 +12,7 @@ class Player(Sprite):
         self.controller = hub.controller
         self.camera = hub.camera
         self.gamemode = hub.gamemode
-        self.fireball_group = fireball_group
 
-        # Mario state
         self.mario_motion_state = "idle"
         self.mario_upgrade_state = "regular"
         self.mario_facing_direction = hub.RIGHT
@@ -85,54 +80,44 @@ class Player(Sprite):
         # Apply gravity
         self.rect.y += self.gravity
 
-        if not self.mario_motion_state is "dying":
-            # Apply movement
-            if self.controller.move_right:
-                self.rect.x += self.velocity
-                self.mario_motion_state = "running"
-                self.mario_facing_direction = self.hub.RIGHT
+        # Apply movement
+        if self.controller.move_right:
+            self.rect.x += self.velocity
+            self.mario_motion_state = "running"
+            self.mario_facing_direction = self.hub.RIGHT
 
-            if self.controller.move_left:
-                self.rect.x -= self.velocity
-                self.mario_motion_state = "running"
-                self.mario_facing_direction = self.hub.LEFT
+        if self.controller.move_left:
+            self.rect.x -= self.velocity
+            self.mario_motion_state = "running"
+            self.mario_facing_direction = self.hub.LEFT
 
-            if not self.controller.move_left and not self.controller.move_right:
-                if not self.gamemode.mario_in_air:
-                    self.mario_motion_state = "idle"
+        if not self.controller.move_left and not self.controller.move_right:
+            if not self.gamemode.mario_in_air:
+                self.mario_motion_state = "idle"
 
-                    self.reset_animations()
-            if self.controller.jump:
-                # turn off controller jump to prevent holding jump space bar
-                self.controller.jump = False
-                if not self.is_jumping or not self.is_bouncing:
-                    self.jump()
+                self.reset_animations()
+        if self.controller.jump:
+            # turn off controller jump to prevent holding jump space bar
+            self.controller.jump = False
+            if not self.is_jumping or not self.is_bouncing:
+                self.jump()
 
-            # Check if the player is jumping
-            if self.is_jumping:
-                if self.counter_jump < self.jump_max_height:
-                    self.counter_jump += self.jump_velocity
-                    self.rect.y -= self.jump_velocity
-                if self.counter_jump > self.jump_max_height:
-                    self.is_jumping = False
+        # Check if the player is jumping
+        if self.is_jumping:
+            if self.counter_jump < self.jump_max_height:
+                self.counter_jump += self.jump_velocity
+                self.rect.y -= self.jump_velocity
+            if self.counter_jump > self.jump_max_height:
+                self.is_jumping = False
 
-            if self.is_bouncing:
-                if self.counter_bounce < self.bounce_max_height:
-                    self.counter_bounce += self.bounce_velocity
-                    self.rect.y -= self.bounce_velocity
-                if self.counter_bounce > self.bounce_max_height:
-                    self.is_bouncing = False
+        if self.is_bouncing:
+            if self.counter_bounce < self.bounce_max_height:
+                self.counter_bounce += self.bounce_velocity
+                self.rect.y -= self.bounce_velocity
+            if self.counter_bounce > self.bounce_max_height:
+                self.is_bouncing = False
 
-            self.check_collision()
-        else:
-            # Check if the player is jumping
-            if self.is_jumping:
-                if self.counter_jump < self.jump_max_height:
-                    self.counter_jump += self.jump_velocity
-                    self.rect.y -= self.jump_velocity
-                if self.counter_jump > self.jump_max_height:
-                    self.is_jumping = False
-            self.check_if_dead()
+        self.check_collision()
 
     def draw(self):
         # draw current image
@@ -162,29 +147,22 @@ class Player(Sprite):
             self.camera.moveCamera(self.velocity)
 
         # Check if the player is fallen off the screen (mario is dead)
-        self.check_if_dead()
-
+        if self.rect.top > self.screen_rect.bottom:
+            self.die()
 
     def jump(self):
         self.is_jumping = True
         self.gamemode.mario_in_air = True
-        if not self.mario_motion_state is "dying":
-            self.mario_motion_state = "jumping"
+        self.mario_motion_state = "jumping"
 
     def bounce(self):
         self.is_bouncing = True
         self.gamemode.mario_in_air = True
+        self.mario_motion_state = "jumping"
 
-        if not self.mario_motion_state is "dying":
-            self.mario_motion_state = "jumping"
-        # print("Mario Bounced off AI")
 
     def throw(self):
-        if self.mario_upgrade_state is "fiery":
-            self.fireball_group.add(Player_FireBall(self.hub, self.fireball_group,
-                                                    self.rect.right + self.camera.world_offset_x,
-                                                    self.rect.centery))
-
+        pass
 
     def get_bigger(self):
         # if mario is regular change to super
@@ -198,10 +176,7 @@ class Player(Sprite):
     def get_smaller(self):
         # if mario is regular, mario dies
         if self.mario_upgrade_state is "regular":
-            self.mario_motion_state = "dying"
-            self.current_list = self.regular_image_idle
-            self.rect.y -= 100
-            self.gravity = 3
+            self.die()
         # if mario is super, change to regular mario
         elif self.mario_upgrade_state is "super":
             self.mario_upgrade_state = "regular"
@@ -210,14 +185,12 @@ class Player(Sprite):
             self.mario_upgrade_state = "fiery"
 
     def die(self):
-        # called when player gets hit by enemy, projectile, or out of bounds
+        # play mario is dying animation
         if not self.is_dead:
             print("mario is dead")
             self.gamemode.lives -= 1
             self.gamemode.mario_is_dead = True
             self.is_dead = True
-
-        sleep(0.5)
 
     def become_fire_mario(self):
         # if mario is regular, turn into super mario
@@ -284,11 +257,7 @@ class Player(Sprite):
             self.current_image = self.current_list[self.index]
             self.set_image_direction()
 
-        if self.mario_motion_state is "dieing":
-            # MARIO DIEING STATE
-            self.current_image = pygame.transform.flip(self.current_image, False, True)
-            self.jump()
-        elif self.mario_motion_state is "jumping" or self.gamemode.mario_in_air:
+        if self.mario_motion_state is "jumping" or self.gamemode.mario_in_air:
             # jumping as regular
             if self.mario_upgrade_state is "regular":
                 self.current_list = self.regular_image_jump
@@ -326,12 +295,8 @@ class Player(Sprite):
 
     def update_rect(self):
         position_x = self.rect.x
-        position_y = self.rect.bottom
+        position_y = self.rect.y
         self.rect = self.current_image.get_rect()
         self.rect.x = position_x
-        self.rect.bottom = position_y
-
-    def check_if_dead(self):
-        if self.rect.top > self.screen_rect.bottom:
-            self.die()
+        self.rect.y = position_y
 

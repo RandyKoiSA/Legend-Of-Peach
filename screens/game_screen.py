@@ -1,11 +1,10 @@
 import pygame
+import sys
 from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from obstacles.teleporter import Teleport
-from player.player import Player
-from player.player_fire_ball import Player_FireBall
+from player import Player
 from pygame import sprite
-from Points import Points
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops
 from AI.enemy import Piranhaplant
@@ -17,6 +16,7 @@ from items.mushroom import Magic
 from items.mushroom import Oneup
 from items.fire_flower import Fireflower
 from items.starman import Starman
+import json
 
 
 class GameScreen:
@@ -31,7 +31,6 @@ class GameScreen:
         self.camera = hub.camera
         self.gamemode = hub.gamemode
         self.level_name = level_name
-        self.time_seconds = pygame.time.get_ticks() + 1000
 
         # Bounce physics
         self.counter_bounce = 0
@@ -50,14 +49,8 @@ class GameScreen:
         # Teleporter Group, teleporter to the given destination
         self.teleporter_group = sprite.Group()
 
-        # Points Group, show the points that was shown
-        self.point_group = sprite.Group()
-
         # Player group spawn player in again if needed
         self.player_group = sprite.GroupSingle()
-        
-        # Player fire ball
-        self.player_fireball_group = sprite.Group()
 
         # Gumba group spawn gumba when appropriate
         self.enemy_group = sprite.Group()
@@ -98,7 +91,6 @@ class GameScreen:
         # Spawn all instances from the JSON File
         self.spawn_objects(hub)
 
-
     def run(self):
         """ Run through the loop process"""
         self.run_event()
@@ -109,93 +101,68 @@ class GameScreen:
         """ Run events """
         for event in pygame.event.get():
             if event.type == QUIT:
-                # quit game
                 self.hub.exit_game()
-
             if event.type == KEYDOWN:
-
                 if event.key == K_ESCAPE:
                     self.hub.exit_game()
-
                 if event.key == K_SPACE:
                     # Jumping key
                     self.controller.jump = True
                     self.controller.jump_pressed = True
-
                 if event.key == K_LEFT or event.key == K_a:
                     # Move left key
                     self.controller.move_left = True
                     self.controller.move_right = False
-
                 if event.key == K_RIGHT or event.key == K_d:
                     # Move right key
                     self.controller.move_right = True
                     self.controller.move_left = False
-
                 if event.key == K_UP or event.key == K_w:
                     # Open level, if inside teleporter
                     self.controller.up = True
-
                 if event.key == K_9:
                     # Go back to main menu
                     self.hub.screen_selector = 1
-
                 if event.key == K_8:
                     # Developer tool, print x coordinates
                     dt.get_coordinates(self, self.player_group, self.camera)
-
                 if event.key == K_7:
                     # Developer tool, toggle grid coordinates
                     self.controller.toggle_grid = not self.controller.toggle_grid
-
                 if event.key == K_6:
                     # Developer tool, toggle mouse coordinates
                     self.controller.toggle_mouse_coordinates = not self.controller.toggle_mouse_coordinates
-
                 if event.key == K_1:
                     # Developer tool, set point A coordinates
                     dt.set_point_a(self, self.controller, self.camera)
-
                 if event.key == K_2:
                     # Developer tool, set point B coordinates
                     dt.set_point_b(self, self.controller, self.camera)
-
                 if event.key == K_3:
                     # Developer tool, find location, width, and height based on point A and point B
                     dt.print_description(self, self.controller)
 
-                if event.key == K_LSHIFT:
-                    self.player_group.sprite.throw()
-
             if event.type == KEYUP:
-
                 if event.key == K_SPACE:
                     # Stop mario from jumping
                     self.controller.jump = False
                     self.controller.jump_pressed = False
-
                 if event.key == K_LEFT or event.key == K_a:
                     # Stop moving mario to the left
                     self.controller.move_left = False
-
                 if event.key == K_RIGHT or event.key == K_d:
                     self.controller.move_right = False
-
                 if event.key == K_UP or event.key == K_w:
                     self.controller.up = False
-
             if event.type == MOUSEBUTTONDOWN:
                 # Developer tool, move player through the sky
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if self.controller.developer_mode:
                     dt.move_player(self, mouse_x, mouse_y, self.camera, self.player_group)
-                else:
-                    self.player_group.sprite.throw()
 
     def run_update(self):
         """ Update all instances in the game_screen"""
         self.update_player_group()
-        self.update_player_fireball_group()
         self.update_teleporter_group()
         self.update_camera()
         self.update_world_collision()
@@ -212,23 +179,18 @@ class GameScreen:
             self.update_fireflower_group()
             self.update_starman_group()
 
-        self.update_point_group()
-        self.update_timer()
-
-
     def run_draw(self):
         """ Draw all instances onto the screen """
-        self.draw_world_collision_group()
-        self.draw_teleporter_group()
-        self.screen.fill((0, 0, 0))
         # Draw background image
         self.screen.blit(self.bg_image, self.bg_rect)
+        # Draw test collision boxes
+        self.draw_world_collision_group()
+        # Draw teleporter collision boxes
+        self.draw_teleporter_group()
         # Draw gumba
         self.draw_enemy_group()
         # Draw player
         self.draw_player_group()
-        # Draw player fireballs
-        self.draw_player_fireball_group()
         # Draw the Death Enemies
         self.draw_death_group()
         # Draw the Shells
@@ -247,8 +209,6 @@ class GameScreen:
         self.draw_fireflower_group()
         # Draw the starmans
         self.draw_starman_group()
-        # Draw points
-        self.draw_point_group()
 
         if self.controller.toggle_grid:
             # Developer tool, Display grid coordinates if toggled
@@ -264,6 +224,139 @@ class GameScreen:
                                                                self.bg_rect.height * 3 + 50))
         self.bg_rect = self.bg_image.get_rect()
         self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
+
+    def update_world_collision(self):
+        """ update world collisions"""
+        # Brick Collision with player
+        for brick in self.brick_group:
+            if brick.rect.colliderect(self.player_group.sprite.rect):
+                if self.player_group.sprite.rect.bottom <= brick.rect.top + 25:
+                    self.player_group.sprite.rect.bottom = brick.rect.top
+                    self.player_group.sprite.reset_jump()
+                    self.player_group.sprite.reset_bounce()
+                # check if the player hits the left wall
+                elif self.player_group.sprite.rect.right < brick.rect.left + 20:
+                    self.player_group.sprite.rect.right = brick.rect.left
+                # check if the player hits the right wall
+                elif self.player_group.sprite.rect.left > brick.rect.right - 20:
+                    self.player_group.sprite.rect.left = brick.rect.right
+                else:
+                    self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
+                    if brick.state == self.hub.RESTING:
+                        brick.state = self.hub.BUMPED
+                        if brick.coin_total > 0 and (brick.insides == 'coins' or brick.insides == 'coin'):
+                            self.coin_group.add(Coins(hub=self.hub, x=brick.rect.x + 10 + self.camera.world_offset_x,
+                                                      y=brick.rect.y - 50, name="Coin"+str(brick.coin_total),
+                                                      state="floating"))
+                        elif brick.insides == 'star':
+                            self.starman_group.add(Starman(hub=self.hub,
+                                                           x=brick.rect.x + 10 + self.camera.world_offset_x,
+                                                           y=brick.rect.y-50, name="Star"))
+                        elif brick.insides == 'rshroom':
+                            self.magic_mushroom_group.add(Magic(hub=self.hub,
+                                                                x=brick.rect.x + self.camera.world_offset_x,
+                                                                y=brick.rect.y-25))
+                        elif brick.insides == 'gshroom':
+                            self.oneup_mushroom_group.add(Oneup(hub=self.hub,
+                                                                x=brick.rect.x + self.camera.world_offset_x,
+                                                                y=brick.rect.y-25))
+                        else:
+                            print("Make a brick piece")
+                            self.brickpieces_group.add(
+                                BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
+                                            y=brick.rect.y - 25, velx=-5, vely=-12, theme=brick.theme),
+                                BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
+                                            y=brick.rect.y - 25, velx=5, vely=-12, theme=brick.theme),
+                                BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
+                                            y=brick.rect.y + 25, velx=-5, vely=-5, theme=brick.theme),
+                                BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
+                                            y=brick.rect.y + 25, velx=5, vely=-5, theme=brick.theme)
+                            )
+
+        # Coin Collision with player
+        for coin in self.coin_group:
+            if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
+                coin.kill()
+                self.hub.score += 200
+
+        # Enemy collision with player
+        for shell in self.shells_group:
+            if shell.rect.colliderect(self.player_group.sprite.rect):
+                shell.move = self.player_group.sprite.mario_facing_direction
+                shell.state = self.hub.SLIDE
+                if shell.move == self.hub.LEFT:
+                    shell.rect.right = self.player_group.sprite.rect.left
+                else:
+                    shell.rect.left = self.player_group.sprite.rect.right
+                if self.player_group.sprite.rect.bottom < shell.rect.top + 20:
+                    self.player_group.sprite.reset_bounce()
+                    self.player_group.sprite.bounce()
+                shell.kill()
+
+                self.projectile_group.add(shell)
+
+        for enemy in self.enemy_group:
+            if enemy.rect.colliderect(self.player_group.sprite.rect):
+                if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
+                    if enemy.name == "piranhaplant":
+                        self.player_group.sprite.die()
+                        print("Mario DED")
+                    else:
+                        self.player_group.sprite.reset_bounce()
+                        self.player_group.sprite.bounce()
+                        enemy.state = self.hub.STOMPED
+                        enemy.isstomped = True
+                        enemy.death_timer = pygame.time.get_ticks()
+                        enemy.kill()
+                        if enemy.name == "koopatroop":
+                            self.shells_group.add(enemy)
+                        else:
+                            self.death_group.add(enemy)
+                        # self.player_group.sprite.is_jumping = False
+                else:
+                    # If Mario collides in x direction
+                    if self.player_group.sprite.rect.right < enemy.rect.left + 20:
+                        self.player_group.sprite.die()
+                    elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
+                        self.player_group.sprite.die()
+
+        for mushroom in self.magic_mushroom_group:
+            if mushroom.rect.colliderect(self.player_group.sprite.rect):
+                # code for mario expanding
+                mushroom.kill()
+
+        for mushroom in self.oneup_mushroom_group:
+            if mushroom.rect.colliderect(self.player_group.sprite.rect):
+                mushroom.kill()
+                self.hub.lives = self.hub.lives + 1
+
+        for flower in self.fireflower_group:
+            if flower.rect.colliderect(self.player_group.sprite.rect):
+                # fire mario code goes here
+                flower.kill()
+
+        for starman in self.starman_group:
+            if starman.rect.colliderect(self.player_group.sprite.rect):
+                # invincible mario code goes here
+                starman.kill()
+
+        # Player has hit the world's floor or wall such as pipes and stairs
+        for collision in self.background_collisions:
+            if collision.rect.colliderect(self.player_group.sprite.rect):
+                # check if the player is standing on top
+                if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
+                    self.player_group.sprite.rect.bottom = collision.rect.top
+                    self.player_group.sprite.reset_jump()
+                    self.player_group.sprite.reset_bounce()
+                elif self.player_group.sprite.rect.top > collision.rect.bottom - 20:
+                    self.player_group.sprite.rect.top = collision.rect.bottom
+                else:
+                    # check if the player hits the left wall
+                    if self.player_group.sprite.rect.right < collision.rect.left + 20:
+                        self.player_group.sprite.rect.right = collision.rect.left
+                    # check if the player hits the right wall
+                    if self.player_group.sprite.rect.left > collision.rect.right - 20:
+                        self.player_group.sprite.rect.left = collision.rect.right
 
     def check_mushroom_collision(self, mushroom):
         bg_collisions = pygame.sprite.spritecollide(mushroom, self.background_collisions, False)
@@ -316,7 +409,7 @@ class GameScreen:
         if player_collision:
             for player in player_collision:
                 if projectile.rect.right > player.rect.left or projectile.rect.left < player.rect.right:
-                    player.get_smaller()
+                    player.die()
 
         if enemy_collisions:
             for enemies in enemy_collisions:
@@ -450,7 +543,7 @@ class GameScreen:
 
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
-        current_player = Player(hub, self.player_fireball_group, player_spawn_point[0], player_spawn_point[1])
+        current_player = Player(hub, player_spawn_point[0], player_spawn_point[1])
         self.player_group.add(current_player)
 
 # ADD UPDATE FUNCTIONS HERE
@@ -510,132 +603,6 @@ class GameScreen:
         """ Update player logic"""
         for player in self.player_group:
             player.update()
-
-    def update_world_collision(self):
-        """ update world collisions"""
-
-        # Remove collisions that are no longer needed
-        for collision in self.background_collisions:
-            past_screen = collision.update()
-            if past_screen:
-                self.background_collisions.remove(collision)
-
-        # Brick Collision with player
-        for brick in self.brick_group:
-            if brick.rect.colliderect(self.player_group.sprite.rect):
-                print(brick.name + " " + brick.insides + " State: " + brick.state)
-                if self.player_group.sprite.rect.bottom <= brick.rect.top + 25:
-                    self.player_group.sprite.rect.bottom = brick.rect.top
-                    self.player_group.sprite.reset_jump()
-                    self.player_group.sprite.reset_bounce()
-                # check if the player hits the left wall
-                elif self.player_group.sprite.rect.right < brick.rect.left + 20:
-                    self.player_group.sprite.rect.right = brick.rect.left
-                # check if the player hits the right wall
-                elif self.player_group.sprite.rect.left > brick.rect.right - 20:
-                    self.player_group.sprite.rect.left = brick.rect.right
-
-                else:
-                    self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
-                    if brick.state == self.hub.RESTING:
-                        brick.state = self.hub.BUMPED
-                if brick.coin_total > 0:
-                    self.coin_group.add(Coins(hub=self.hub, x=brick.rect.x + 10, y=brick.rect.y - 50,
-                                              name="Coin"+str(brick.coin_total), state="floating"))
-                elif brick.insides == 'star':
-                    self.starman_group.add(Starman(hub=self.hub, x=brick.rect.x + 10, y=brick.rect.y-50, name="Starman"))
-
-        # Coin Collision with player
-        for coin in self.coin_group:
-            if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
-                coin.kill()
-                self.gamemode.coins += 1
-
-        # Enemy collision with player
-        for shell in self.shells_group:
-            if shell.rect.colliderect(self.player_group.sprite.rect):
-                shell.move = self.player_group.sprite.mario_facing_direction
-                shell.state = self.hub.SLIDE
-                if shell.move == self.hub.LEFT:
-                    shell.rect.right = self.player_group.sprite.rect.left
-                else:
-                    shell.rect.left = self.player_group.sprite.rect.right
-                if self.player_group.sprite.rect.bottom < shell.rect.top + 20:
-                    self.player_group.sprite.reset_bounce()
-                    self.player_group.sprite.bounce()
-                shell.kill()
-
-                self.projectile_group.add(shell)
-
-        # Enemy Collision with Player
-        for enemy in self.enemy_group:
-            if enemy.rect.colliderect(self.player_group.sprite.rect):
-                if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
-                    self.player_group.sprite.reset_bounce()
-                    self.player_group.sprite.bounce()
-                    self.point_group.add(Points(self.hub, self.point_group, "100pts", enemy.rect.centerx + self.camera.world_offset_x, enemy.rect.top))
-                    enemy.state = self.hub.STOMPED
-                    enemy.isstomped = True
-                    enemy.death_timer = pygame.time.get_ticks()
-                    enemy.kill()
-                    if enemy.name == "koopatroop":
-                        self.shells_group.add(enemy)
-                    else:
-                        self.death_group.add(enemy)
-                    #self.player_group.sprite.is_jumping = False
-                else:
-                    # If Mario collides in x direction
-                    if self.player_group.sprite.rect.right < enemy.rect.left + 20:
-                        self.player_group.sprite.get_smaller()
-                    elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
-                        self.player_group.sprite.get_smaller()
-
-        # Magic Mushroom collision with Player
-        for mushroom in self.magic_mushroom_group:
-            if mushroom.rect.colliderect(self.player_group.sprite.rect):
-                # code for mario expanding
-                for player in self.player_group:
-                    player.get_bigger()
-                mushroom.kill()
-
-        # One-up Mushroom collision with player
-        for mushroom in self.oneup_mushroom_group:
-            if mushroom.rect.colliderect(self.player_group.sprite.rect):
-                mushroom.kill()
-                self.gamemode.lives += 1
-
-        # Fire flower collision with player
-        for flower in self.fireflower_group:
-            if flower.rect.colliderect(self.player_group.sprite.rect):
-                # fire mario code goes here
-                for player in self.player_group:
-                    player.become_fire_mario()
-                flower.kill()
-
-        # Star-man collision with player
-        for starman in self.starman_group:
-            if starman.rect.colliderect(self.player_group.sprite.rect):
-                # TODO invincible mario code goes here
-                starman.kill()
-
-        # Player has hit the world's floor or wall such as pipes and stairs
-        if not self.player_group.sprite.mario_motion_state is "dying":
-            for collision in self.background_collisions:
-                if collision.rect.colliderect(self.player_group.sprite.rect):
-                    # check if the player is standing on top
-                    if self.player_group.sprite.rect.bottom < collision.rect.top + 20:
-                        self.player_group.sprite.rect.bottom = collision.rect.top
-                        self.player_group.sprite.reset_jump()
-                        self.player_group.sprite.reset_bounce()
-                    elif self.player_group.sprite.rect.top > collision.rect.bottom - 20:
-                        self.player_group.sprite.rect.top = collision.rect.bottom
-                    else:
-                        # check if the player hits the left wall
-                        if self.player_group.sprite.rect.right < collision.rect.left + 20:
-                            self.player_group.sprite.rect.right = collision.rect.left
-                        # check if the player hits the right wall
-                        if self.player_group.sprite.rect.left > collision.rect.right - 20:
-                            self.player_group.sprite.rect.left = collision.rect.right
 
     def update_enemy_group(self):
         """ updating the gumba group """
@@ -734,12 +701,12 @@ class GameScreen:
             player.draw()
 
     def draw_enemy_group(self):
-        # Draw all the goomba's onto the screen
+        """  Draw all enemies onto the screen"""
+        # Draw all the gumbas onto the screen
         for gumba in self.enemy_group:
             gumba.draw()
 
     def draw_mushroom_group(self):
-        """ Draw all magic/one-up mushroom onto the screen """
         for mushroom in self.magic_mushroom_group:
             mushroom.draw()
 
@@ -747,17 +714,15 @@ class GameScreen:
             mushroom.draw()
 
     def draw_fireflower_group(self):
-        """ Draw all fire-flower onto the screen """
         for flower in self.fireflower_group:
             flower.draw()
 
     def draw_starman_group(self):
-        """ Draw all star-man onto the screen """
         for starman in self.starman_group:
             starman.draw()
 
     def draw_death_group(self):
-        """ Draw all the soon to die enemies """
+        """ Draw all the soon to die enemies"""
         for enemy in self.death_group:
             enemy.draw()
 
@@ -775,25 +740,3 @@ class GameScreen:
         """ Draw the collision lines """
         for collision in self.background_collisions:
             collision.draw()
-
-    def update_timer(self):
-        """ Update timer, calculates the seconds passed and added it onto the time hud text. """
-        if pygame.time.get_ticks() >= self.time_seconds:
-            self.gamemode.time += 1
-            self.time_seconds = pygame.time.get_ticks() + 1000
-
-    def update_point_group(self):
-        for point in self.point_group:
-            point.update()
-
-    def draw_point_group(self):
-        for point in self.point_group:
-            point.draw()
-
-    def update_player_fireball_group(self):
-        for fireball in self.player_fireball_group:
-            fireball.update()
-
-    def draw_player_fireball_group(self):
-        for fireball in self.player_fireball_group:
-            fireball.draw()

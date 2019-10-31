@@ -99,7 +99,7 @@ class Coins(Sprite):
             self.image = self.image_index[self.index]
 
         if self.rect.y == self.rest_height:
-            self.hub.gamemode.coins += 1
+            self.hub.score += 200
             self.kill()
 
     def resting(self):
