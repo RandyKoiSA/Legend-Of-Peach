@@ -38,7 +38,7 @@ class Enemy(Sprite):
         self.rect.y = self.original_pos[1]
 
         self.death_timer = 0
-        self.rise_counter = 100
+        self.rise_counter = 0
         self.wait_timer = 0
 
         # Physics Values
@@ -65,6 +65,8 @@ class Enemy(Sprite):
         if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0] and\
          not self.checked:
             if self.name == "piranhaplant":
+                self.rect.x = self.original_pos[0]
+                self.rect.y = self.original_pos[1]
                 self.state = self.hub.FALL
             else:
                 self.state = self.hub.WALK
@@ -132,29 +134,31 @@ class Enemy(Sprite):
 
     def rise(self):
         self.gravity = 0
-        self.velY = -5
+        self.velY = 0
         self.update_image()
         if self.rise_counter < 0:
             self.rect.y = self.original_pos[1]
             self.rise_counter = 0
             self.state = self.hub.FALL
-        elif pygame.time.get_ticks() - self.wait_timer > 500:
+        elif pygame.time.get_ticks() - self.wait_timer > 1000:
+            self.velY = -5
             self.rect.y += self.velY
-            print(self.name + " going up!"+ str(self.rect.y))
             self.rise_counter += self.velY
 
     def fall(self):
         self.gravity = 0
-        self.velY = 5
+        self.velY = 0
         self.update_image()
-        if self.rise_counter > 100:
+        if self.rect.y <= (self.original_pos[1] - 200) or self.rect.y >= (self.original_pos[1] + 200):
+            self.rect.y = self.original_pos[1]
+        if self.rise_counter > 150:
             self.wait_timer = pygame.time.get_ticks()
-            self.rise_counter = 100
+            self.rise_counter = 150
             self.state = self.hub.RISE
         else:
+            self.velY = 5
             self.rect.y += self.velY
             self.rise_counter += self.velY
-            print(self.name + " going DOWN!" + str(self.rect.y))
 
     def slide(self):
         if self.move == self.hub.RIGHT or self.hub.STAND:
