@@ -38,7 +38,7 @@ class Enemy(Sprite):
         self.rect.y = self.original_pos[1]
 
         self.death_timer = 0
-        self.rise_counter = 0
+        self.rise_counter = 100
         self.wait_timer = 0
 
         # Physics Values
@@ -132,31 +132,29 @@ class Enemy(Sprite):
 
     def rise(self):
         self.gravity = 0
-        self.velY = 0
+        self.velY = -5
         self.update_image()
         if self.rise_counter < 0:
             self.rect.y = self.original_pos[1]
             self.rise_counter = 0
             self.state = self.hub.FALL
         elif pygame.time.get_ticks() - self.wait_timer > 500:
-            self.velY = -5
             self.rect.y += self.velY
+            print(self.name + " going up!"+ str(self.rect.y))
             self.rise_counter += self.velY
 
     def fall(self):
         self.gravity = 0
-        self.velY = 0
+        self.velY = 5
         self.update_image()
-        if self.rect.y <= (self.original_pos[1] - 200) or self.rect.y >= (self.original_pos[1] + 200):
-            self.rect.y = self.original_pos[1]
-        if self.rise_counter > 120:
+        if self.rise_counter > 100:
             self.wait_timer = pygame.time.get_ticks()
-            self.rise_counter = 120
+            self.rise_counter = 100
             self.state = self.hub.RISE
         else:
-            self.velY = 5
             self.rect.y += self.velY
             self.rise_counter += self.velY
+            print(self.name + " going DOWN!" + str(self.rect.y))
 
     def slide(self):
         if self.move == self.hub.RIGHT or self.hub.STAND:
