@@ -64,7 +64,7 @@ class Mushroom(Sprite):
             self.check_direction()
             # Apply movement
             # Move Right
-            self.original_pos[0] += self.velX
+            self.rect.x += self.velX
 
         self.check_collision()
         self.check_fell()

@@ -174,6 +174,7 @@ class Player(Sprite):
     def bounce(self):
         self.is_bouncing = True
         self.gamemode.mario_in_air = True
+
         if not self.mario_motion_state is "dying":
             self.mario_motion_state = "jumping"
         # print("Mario Bounced off AI")

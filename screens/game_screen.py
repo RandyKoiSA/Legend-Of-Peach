@@ -8,7 +8,9 @@ from pygame import sprite
 from Points import Points
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops
+from AI.enemy import Piranhaplant
 from obstacles.bricks import Bricks
+from obstacles.bricks import BrickPieces
 from items.coins import Coins
 from custom import developer_tool as dt
 from items.mushroom import Magic
@@ -60,6 +62,9 @@ class GameScreen:
         # Gumba group spawn gumba when appropriate
         self.enemy_group = sprite.Group()
 
+        # Piranhaplant group spawn gumba when appropriate
+        self.plant_group = sprite.Group()
+
         # Magic mushroom group
         self.magic_mushroom_group = sprite.Group()
 
@@ -83,6 +88,9 @@ class GameScreen:
 
         # Bricks to be spawned
         self.brick_group = sprite.Group()
+
+        # Bricks pieces to be spawned
+        self.brickpieces_group = sprite.Group()
 
         # Coins to be spawned
         self.coin_group = sprite.Group()
@@ -198,6 +206,7 @@ class GameScreen:
             self.update_projectile_group()
             self.update_shell_group()
             self.update_brick_group()
+            self.update_brickpieces_group()
             self.update_coin_group()
             self.update_mushroom_group()
             self.update_fireflower_group()
@@ -228,6 +237,8 @@ class GameScreen:
         self.draw_projectile_group()
         # Draw the Bricks
         self.draw_brick_group()
+        # Draw broken Brick Pieces
+        self.draw_brickpieces_group()
         # Draw the Coins
         self.draw_coin_group()
         # Draw the mushrooms
@@ -261,7 +272,7 @@ class GameScreen:
                 if mushroom.rect.bottom < collision.rect.top + 50:
                     mushroom.rect.bottom = collision.rect.top - 5
                 elif mushroom.rect.right > collision.rect.left + 20 or mushroom.rect.left < collision.rect.right - 20:
-                        mushroom.flip_direction()
+                    mushroom.flip_direction()
 
     def check_starman_collision(self, starman):
         bg_collisions = pygame.sprite.spritecollide(starman, self.background_collisions, False)
@@ -286,13 +297,15 @@ class GameScreen:
         if bg_collisions:
             for collision in bg_collisions:
                 # Hits ground
-                if enemy.rect.bottom < collision.rect.top + 20:
-                    enemy.rect.bottom = collision.rect.top - 5
-                # Hit side walls
-                elif enemy.rect.right > collision.rect.left + 20 or enemy.rect.left < collision.rect.right - 20:
-                    # Checks if player is not on top
-                    if enemy.rect.bottom > collision.rect.top:
-                        enemy.flip_direction()
+                if enemy.name != "piranhaplant":
+
+                    if enemy.rect.bottom < collision.rect.top + 20:
+                        enemy.rect.bottom = collision.rect.top - 5
+                    # Hit side walls
+                    elif enemy.rect.right > collision.rect.left + 20 or enemy.rect.left < collision.rect.right - 20:
+                        # Checks if player is not on top
+                        if enemy.rect.bottom > collision.rect.top:
+                            enemy.flip_direction()
 
     def check_projectile_collision(self, projectile):
         """ Checks if all types of collisions here. """
@@ -307,7 +320,9 @@ class GameScreen:
 
         if enemy_collisions:
             for enemies in enemy_collisions:
-                if projectile.rect.right > enemies.rect.left + 20 or projectile.rect.left < enemies.rect.right - 20:
+                if enemies.name == "piranhaplant":
+                    self.death_group.add(enemies)
+                elif projectile.rect.right > enemies.rect.left + 20 or projectile.rect.left < enemies.rect.right - 20:
                     enemies.state = self.hub.HIT
                     enemies.kill()
                     self.death_group.add(enemies)
@@ -336,6 +351,13 @@ class GameScreen:
             print('no gumba exist within this level')
 
         try:
+            # Try to read JSON file for any gumbas.
+            for plant in self.hub.game_levels[self.level_name]["plant_group"]:
+                self.enemy_group.add(Piranhaplant(hub=hub, x=plant["x"], y=plant["y"]))
+        except LookupError:
+            print('no gumba exist within this level')
+
+        try:
             for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
                 self.enemy_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
         except LookupError:
@@ -359,10 +381,12 @@ class GameScreen:
 
         # Add Brick Instance
         try:
+
             print(len(self.hub.game_levels[self.level_name]["bricks"]))
             for brick in self.hub.game_levels[self.level_name]["bricks"]:
                 self.brick_group.add(Bricks(hub=hub, x=brick["x"], y=brick["y"], insides=brick["inside"],
-                                            powerup_group=brick["powerup"], name=brick["name"]))
+                                            powerup_group=brick["powerup"], name=brick["name"],
+                                            theme=self.hub.game_levels[self.level_name]["theme"]))
         except LookupError:
             print('no bricks exist within this level')
 
@@ -374,19 +398,29 @@ class GameScreen:
         except LookupError:
             print('no coins exist within this level')
 
+        # Add coin Group Instance
+        try:
+            for coinset in self.hub.game_levels[self.level_name]["coin_group"]:
+                for i in range(0, coinset["Row"]):
+                    for j in range(0, coinset["Col"]):
+                        col = (i * 100) + coinset["startY"]
+                        row = (j * 50) + coinset["startX"]
+
+                        self.coin_group.add(Coins(hub=hub, x=row, y=col, name="coin", state="resting"))
+        except LookupError:
+            print('no brickset exist within this level')
+
         # Add Brick Group Instance
         try:
-            print(len(self.hub.game_levels[self.level_name]["brick_group"]))
             for brickset in self.hub.game_levels[self.level_name]["brick_group"]:
                 for i in range(0, brickset["Row"]):
                     # print(str(i))
                     for j in range(0, brickset["Col"]):
-                        print(str(j))
-                        row = i * 50
-                        col = j * 50
-                        print(str(row) + " equals" + str(col))
+                        col = (i * 50) + brickset["startY"]
+                        row = (j * 50) + brickset["startX"]
                         self.brick_group.add(Bricks(hub=hub, x=row, y=col, insides="None",
-                                                    powerup_group="Brick", name="Brick"))
+                                                    powerup_group="Brick", name="Brick",
+                                                    theme=self.hub.game_levels[self.level_name]["theme"]))
         except LookupError:
             print('no brickset exist within this level')
 
@@ -445,9 +479,6 @@ class GameScreen:
             for mushroom in self.magic_mushroom_group:
                 mushroom.rect.x = mushroom.original_pos[0] - self.camera.world_offset_x
 
-            for mushroom in self.oneup_mushroom_group:
-                mushroom.rect.x = mushroom.original_pos[0] - self.camera.world_offset_x
-
             for starman in self.starman_group:
                 starman.rect.x = starman.original_pos[0] - self.camera.world_offset_x
 
@@ -465,6 +496,15 @@ class GameScreen:
 
             for brick in self.brick_group:
                 brick.rect.x = brick.original_pos[0] - self.camera.world_offset_x
+
+            for piece in self.brickpieces_group:
+                piece.rect.x = piece.original_pos[0] - self.camera.world_offset_x
+
+            for plant in self.plant_group:
+                plant.rect.x = plant.original_pos[0] - self.camera.world_offset_x
+
+            for coin in self.coin_group:
+                coin.rect.x = coin.original_pos[0] - self.camera.world_offset_x
 
     def update_player_group(self):
         """ Update player logic"""
@@ -631,7 +671,6 @@ class GameScreen:
             if enemy.killed:
                 try:
                     self.death_group.remove(enemy)
-                    print(enemy.name + " is ded")
                 except AssertionError:
                     print("ERROR: Remove Gumba does not exist")
                     pass
@@ -651,6 +690,11 @@ class GameScreen:
         """ Update brick logic """
         for brick in self.brick_group:
             brick.update()
+
+    def update_brickpieces_group(self):
+        """ Update pieces logic"""
+        for pieces in self.brickpieces_group:
+            pieces.update()
 
     def update_coin_group(self):
         """ Update coin logic """
@@ -673,6 +717,11 @@ class GameScreen:
         """ Draw bricks onto the screen """
         for brick in self.brick_group:
             brick.draw()
+
+    def draw_brickpieces_group(self):
+        """ Draw broken bricks on screen"""
+        for piece in self.brickpieces_group:
+            piece.draw()
 
     def draw_coin_group(self):
         """ Draw coins onto the screen """
