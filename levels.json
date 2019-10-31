@@ -1,6 +1,7 @@
 {
   "1-1-1": {
     "background_image": "imgs/background/1-1/1-1-1.jpg",
+    "setting": "overworld",
     "spawn_point": [100, 500],
     "teleporter": [
       {
@@ -577,6 +578,7 @@
   },
   "1-1-2": {
     "background_image": "imgs/background/1-1/1-1-2.png",
+    "setting": "overworld",
     "spawn_point": [241 ,0],
     "teleporter": [
       {
@@ -627,6 +629,7 @@
   },
   "1-2-1": {
     "background_image": "imgs/background/1-2/1-2-1.jpg",
+    "setting": "underground",
     "spawn_point": [0, 0],
     "teleporter": [
       {
@@ -664,6 +667,7 @@
   "1-2-2": {
     "_comment": "main 1-2 level",
     "background_image": "imgs/background/1-2/1-2-2.jpg",
+    "setting": "underground",
     "spawn_point": [50, 500],
     "teleporter": [
       {
@@ -862,6 +866,7 @@
   "1-2-3": {
     "_comment": "dungeon level",
     "background_image": "imgs/background/1-2/1-2-3.png",
+    "setting": "underground",
     "spawn_point": [70, 0],
     "teleporter": [
       {
@@ -912,6 +917,7 @@
   },
   "1-2-4": {
     "background_image": "imgs/background/1-2/1-2-4.jpg",
+    "setting": "underground",
     "spawn_point": [0, 0],
     "teleporter": [
       {
@@ -994,6 +1000,7 @@
   },
   "1-3": {
     "background_image": "imgs/background/1-3/1-3.jpg",
+    "setting": "athletic",
     "spawn_point": [75, 541],
     "teleporter": [
       {
@@ -1147,6 +1154,7 @@
   },
   "1-4": {
     "background_image": "imgs/background/1-4/1-4.jpg",
+    "setting": "castle",
     "spawn_point": [0, 230],
     "teleporter": [
       {
@@ -1337,6 +1345,7 @@
   },
   "2-1-1": {
     "background_image": "imgs/background/2-1/2-1-1.jpg",
+    "setting": "overworld",
     "spawn_point": [96, 583],
     "teleporter": [
       {
@@ -1496,6 +1505,7 @@
   },
   "2-1-2": {
     "background_image": "imgs/background/2-1/2-1-2.jpg",
+    "setting": "overworld",
     "spawn_point": [70, 0],
     "teleporter": [
       {
@@ -1548,6 +1558,7 @@
   },
   "2-2-1": {
     "background_image": "imgs/background/2-2/2-2-1.jpg",
+    "setting": "underwater",
     "spawn_point": [100, 530],
     "teleporter": [
       {
@@ -1581,6 +1592,7 @@
   },
   "2-2-2": {
     "background_image": "imgs/background/2-2/2-2-2.jpg",
+    "setting": "underwater",
     "spawn_point": [0, 0],
     "teleporter": [
       {
@@ -1806,6 +1818,7 @@
   },
   "2-2-3": {
     "background_image": "imgs/background/2-2/2-2-3.jpg",
+    "setting": "underwater",
     "spawn_point": [173, 451],
     "teleporter": [
       {
@@ -1887,6 +1900,7 @@
   },
   "2-3": {
     "background_image": "imgs/background/2-3/2-3.jpg",
+    "setting": "athletic",
     "spawn_point": [85, 535],
     "teleporter": [
       {
@@ -2202,6 +2216,7 @@
   },
   "2-4": {
     "background_image": "imgs/background/2-4/2-4.jpg",
+    "setting": "castle",
     "spawn_point": [0, 250],
     "teleporter": [],
     "gumba_group": [],
