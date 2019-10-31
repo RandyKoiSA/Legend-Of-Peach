@@ -372,6 +372,7 @@ class GameScreen:
             for collision in bg_collisions:
                 # Hits ground
                 if enemy.name != "piranhaplant":
+
                     if enemy.rect.bottom < collision.rect.top + 20:
                         enemy.rect.bottom = collision.rect.top - 5
                     # Hit side walls
