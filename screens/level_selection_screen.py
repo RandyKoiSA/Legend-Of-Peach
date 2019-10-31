@@ -10,6 +10,7 @@ class LevelSelectionScreen():
     def __init__(self, hub):
         """ Initialize default values """
         self.hub = hub
+        self.gamemode = hub.gamemode
         self.screen = hub.main_screen
 
         # Set up background
@@ -58,11 +59,11 @@ class LevelSelectionScreen():
 
     def prep_title_text(self):
         self.title_text.msg_image_rect.center = self.screen.get_rect().center
-        self.title_text.msg_image_rect.top = 50
+        self.title_text.msg_image_rect.top = 100
 
     def prep_back_button(self):
         self.back_button.rect.x = 10
-        self.back_button.rect.y = 10
+        self.back_button.rect.y = 100
         self.back_button.update_message_position()
 
     def check_button_clicked(self, mouse_x, mouse_y):
@@ -72,6 +73,7 @@ class LevelSelectionScreen():
             if button.rect.collidepoint(mouse_x, mouse_y):
                 try:
                     self.hub.open_level(button.message)
+                    self.gamemode.reset_gamemode()
                     self.hub.screen_selector = 0
                 except Exception:
                     print('error: failed to load level')
