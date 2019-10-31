@@ -795,6 +795,48 @@
     ],
     "bricks": [
       {
+      "x": 2234,
+      "y": 306,
+      "inside": "star",
+      "powerup": "brick",
+      "name": "brick"
+      },
+      {
+      "x": 480,
+      "y": 410,
+      "inside": "rshroom",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 530,
+      "y": 410,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 580,
+      "y": 410,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 630,
+      "y": 410,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 680,
+      "y": 410,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
       "x": 1402,
       "y": 357,
       "inside": "coins",
@@ -830,13 +872,34 @@
       "name": "brick"
       },
       {
-        "x": 3285,
-        "y": 465,
+        "x": 3333,
+        "y": 365,
+        "inside": "rshroom",
+        "powerup": "Brick",
+        "name": "brick"
+      },
+      {
+        "x": 3477,
+        "y": 365,
         "inside": "None",
         "powerup": "Brick",
         "name": "brick"
+      },
+      {
+        "x": 3527,
+        "y": 365,
+        "inside": "coins",
+        "powerup": "Brick",
+        "name": "brick"
+      },
+      {
+        "x": 4342,
+        "y": 65,
+        "inside": "gshroom",
+        "powerup": "Brick",
+        "name": "brick"
       }
-      ],
+    ],
     "brick_group":[
       { "startX": 0,
         "startY": 65,
@@ -864,8 +927,8 @@
         "Col": 1
       },
       { "startX": 2234,
-        "startY": 306,
-        "Row": 3,
+        "startY": 356,
+        "Row": 2,
         "Col": 1
       },
       { "startX": 2605,
@@ -912,23 +975,55 @@
         "startY": 415,
         "Row": 1,
         "Col": 2
+      },
+      { "startX": 3477,
+        "startY": 215,
+        "Row": 3,
+        "Col": 2
+      },
+      { "startX": 3477,
+        "startY": 415,
+        "Row": 1,
+        "Col": 2
+      },
+      {
+        "startX": 3671,
+        "startY": 115,
+        "Row": 2,
+        "Col": 4
+      },
+      { "startX": 3671,
+        "startY": 415,
+        "Row": 1,
+        "Col": 4
+      },
+      { "startX": 4057,
+        "startY": 315,
+        "Row": 2,
+        "Col": 6
+      },
+      { "startX": 5892,
+        "startY": 457,
+        "Row": 3,
+        "Col": 2
+      },
+      { "startX": 7003,
+        "startY": 357,
+        "Row": 1,
+        "Col": 6
       }
     ],
     "plant_group": [
-      {
-        "x": 1300,
-        "y":364
-      },
       {
         "x": 4991,
         "y":364
       },
       {
-        "x": 5264,
+        "x": 5294,
         "y":311
       },
       {
-        "x": 5557,
+        "x": 5587,
         "y":412
       }
         ],
@@ -950,9 +1045,9 @@
       {
         "_comment": "base floor 3",
         "x": 5890,
-        "y": 460,
+        "y": 620,
         "width": 98,
-        "height": 300
+        "height": 100
       },
       {
         "_comment": "base floor 4",

@@ -138,7 +138,7 @@ class Enemy(Sprite):
             self.rect.y = self.original_pos[1]
             self.rise_counter = 0
             self.state = self.hub.FALL
-        elif pygame.time.get_ticks() - self.wait_timer > 500:
+        elif pygame.time.get_ticks() - self.wait_timer > 1000:
             self.velY = -5
             self.rect.y += self.velY
             self.rise_counter += self.velY

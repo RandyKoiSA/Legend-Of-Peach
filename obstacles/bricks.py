@@ -136,24 +136,31 @@ class Bricks(Sprite):
 
 class BrickPieces(Sprite):
     """ Pieces appear when brick is broken"""
-    def __init__(self, hub, x, y, velx, vely):
+    def __init__(self, hub, x, y, velx, vely, theme='0'):
         super().__init__()
         self.hub = hub
         self.screen = hub.main_screen
         self.screen_rect = self.screen.get_rect()
         self.camera = hub.camera
-        self.image = pygame.image.load("imgs/Blocks/BrickBlockBrown.png")
-        self.image = pygame.transform.scale(self.image,  (25, 25))
+        self.theme = theme
+        self.image = pygame.image.load("imgs/Blocks/"+self.theme+"/BrickBlock.png")
+        self.image = pygame.transform.scale(self.image, (25, 25))
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.original_pos = [x, y]
+        self.rect.x = self.original_pos[0]
+        self.rect.y = self.original_pos[1]
         self.velX = velx
         self.velY = vely
         self.gravity = hub.GRAVITY
+        self.turntimer = 0
 
     def update(self):
         """Update Brick Piece"""
         self.rect.x += self.velX
+        if pygame.time.get_ticks() - self.turntimer > 100:
+            self.turntimer = pygame.time.get_ticks()
+            self.image = pygame.transform.rotozoom(self.image, self.velX, 1)
+        print("PIECE AT " + str(self.rect.x))
         self.rect.y += self.velY
         self.velY += self.gravity
         self.check_gone()
@@ -161,4 +168,8 @@ class BrickPieces(Sprite):
     def check_gone(self):
         """Remove When off Screen"""
         if self.rect.y > self.screen_rect.bottom:
+            print("REMOVED PIECE")
             self.kill()
+
+    def draw(self):
+        self.screen.blit(self.image, self.rect)

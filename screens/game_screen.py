@@ -9,6 +9,7 @@ from AI.enemy import Gumba
 from AI.enemy import Koopatroops
 from AI.enemy import Piranhaplant
 from obstacles.bricks import Bricks
+from obstacles.bricks import BrickPieces
 from items.coins import Coins
 from custom import developer_tool as dt
 from items.mushroom import Magic
@@ -80,6 +81,9 @@ class GameScreen:
 
         # Bricks to be spawned
         self.brick_group = sprite.Group()
+
+        # Bricks pieces to be spawned
+        self.brickpieces_group = sprite.Group()
 
         # Coins to be spawned
         self.coin_group = sprite.Group()
@@ -169,6 +173,7 @@ class GameScreen:
             self.update_projectile_group()
             self.update_shell_group()
             self.update_brick_group()
+            self.update_brickpieces_group()
             self.update_coin_group()
             self.update_mushroom_group()
             self.update_fireflower_group()
@@ -194,6 +199,8 @@ class GameScreen:
         self.draw_projectile_group()
         # Draw the Bricks
         self.draw_brick_group()
+        # Draw broken Brick Pieces
+        self.draw_brickpieces_group()
         # Draw the Coins
         self.draw_coin_group()
         # Draw the mushrooms
@@ -253,6 +260,18 @@ class GameScreen:
                             self.oneup_mushroom_group.add(Oneup(hub=self.hub,
                                                                 x=brick.rect.x + self.camera.world_offset_x,
                                                                 y=brick.rect.y-25))
+                        else:
+                            print("Make a brick piece")
+                            self.brickpieces_group.add(
+                                BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
+                                            y=brick.rect.y - 25, velx=-5, vely=-12, theme=brick.theme),
+                                BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
+                                            y=brick.rect.y - 25, velx=5, vely=-12, theme=brick.theme),
+                                BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
+                                            y=brick.rect.y + 25, velx=-5, vely=-5, theme=brick.theme),
+                                BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
+                                            y=brick.rect.y + 25, velx=5, vely=-5, theme=brick.theme)
+                            )
 
         # Coin Collision with player
         for coin in self.coin_group:
@@ -293,7 +312,7 @@ class GameScreen:
                             self.shells_group.add(enemy)
                         else:
                             self.death_group.add(enemy)
-                        #self.player_group.sprite.is_jumping = False
+                        # self.player_group.sprite.is_jumping = False
                 else:
                     # If Mario collides in x direction
                     if self.player_group.sprite.rect.right < enemy.rect.left + 20:
@@ -346,7 +365,7 @@ class GameScreen:
                 if mushroom.rect.bottom < collision.rect.top + 50:
                     mushroom.rect.bottom = collision.rect.top - 5
                 elif mushroom.rect.right > collision.rect.left + 20 or mushroom.rect.left < collision.rect.right - 20:
-                        mushroom.flip_direction()
+                    mushroom.flip_direction()
 
     def check_starman_collision(self, starman):
         bg_collisions = pygame.sprite.spritecollide(starman, self.background_collisions, False)
@@ -500,7 +519,7 @@ class GameScreen:
 
         try:
             for mushroom in self.hub.game_levels[self.level_name]["magic_mushroom_group"]:
-                self.magic_mushroom_group.add(Magic(hub=hub, x=mushroom["x"], y =mushroom["y"]))
+                self.magic_mushroom_group.add(Magic(hub=hub, x=mushroom["x"], y=mushroom["y"]))
         except LookupError:
             print('no magic mushrooms exist within this level')
 
@@ -571,6 +590,9 @@ class GameScreen:
             for brick in self.brick_group:
                 brick.rect.x = brick.original_pos[0] - self.camera.world_offset_x
 
+            for piece in self.brickpieces_group:
+                piece.rect.x = piece.original_pos[0] - self.camera.world_offset_x
+
             for plant in self.plant_group:
                 plant.rect.x = plant.original_pos[0] - self.camera.world_offset_x
 
@@ -636,6 +658,11 @@ class GameScreen:
         for brick in self.brick_group:
             brick.update()
 
+    def update_brickpieces_group(self):
+        """ Update pieces logic"""
+        for pieces in self.brickpieces_group:
+            pieces.update()
+
     def update_coin_group(self):
         """ Update coin logic """
         for coin in self.coin_group:
@@ -657,6 +684,11 @@ class GameScreen:
         """ Draw bricks onto the screen """
         for brick in self.brick_group:
             brick.draw()
+
+    def draw_brickpieces_group(self):
+        """ Draw broken bricks on screen"""
+        for piece in self.brickpieces_group:
+            piece.draw()
 
     def draw_coin_group(self):
         """ Draw coins onto the screen """
