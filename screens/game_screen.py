@@ -251,15 +251,15 @@ class GameScreen:
                         elif brick.insides == 'star':
                             self.starman_group.add(Starman(hub=self.hub,
                                                            x=brick.rect.x + 10 + self.camera.world_offset_x,
-                                                           y=brick.rect.y-50, name="Star"))
+                                                           y=brick.rect.y-5, name="Star"))
                         elif brick.insides == 'rshroom':
                             self.magic_mushroom_group.add(Magic(hub=self.hub,
                                                                 x=brick.rect.x + self.camera.world_offset_x,
-                                                                y=brick.rect.y-25))
+                                                                y=brick.rect.y-5))
                         elif brick.insides == 'gshroom':
                             self.oneup_mushroom_group.add(Oneup(hub=self.hub,
                                                                 x=brick.rect.x + self.camera.world_offset_x,
-                                                                y=brick.rect.y-25))
+                                                                y=brick.rect.y-5))
                         else:
                             print("Make a brick piece")
                             self.brickpieces_group.add(
@@ -360,6 +360,7 @@ class GameScreen:
 
     def check_mushroom_collision(self, mushroom):
         bg_collisions = pygame.sprite.spritecollide(mushroom, self.background_collisions, False)
+        brick_collisions = pygame.sprite.spritecollide(mushroom, self.brick_group, False)
         if bg_collisions:
             for collision in bg_collisions:
                 if mushroom.rect.bottom < collision.rect.top + 50:
@@ -367,14 +368,25 @@ class GameScreen:
                 elif mushroom.rect.right > collision.rect.left + 20 or mushroom.rect.left < collision.rect.right - 20:
                     mushroom.flip_direction()
 
+        if brick_collisions:
+            for collision in brick_collisions:
+                if not mushroom.isrising and mushroom.rect.bottom >= collision.rect.top:
+                    mushroom.rect.bottom = collision.rect.top
+
     def check_starman_collision(self, starman):
         bg_collisions = pygame.sprite.spritecollide(starman, self.background_collisions, False)
+        brick_collisions = pygame.sprite.spritecollide(starman, self.brick_group, False)
         if bg_collisions:
             for collision in bg_collisions:
                 if starman.rect.bottom < collision.rect.top + 50:
                     starman.rect.bottom = collision.rect.top - 5
                 elif starman.rect.right > collision.rect.left + 20 or starman.rect.left < collision.rect.right - 20:
                     starman.flip_direction()
+
+        if brick_collisions:
+            for collision in brick_collisions:
+                if not starman.isrising and starman.rect.bottom >= collision.rect.top:
+                    starman.rect.bottom = collision.rect.top
 
     def check_enemy_collision(self, enemy):
         """ Checks the enemy colliding with Pipes"""

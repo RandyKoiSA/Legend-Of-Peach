@@ -47,6 +47,7 @@ class Starman(Sprite):
         self.check_direction()
 
         self.killed = False
+        self.isrising = True
 
     def check_direction(self):
         if self.state == self.hub.STAND:
@@ -66,6 +67,7 @@ class Starman(Sprite):
                 self.rect.y -= self.velY
             else:
                 self.state = self.hub.WALK
+                self.isrising = False
         else:
             # Apply gravity
             self.rect.y += self.gravity
