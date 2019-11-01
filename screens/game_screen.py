@@ -336,7 +336,9 @@ class GameScreen:
                         enemy.death_timer = pygame.time.get_ticks()
                         enemy.kill()
                         if enemy.name == "paratroop":
-                            self.enemy_group.add(Koopatroops(hub=self.hub, x=enemy.rect.x, y=enemy.rect.y, color=2))
+                            self.enemy_group.add(Koopatroops(hub=self.hub, x=enemy.rect.x + self.camera.world_offset_x
+                                                             , y=enemy.rect.y + 50
+                                                             , color=2))
                         elif enemy.name == "koopatroop":
                             self.shells_group.add(enemy)
                         else:
