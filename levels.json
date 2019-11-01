@@ -412,11 +412,11 @@
       }
 
     ],
-    "brick_group":[
-      { "startX": 100,
-        "startY": 100,
-        "Row": 5,
-        "Col": 5
+    "platforms": [
+      {
+        "x": 100,
+        "y": 300,
+        "name": "platform"
       }
     ],
     "collision_group": [
