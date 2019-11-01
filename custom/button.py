@@ -1,6 +1,7 @@
 import pygame.ftfont
 import pygame
 
+
 class Button:
     def __init__(self, hub, msg, width=200, height=40):
         """ Initialize button attributes. """

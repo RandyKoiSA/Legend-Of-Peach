@@ -71,7 +71,6 @@ class Hub:
         self.level_screen = LevelSelectionScreen(self)
         self.game_screen = GameScreen(self)
 
-
     def display_screen(self):
         if self.screen_selector is 1:
             self.main_menu_screen.run()
@@ -92,11 +91,13 @@ class Hub:
 
         self.hud_screen.run()
 
-    def exit_game(self):
+    @staticmethod
+    def exit_game():
         pygame.quit()
         sys.exit()
 
-    def get_levels(self):
+    @staticmethod
+    def get_levels():
         """ Grab the level data from the JSON file"""
         filename = 'levels.json'
         with open(filename, 'r') as read_file:

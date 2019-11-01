@@ -273,11 +273,11 @@ class Koopatroops(Enemy):
         self.color = color
 
         self.GREEN = [pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT00.gif"),
-                            pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT01.gif"),
-                            pygame.image.load("imgs/Enemies/KoopaTroopa/ShellGreen.png")]
+                      pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT01.gif"),
+                      pygame.image.load("imgs/Enemies/KoopaTroopa/ShellGreen.png")]
         self.RED = [pygame.image.load("imgs/Enemies/KoopaTroopa/Troopa000.png"),
                     pygame.image.load("imgs/Enemies/KoopaTroopa/Troopa001.png"),
-                    pygame.image.load("imgs/Other/KoopaTroopaShellRed.png") ]
+                    pygame.image.load("imgs/Other/KoopaTroopaShellRed.png")]
         self.DGREEN = [pygame.image.load("imgs/Enemies/KoopaTroopa/Ckoopa000.png"),
                        pygame.image.load("imgs/Enemies/KoopaTroopa/Ckoopa001.png"),
                        pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaTroopaShellGreenDark.png")]
@@ -318,13 +318,14 @@ class Paratroops(Enemy):
         self.direction = hub.LEFT
         self.type = "flying"
         self.image_index = [pygame.image.load("imgs/Enemies/KoopaParaTroopa/FlyTroopa000.gif"),
-                       pygame.image.load("imgs/Enemies/KoopaParaTroopa/FlyTroopa001.gif")]
+                            pygame.image.load("imgs/Enemies/KoopaParaTroopa/FlyTroopa001.gif")]
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)
 
     def stomped(self):
         self.kill()
+
 
 class Piranhaplant(Enemy):
     def __init__(self, hub, x, y):

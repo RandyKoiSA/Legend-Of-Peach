@@ -1,10 +1,10 @@
 import pygame
 from pygame.locals import *
-import sys
 from custom.text import Text
 from custom.button import Button
 
-class LevelSelectionScreen():
+
+class LevelSelectionScreen:
     """ Level Selection Screen, where you can select certain levels to play """
 
     def __init__(self, hub):
@@ -47,7 +47,6 @@ class LevelSelectionScreen():
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 self.check_button_clicked(mouse_x, mouse_y)
 
-
     def run_update(self):
         pass
 
@@ -71,6 +70,7 @@ class LevelSelectionScreen():
             self.hub.screen_selector = 1
         for button in self.level_list:
             if button.rect.collidepoint(mouse_x, mouse_y):
+                # noinspection PyBroadException
                 try:
                     self.hub.open_level(button.message)
                     self.gamemode.reset_gamemode()
@@ -100,8 +100,8 @@ class LevelSelectionScreen():
             button.rect.center = self.screen.get_rect().center
             button.rect.y -= 200
             button.rect.x -= 150
-            button.rect.x += (counter % 4 ) * (100)
-            button.rect.y += int (counter / 4) * (70)
+            button.rect.x += (counter % 4) * 100
+            button.rect.y += int(counter / 4) * 70
             button.update_message_position()
 
             counter += 1
@@ -112,6 +112,7 @@ class LevelSelectionScreen():
             print('level list is empty')
             return
         else:
+            # noinspection PyBroadException
             try:
                 for button in self.level_list:
                     button.draw()

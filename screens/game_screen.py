@@ -1,5 +1,4 @@
 import pygame
-import sys
 from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from obstacles.teleporter import Teleport
@@ -16,7 +15,6 @@ from items.mushroom import Magic
 from items.mushroom import Oneup
 from items.fire_flower import Fireflower
 from items.starman import Starman
-import json
 
 
 class GameScreen:
@@ -132,7 +130,7 @@ class GameScreen:
                     self.hub.screen_selector = 1
                 if event.key == K_8:
                     # Developer tool, print x coordinates
-                    dt.get_coordinates(self, self.player_group, self.camera)
+                    dt.get_coordinates(self.player_group, self.camera)
                 if event.key == K_7:
                     # Developer tool, toggle grid coordinates
                     self.controller.toggle_grid = not self.controller.toggle_grid
@@ -141,13 +139,13 @@ class GameScreen:
                     self.controller.toggle_mouse_coordinates = not self.controller.toggle_mouse_coordinates
                 if event.key == K_1:
                     # Developer tool, set point A coordinates
-                    dt.set_point_a(self, self.controller, self.camera)
+                    dt.set_point_a(self.controller, self.camera)
                 if event.key == K_2:
                     # Developer tool, set point B coordinates
-                    dt.set_point_b(self, self.controller, self.camera)
+                    dt.set_point_b(self.controller, self.camera)
                 if event.key == K_3:
                     # Developer tool, find location, width, and height based on point A and point B
-                    dt.print_description(self, self.controller)
+                    dt.print_description(self.controller)
 
                 if event.key == K_LSHIFT:
                     self.player_group.sprite.throw()
@@ -165,16 +163,15 @@ class GameScreen:
                 if event.key == K_UP or event.key == K_w:
                     self.controller.up = False
             if event.type == MOUSEBUTTONDOWN:
-                # Developer tool, move player through the sky
-                mouse_x, mouse_y = pygame.mouse.get_pos()
                 if self.controller.developer_mode:
-                    dt.move_player(self, mouse_x, mouse_y, self.camera, self.player_group)
+                    dt.move_player(self.camera, self.player_group)
                 else:
                     self.player_group.sprite.throw()
 
     def run_update(self):
         """ Update all instances in the game_screen"""
         self.update_player_group()
+        self.update_player_fireball_group()
         self.update_teleporter_group()
         self.update_camera()
         self.update_world_collision()
@@ -229,12 +226,12 @@ class GameScreen:
         # Draw points
         self.draw_point_group()
 
-        if self.controller.toggle_grid:
-            # Developer tool, Display grid coordinates if toggled
-            dt.draw_debug_line(self, self.screen, self.player_group)
+        # if self.controller.toggle_grid:
+        # Developer tool, Display grid coordinates if toggled
+        # dt.draw_debug_line(self.screen, self.player_group)
         if self.controller.toggle_mouse_coordinates:
             # Developer tool, Display mouse coordinates over cursor if toggled
-            dt.draw_mouse_coordinates(self, self.screen, self.camera)
+            dt.draw_mouse_coordinates(self.screen, self.camera)
 
     def prep_bg_image(self):
         """ Prepare background adjustments """
@@ -286,6 +283,10 @@ class GameScreen:
                             self.oneup_mushroom_group.add(Oneup(hub=self.hub,
                                                                 x=brick.rect.x + self.camera.world_offset_x,
                                                                 y=brick.rect.y-5))
+                        elif brick.insides == 'flower':
+                            self.fireflower_group.add(Fireflower(hub=self.hub,
+                                                                 x=brick.rect.x + self.camera.world_offset_x,
+                                                                 y=brick.rect.y-5, name="Flower"))
                         else:
                             print("Make a brick piece")
                             self.brickpieces_group.add(
@@ -369,7 +370,7 @@ class GameScreen:
                 starman.kill()
 
         # Player has hit the world's floor or wall such as pipes and stairs
-        if not self.player_group.sprite.mario_motion_state is "dying":
+        if self.player_group.sprite.mario_motion_state is not "dying":
             for collision in self.background_collisions:
                 if collision.rect.colliderect(self.player_group.sprite.rect):
                     # check if the player is standing on top

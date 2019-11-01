@@ -1,12 +1,12 @@
 import pygame
 from pygame.sprite import Sprite
 from time import sleep
-from player_fire_ball import Player_FireBall
+from player_fire_ball import PlayerFireBall
 
 
 class Player(Sprite):
     """ Player class, where the player will control """
-    def __init__(self, hub, fireball_group, pos_x= 50, pos_y=50):
+    def __init__(self, hub, fireball_group, pos_x=50, pos_y=50):
         """ Initialize default values """
         super().__init__()
         self.hub = hub
@@ -31,8 +31,8 @@ class Player(Sprite):
         # regular mario image
         self.regular_image_idle = [pygame.image.load("imgs/Mario/RegularMario/MarioStanding.png")]
         self.regular_image_run = [pygame.image.load('imgs/Mario/RegularMario/MarioRun01.gif'),
-                          pygame.image.load('imgs/Mario/RegularMario/MarioRun02.gif'),
-                          pygame.image.load('imgs/Mario/RegularMario/MarioRun03.gif')]
+                                  pygame.image.load('imgs/Mario/RegularMario/MarioRun02.gif'),
+                                  pygame.image.load('imgs/Mario/RegularMario/MarioRun03.gif')]
         self.regular_image_jump = [pygame.image.load('imgs/Mario/RegularMario/MarioJumping.png')]
 
         # super mario image
@@ -85,7 +85,7 @@ class Player(Sprite):
         # Apply gravity
         self.rect.y += self.gravity
 
-        if not self.mario_motion_state is "dying":
+        if self.mario_motion_state is not "dying":
             # Apply movement
             if self.controller.move_right:
                 self.rect.x += self.velocity
@@ -159,31 +159,29 @@ class Player(Sprite):
                 self.camera.player_hit_right_screen = False
 
             # Move camera respective to player movement
-            self.camera.moveCamera(self.velocity)
+            self.camera.move_camera(self.velocity)
 
         # Check if the player is fallen off the screen (mario is dead)
         self.check_if_dead()
 
-
     def jump(self):
         self.is_jumping = True
         self.gamemode.mario_in_air = True
-        if not self.mario_motion_state is "dying":
+        if self.mario_motion_state is not "dying":
             self.mario_motion_state = "jumping"
 
     def bounce(self):
         self.is_bouncing = True
         self.gamemode.mario_in_air = True
-        if not self.mario_motion_state is "dying":
+        if self.mario_motion_state is not "dying":
             self.mario_motion_state = "jumping"
         # print("Mario Bounced off AI")
 
     def throw(self):
         if self.mario_upgrade_state is "fiery":
-            self.fireball_group.add(Player_FireBall(self.hub, self.fireball_group,
-                                                    self.rect.right + self.camera.world_offset_x,
-                                                    self.rect.centery))
-
+            self.fireball_group.add(PlayerFireBall(self.hub, self.fireball_group,
+                                                   self.rect.right + self.camera.world_offset_x,
+                                                   self.rect.centery))
 
     def get_bigger(self):
         # if mario is regular change to super

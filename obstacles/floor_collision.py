@@ -20,4 +20,3 @@ class FloorCollision(Sprite):
         if self.rect.right <= 0:
             return True
         return False
-

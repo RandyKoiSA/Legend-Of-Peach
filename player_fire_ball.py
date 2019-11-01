@@ -1,8 +1,8 @@
 import pygame
 from pygame.sprite import Sprite
-from math import sin, cos
 
-class Player_FireBall(Sprite):
+
+class PlayerFireBall(Sprite):
     """ Spawns in fire-ball when mario is in fiery state """
     def __init__(self, hub, player_fireball_group, pos_x, pos_y):
         super().__init__()
@@ -53,5 +53,5 @@ class Player_FireBall(Sprite):
         self.screen.blit(self.current_image, self.rect)
 
     def prep_fireball_images(self):
-        for i in range (0, len(self.fireball_images)):
+        for i in range(0, len(self.fireball_images)):
             self.fireball_images[i] = pygame.transform.scale(self.fireball_images[i], (25, 25))

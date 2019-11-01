@@ -1,14 +1,14 @@
 import pygame
 
 
-def move_player(self, mouse_x, mouse_y, camera, player_group):
+def move_player(camera, player_group):
     """ Developer tool, teleports mario 200 to the right and spawns at the roof to look through the world more
      easily. """
-    camera.moveCamera(200)
+    camera.move_camera(200)
     player_group.sprite.rect.y = 0
 
 
-def get_coordinates(self, player_group, camera):
+def get_coordinates(player_group, camera):
     """ Developer tool, prints out x coordinates based on marios left and right rect onto the console."""
     x_coordinates = player_group.sprite.rect.right + camera.world_offset_x
     print("x_coordinates based on player's right side: " + str(x_coordinates))
@@ -46,7 +46,7 @@ def draw_debug_line(self, screen, player_group):
     screen.blit(message_image, message_rect)
 
 
-def draw_mouse_coordinates(self, screen, camera):
+def draw_mouse_coordinates(screen, camera):
     """ Developer tool, only called when key 6 is toggled. Displays current coordinates based on mouse cursor is."""
     mouse_x, mouse_y = pygame.mouse.get_pos()
     world_x_coordinates = mouse_x + camera.world_offset_x
@@ -63,21 +63,21 @@ def draw_mouse_coordinates(self, screen, camera):
     screen.blit(message_image, message_rect)
 
 
-def set_point_a(self, controller, camera):
+def set_point_a(controller, camera):
     """ Developer Tool, Assigned to key 1, set the coordinates to point A based on where the mouse cursor is. """
     mouse_x, mouse_y = pygame.mouse.get_pos()
     controller.point_a[0] = mouse_x + camera.world_offset_x
     controller.point_a[1] = mouse_y
 
 
-def set_point_b(self, controller, camera):
+def set_point_b(controller, camera):
     """ Developer Tool, Assigned to key 2, set the coordinates to point B based on where the mouse cursor is. """
     mouse_x, mouse_y = pygame.mouse.get_pos()
     controller.point_b[0] = mouse_x + camera.world_offset_x
     controller.point_b[1] = mouse_y
 
 
-def print_description(self, controller):
+def print_description(controller):
     """ Developer tool, used for finding the location, width, and height of given point A and point B"""
     print('      {')
     print('         "x": ' + str(controller.point_a[0]) + ",")

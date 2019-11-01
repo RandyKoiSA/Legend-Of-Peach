@@ -4,7 +4,7 @@ import pygame
 
 class Points(Sprite):
     """ Display points onto the screen and kill itself after a certain amount of time """
-    def __init__(self, hub, point_group, type="100pts", pos_x=0, pos_y=0):
+    def __init__(self, hub, point_group, value="100pts", pos_x=0, pos_y=0):
         super().__init__()
         self.hub = hub
         self.screen = hub.main_screen
@@ -24,7 +24,7 @@ class Points(Sprite):
             "5000pts": pygame.image.load('imgs/Other/5000pts.png'),
             "8000pts": pygame.image.load('imgs/Other/8000pts.png')
         }
-        self.type = type
+        self.type = value
 
         try:
             self.current_image = self.points_image[type]
