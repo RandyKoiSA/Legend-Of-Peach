@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from obstacles.teleporter import Teleport
+from Points import Points
 from player import Player
 from pygame import sprite
 from AI.enemy import Gumba
@@ -305,6 +306,7 @@ class GameScreen:
             if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
                 coin.kill()
                 self.hub.gamemode.score += 200
+                self.point_group.add(Points(self.hub, self.point_group, "200pts", coin.rect.centerx, coin.rect.centery))
                 self.hub.gamemode.coins += 1
 
         # Enemy collision with player
@@ -328,7 +330,7 @@ class GameScreen:
                 if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
                     if enemy.name == "piranhaplant":
                         self.player_group.sprite.get_smaller()
-                        print("Mario DED")
+                        # print("Mario DED")
                     else:
                         self.player_group.sprite.reset_bounce()
                         self.player_group.sprite.bounce()
@@ -336,6 +338,8 @@ class GameScreen:
                         enemy.isstomped = True
                         enemy.death_timer = pygame.time.get_ticks()
                         enemy.kill()
+                        self.point_group.add(Points(self.hub, self.point_group, "100pts",
+                                                    enemy.rect.centerx + self.camera.world_offset_x, enemy.rect.centery))
                         if enemy.name == "koopatroop":
                             self.shells_group.add(enemy)
                         else:

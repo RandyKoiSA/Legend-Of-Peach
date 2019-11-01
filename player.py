@@ -230,13 +230,14 @@ class Player(Sprite):
         # if mario is regular, turn into super mario
         if self.mario_upgrade_state is "regular":
             self.mario_upgrade_state = "super"
+            self.sound_board.powerup.play()
         # if mario is super, turn into fiery mario
         elif self.mario_upgrade_state is "super":
             self.mario_upgrade_state = "fiery"
+            self.sound_board.powerup.play()
         # if mario is fiery, add points to score
         elif self.mario_upgrade_state is "fiery":
-            # add points to score
-            pass
+            self.sound_board.powerup.play()
         else:
             print('ERROR: become_fire_mario(), mario upgrades state does not exist. ')
 
