@@ -15,3 +15,9 @@ class FloorCollision(Sprite):
 
     def draw(self):
         pygame.draw.rect(self.screen, self.color, self.rect, 2)
+
+    def update(self):
+        if self.rect.right <= 0:
+            return True
+        return False
+
