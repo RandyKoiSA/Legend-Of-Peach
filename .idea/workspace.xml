@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/mp3/01-main-theme-overworld.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mp3/02-underworld.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mp3/03-underwater.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mp3/04-castle.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mp3/06-level-complete.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mp3/07-castle-complete.mp3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hub.py" beforeDir="false" afterPath="$PROJECT_DIR$/hub.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sound_board.py" beforeDir="false" afterPath="$PROJECT_DIR$/sound_board.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,6 +40,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\97ran\Desktop\LegendOfPeach\player" />
       <recent name="$PROJECT_DIR$/AI" />
     </key>
   </component>

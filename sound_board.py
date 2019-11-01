@@ -32,7 +32,7 @@ class SoundBoard:
 
     def play_main_theme_overworld(self):
         pygame.mixer.music.load('mp3/01-main-theme-overworld.mp3')
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1, 0)
 
     def play_underworld(self):
         pygame.mixer.music.load('mp3/02-underworld.mp3')
