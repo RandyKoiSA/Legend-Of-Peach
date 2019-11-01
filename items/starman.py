@@ -25,9 +25,18 @@ class Starman(Sprite):
 
         # Images
         self.index = 0
-        self.image_index = [pygame.image.load("imgs/Items/Starman.gif")]
+        self.change_freq = 120
+        self.player_clock = pygame.time.get_ticks() + self.change_freq
+        self.frameRate = 30
+        self.clock = pygame.time.get_ticks() + self.frameRate
+        self.image_index = [pygame.image.load("imgs/Items/Starman1.png"),
+                            pygame.image.load("imgs/Items/Starman2.png"),
+                            pygame.image.load("imgs/Items/Starman3.png"),
+                            pygame.image.load("imgs/Items/Starman4.png")]
+
+        for i in range(len(self.image_index)):
+            self.image_index[i] = pygame.transform.scale(self.image_index[i], self.scale)
         self.image = self.image_index[self.index]
-        self.image = pygame.transform.scale(self.image, self.scale)
         self.rect = self.image.get_rect()
 
         self.rect.x = self.original_pos[0]
@@ -68,6 +77,11 @@ class Starman(Sprite):
 
         self.check_collision()
         self.check_fell()
+        if pygame.time.get_ticks() > self.player_clock:
+            self.player_clock = pygame.time.get_ticks() + self.change_freq
+            self.index += 1
+            self.index %= len(self.image_index)
+            self.image = self.image_index[self.index]
 
     def flip_direction(self):
         if self.move == self.hub.LEFT:

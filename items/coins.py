@@ -28,7 +28,7 @@ class Coins(Sprite):
 
         # Images
         self.index = 0
-        self.change_freq = 240
+        self.change_freq = 120
         self.player_clock = pygame.time.get_ticks() + self.change_freq
         self.frameRate = 30
         self.clock = pygame.time.get_ticks() + self.frameRate
@@ -42,8 +42,10 @@ class Coins(Sprite):
         self.image_index[2] = pygame.transform.scale(self.image_index[2], self.scale3)
         self.image_index[3] = pygame.transform.scale(self.image_index[3], self.scale2)
 
-        self.resting_index = [pygame.image.load("imgs/Items/coin1.png"),
-                              pygame.image.load("imgs/Items/coin1.png")]
+        self.resting_index = [pygame.image.load("imgs/Items/CoinForBlackBG.png"),
+                              pygame.image.load("imgs/Items/CoinForBlackBG1.png"),
+                              pygame.image.load("imgs/Items/CoinForBlackBG2.png"),
+                              pygame.image.load("imgs/Items/CoinForBlackBG1.png")]
 
         for i in range(len(self.resting_index)):
             self.resting_index[i] = pygame.transform.scale(self.resting_index[i], self.scale)
@@ -73,7 +75,7 @@ class Coins(Sprite):
 
     def start_anim(self):
         """Starts coin spin animation"""
-        self.velY = 3
+        self.velY = 5
 
         if self.rect.y == (self.rest_height - 60):
             self.upwards = False
@@ -87,13 +89,13 @@ class Coins(Sprite):
         if pygame.time.get_ticks() > self.player_clock:
             self.player_clock = pygame.time.get_ticks() + self.change_freq
             if self.index == 0:
-                self.rect.x += 8
+                self.original_pos[0] += 8
             elif self.index == 1:
-                self.rect.x += 5
+                self.original_pos[0] += 5
             elif self.index == 2:
-                self.rect.x -= 5
+                self.original_pos[0] -= 5
             elif self.index == 3:
-                self.rect.x -= 8
+                self.original_pos[0] -= 8
             self.index += 1
             self.index %= len(self.image_index)
             self.image = self.image_index[self.index]
