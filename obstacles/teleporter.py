@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Teleport(Sprite):
     """ Teleporter that teleports the player to the next level """
     def __init__(self, hub, pos_x, pos_y, level_name, world_offset):

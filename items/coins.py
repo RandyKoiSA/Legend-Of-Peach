@@ -60,7 +60,6 @@ class Coins(Sprite):
         self.rect.x = self.original_pos[0]
         self.rect.y = self.original_pos[1]
 
-
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
@@ -101,7 +100,9 @@ class Coins(Sprite):
             self.image = self.image_index[self.index]
 
         if self.rect.y == self.rest_height:
-            self.hub.score += 200
+            self.hub.gamemode.coins += 1
+            self.hub.gamemode.check_coins()
+            self.hub.gamemode.score += 200
             self.kill()
 
     def resting(self):

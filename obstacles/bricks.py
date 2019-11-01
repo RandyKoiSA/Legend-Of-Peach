@@ -98,7 +98,8 @@ class Bricks(Sprite):
                 self.coin_total -= 1
                 if self.coin_total <= 0:
                     self.index = 1
-        elif self.insides == 'star' or self.insides == 'gshroom' or self.insides == 'rshroom':
+        elif self.insides == 'star' or self.insides == 'gshroom' or \
+                self.insides == 'rshroom' or self.insides == 'flower':
             self.bumped_up = True
             self.index = 1
         else:
@@ -117,7 +118,8 @@ class Bricks(Sprite):
                 self.state = self.hub.OPENED
             else:
                 self.state = self.hub.RESTING
-        elif self.insides == 'star' or self.insides == 'gshroom' or self.insides == 'rshroom':
+        elif self.insides == 'star' or self.insides == 'gshroom' or \
+                self.insides == 'rshroom' or self.insides == 'flower':
             self.state = self.hub.OPENED
         else:
             self.kill()

@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Platform(Sprite):
     """Platforms that fall when stood on"""
     def __init__(self, hub, x, y, name='platform'):

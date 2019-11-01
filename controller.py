@@ -7,7 +7,7 @@ class Controller:
         self.move_right = False
         self.jump = False
         self.up = False
-
+        self.hub = hub
 
         # Developer use only
         self.developer_mode = False

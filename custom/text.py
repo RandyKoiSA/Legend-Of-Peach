@@ -11,6 +11,7 @@ class Text:
         self.screen = screen
         self.message = message
         self.text_color = text_color
+        self.font_size = font_size
         self.background_color = background_color
         self.font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
 

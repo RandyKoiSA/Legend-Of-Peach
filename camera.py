@@ -7,7 +7,7 @@ class Camera:
         self.camera_hit_right_screen = False
         self.player_hit_right_screen = False
 
-    def moveCamera(self, velocity):
+    def move_camera(self, velocity):
         if not self.camera_hit_right_screen:
             self.world_offset_x += velocity
         if not self.player_hit_right_screen:
