@@ -380,6 +380,21 @@ class GameScreen:
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
         enemy_collisions = pygame.sprite.spritecollide(enemy, self.enemy_group, False)
+        brick_collisions = pygame.sprite.spritecollide(enemy, self.brick_group, False)
+
+        if brick_collisions:
+            for brick in brick_collisions:
+                if enemy.rect.bottom < brick.rect.top + 25:
+                    enemy.rect.bottom = brick.rect.top
+                # check if the player hits the left wall
+                elif enemy.rect.right < brick.rect.left + 20:
+                    enemy.rect.right = brick.rect.left
+                # check if the player hits the right wall
+                elif enemy.rect.left > brick.rect.right - 20:
+                    enemy.rect.left = brick.rect.right
+                if brick.state == self.hub.BUMPED:
+                    enemy.state = self.hub.HIT
+
         if enemy_collisions:
             for enemies in enemy_collisions:
                 if enemy.rect.right > enemies.rect.left + 20 or enemy.rect.left < enemies.rect.right - 20:
