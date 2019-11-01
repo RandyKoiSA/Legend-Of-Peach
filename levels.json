@@ -91,7 +91,14 @@
     "koopatroop_group": [
        {
         "x": 5700,
-        "y": 570
+        "y": 570,
+         "color": 0
+      }
+    ],
+    "paratroop_group": [
+      {
+        "x": 500,
+        "y": 300
       }
     ],
     "bricks": [
@@ -887,19 +894,23 @@
     "koopatroop_group": [
        {
         "x": 2120,
-        "y": 550
+        "y": 550,
+        "color": 1
       },
        {
         "x": 2200,
-        "y": 550
+        "y": 550,
+         "color": 1
       },
       {
         "x": 2800,
-        "y": 550
+        "y": 550,
+        "color": 1
       },
        {
         "x": 7200,
-        "y": 550
+        "y": 550,
+         "color": 2
       }
     ],
     "bricks": [
@@ -1508,7 +1519,63 @@
         "world_offset": 0
       }
     ],
-    "gumba_group": [],
+    "coin_group": [
+      { "startX": 1301,
+        "startY": 150,
+        "Row": 1,
+        "Col": 3
+      },
+      { "startX": 1595,
+        "startY": 520,
+        "Row": 1,
+        "Col": 1
+      },
+      { "startX": 1870,
+        "startY": 100,
+        "Row": 1,
+        "Col": 2
+      },
+      { "startX": 2395,
+        "startY": 250,
+        "Row": 1,
+        "Col": 2
+      },
+      { "startX": 2910,
+        "startY": 150,
+        "Row": 1,
+        "Col": 4
+      },
+      { "startX": 4116,
+        "startY": 225,
+        "Row": 1,
+        "Col": 2
+      },
+      { "startX": 4568,
+        "startY": 175,
+        "Row": 1,
+        "Col": 2
+      },
+      { "startX": 4700,
+        "startY": 175,
+        "Row": 1,
+        "Col": 2
+      },
+      { "startX": 5460,
+        "startY": 550,
+        "Row": 1,
+        "Col": 3
+      },
+            { "startX": 5797,
+        "startY": 225,
+        "Row": 1,
+        "Col": 2
+      },
+      { "startX": 5797,
+        "startY": 225,
+        "Row": 1,
+        "Col": 2
+      }
+    ],
     "collision_group": [
       {
          "x": 1,
@@ -1647,6 +1714,78 @@
          "y": 571,
          "width": 46,
          "height": 50
+      }
+    ],
+    "platforms": [
+            {
+        "x": 2629,
+        "y": 275,
+        "name": "platform"
+      },
+      {
+        "x": 4150,
+        "y": 350,
+        "name": "platform"
+      },
+        {
+        "x": 6300,
+        "y": 250,
+        "name": "platform"
+      },
+      {
+        "x": 4550,
+        "y": 420,
+        "name": "platform"
+      }
+    ],
+    "bricks":[
+      {
+      "x": 2851,
+      "y": 467,
+      "inside": "rshroom",
+      "powerup": "box",
+      "name": "brick"
+      }
+    ],
+    "gumba_group": [
+      {
+        "x": 2130,
+        "y": 100
+      },
+      {
+        "x": 2200,
+        "y": 100
+      },
+      {
+        "x": 3837,
+        "y": 190
+      }
+      ],
+    "koopatroop_group": [
+       {
+        "x": 1460,
+        "y": 150,
+        "color": 2
+      },
+       {
+        "x": 5314,
+        "y": 230,
+        "color": 2
+      },
+      {
+        "x": 6516,
+        "y": 566,
+        "color": 2
+      }
+      ],
+    "paratroop_group": [
+      {
+        "x": 2468,
+        "y": 250
+      },
+      {
+        "x": 3561,
+        "y": 250
       }
     ]
   },

@@ -64,7 +64,7 @@ class Enemy(Sprite):
     def check_cam(self):
         if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0] and\
          not self.checked:
-            if self.name == "piranhaplant":
+            if self.name == "piranhaplant " or self.name == "paratroop":
                 self.rect.x = self.original_pos[0]
                 self.rect.y = self.original_pos[1]
                 self.state = self.hub.FALL
@@ -265,17 +265,34 @@ class Gumba(Enemy):
 
 
 class Koopatroops(Enemy):
-    def __init__(self, hub, x, y):
+    def __init__(self, hub, x, y, color='0'):
         self.name = "koopatroop"
         self.frame = 100
         self.scale = (50, 50)
         self.direction = hub.LEFT
-        self.image_index = [pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT00.gif"),
+        self.color = color
+
+        self.GREEN = [pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT00.gif"),
                             pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaT01.gif"),
                             pygame.image.load("imgs/Enemies/KoopaTroopa/ShellGreen.png")]
-
+        self.RED = [pygame.image.load("imgs/Enemies/KoopaTroopa/Troopa000.png"),
+                    pygame.image.load("imgs/Enemies/KoopaTroopa/Troopa001.png"),
+                    pygame.image.load("imgs/Other/KoopaTroopaShellRed.png") ]
+        self.DGREEN = [pygame.image.load("imgs/Enemies/KoopaTroopa/Ckoopa000.png"),
+                       pygame.image.load("imgs/Enemies/KoopaTroopa/Ckoopa001.png"),
+                       pygame.image.load("imgs/Enemies/KoopaTroopa/KoopaTroopaShellGreenDark.png")]
+        self.image_index = self.GREEN
+        self.setup_image()
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)
+
+    def setup_image(self):
+        if self.color == 0:
+            self.image_index = self.GREEN
+        elif self.color == 1:
+            self.image_index = self.DGREEN
+        else:
+            self.image_index = self.RED
 
     def stomped(self):
         self.velX = 0
@@ -298,12 +315,16 @@ class Paratroops(Enemy):
         self.name = "paratroop"
         self.frame = 100
         self.scale = (50, 50)
-        self.direction = hub.RIGHT
-        self.image_index = [pygame.image.load("")]
+        self.direction = hub.LEFT
+        self.type = "flying"
+        self.image_index = [pygame.image.load("imgs/Enemies/KoopaParaTroopa/FlyTroopa000.gif"),
+                       pygame.image.load("imgs/Enemies/KoopaParaTroopa/FlyTroopa001.gif")]
 
         super().__init__(hub=hub, x=x, y=y, direction=self.direction, name=self.name,
                          images=self.image_index, frame=self.frame, scale=self.scale)
 
+    def stomped(self):
+        self.kill()
 
 class Piranhaplant(Enemy):
     def __init__(self, hub, x, y):

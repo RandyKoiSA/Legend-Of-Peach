@@ -7,6 +7,7 @@ from player import Player
 from pygame import sprite
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops
+from AI.enemy import Paratroops
 from AI.enemy import Piranhaplant
 from obstacles.bricks import Bricks
 from obstacles.bricks import BrickPieces
@@ -231,6 +232,7 @@ class GameScreen:
                                                                self.bg_rect.height * 3 + 50))
         self.bg_rect = self.bg_image.get_rect()
         self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
+        self.bg_rect.bottomleft = self.screen.get_rect().bottomleft
 
     def update_world_collision(self):
         """ update world collisions"""
@@ -333,7 +335,11 @@ class GameScreen:
                         enemy.isstomped = True
                         enemy.death_timer = pygame.time.get_ticks()
                         enemy.kill()
-                        if enemy.name == "koopatroop":
+                        if enemy.name == "paratroop":
+                            self.enemy_group.add(Koopatroops(hub=self.hub, x=enemy.rect.x + self.camera.world_offset_x
+                                                             , y=enemy.rect.y + 50
+                                                             , color=2))
+                        elif enemy.name == "koopatroop":
                             self.shells_group.add(enemy)
                         else:
                             self.death_group.add(enemy)
@@ -515,9 +521,16 @@ class GameScreen:
 
         try:
             for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
-                self.enemy_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
+                self.enemy_group.add(Koopatroops(hub=hub, x=koopatroop["x"],
+                                                 y=koopatroop["y"], color=koopatroop["color"]))
         except LookupError:
             print('no koopatroop exist within this level')
+
+        try:
+            for paratroop in self.hub.game_levels[self.level_name]["paratroop_group"]:
+                self.enemy_group.add(Paratroops(hub=hub, x=paratroop["x"], y=paratroop["y"]))
+        except LookupError:
+            print('no paratroop exist within this level')
 
         # Add floor collision instances to the map
         try:
