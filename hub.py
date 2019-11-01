@@ -4,6 +4,7 @@ import json
 from screens.game_screen import GameScreen
 from screens.main_menu_screen import MainMenuScreen
 from screens.level_selection_screen import LevelSelectionScreen
+from sound_board import SoundBoard
 from screens.HUD_screen import HudScreen
 from controller import Controller
 from camera import Camera
@@ -65,6 +66,7 @@ class Hub:
         """ Initialize the type of screen possible to display
         game_screen is the only one that will probably be reinstance everytime a new level
         opens. """
+        self.sound_board = SoundBoard()
         self.main_screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
         self.hud_screen = HudScreen(self)
         self.main_menu_screen = MainMenuScreen(self)

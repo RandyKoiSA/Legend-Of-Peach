@@ -327,7 +327,7 @@ class GameScreen:
             if enemy.rect.colliderect(self.player_group.sprite.rect):
                 if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
                     if enemy.name == "piranhaplant":
-                        self.player_group.sprite.die()
+                        self.player_group.sprite.get_smaller()
                         print("Mario DED")
                     else:
                         self.player_group.sprite.reset_bounce()
@@ -344,9 +344,9 @@ class GameScreen:
                 else:
                     # If Mario collides in x direction
                     if self.player_group.sprite.rect.right < enemy.rect.left + 20:
-                        self.player_group.sprite.die()
+                        self.player_group.sprite.get_smaller()
                     elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
-                        self.player_group.sprite.die()
+                        self.player_group.sprite.get_smaller()
 
         for mushroom in self.magic_mushroom_group:
             if mushroom.rect.colliderect(self.player_group.sprite.rect):
@@ -586,7 +586,8 @@ class GameScreen:
 
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
-        current_player = Player(hub, self.player_fireball_group, player_spawn_point[0], player_spawn_point[1])
+        current_player = Player(hub, self.player_fireball_group, player_spawn_point[0],
+                                player_spawn_point[1], self.gamemode.mario_upgrade_state)
         self.player_group.add(current_player)
 
 # ADD UPDATE FUNCTIONS HERE
@@ -716,6 +717,11 @@ class GameScreen:
         for teleporter in self.teleporter_group:
             teleporter.update(self.player_group.sprite.rect)
 
+    def update_player_fireball_group(self):
+        for fireball in self.player_fireball_group:
+            fireball.update()
+            fireball.update()
+
 # ADD DRAWING FUNCTIONS HERE
 
     def draw_teleporter_group(self):
@@ -797,10 +803,6 @@ class GameScreen:
     def draw_point_group(self):
         for point in self.point_group:
             point.draw()
-
-    def update_player_fireball_group(self):
-        for fireball in self.player_fireball_group:
-            fireball.update()
 
     def draw_player_fireball_group(self):
         for fireball in self.player_fireball_group:

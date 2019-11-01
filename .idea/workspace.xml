@@ -2,13 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/imgs/Other/FireBall/ezgif-4-b439b3dd6fc8-gif-im.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/imgs/Other/FireBall/fireball_01.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/imgs/Other/FireBall/fireball_02.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/imgs/Other/FireBall/fireball_03.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/imgs/Other/FireBall/fireball_04.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sound_board.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/04-castle.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_1-up.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_bowserfalls.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_bowserfire.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_breakblock.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_bump.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_coin.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_fireball.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_fireworks.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_flagpole.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_gameover.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_jump-small.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_jump-super.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_kick.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_mariodie.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_pause.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_pipe.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_powerup.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_powerup_appears.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_stage_clear.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_stomp.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_vine.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_warning.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wavs/smb_world_clear.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/LegendOfPeach.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LegendOfPeach.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AI/enemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/enemy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaParaTroopa/KoopaParatroopaRed.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaParaTroopa/ezgif-6-007e1c5ab4c6-gif-im.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/levels.json" beforeDir="false" afterPath="$PROJECT_DIR$/levels.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gamemode.py" beforeDir="false" afterPath="$PROJECT_DIR$/gamemode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hub.py" beforeDir="false" afterPath="$PROJECT_DIR$/hub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/game_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/screens/game_screen.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,6 +67,7 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -228,6 +258,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Added Gumba to game" />
     <MESSAGE value="Bricks added and mapped to level 1" />
     <MESSAGE value="Coins spawn in bricks" />

@@ -10,6 +10,7 @@ class GameMode:
         self.mario_is_dead = False
         self.mario_in_air = False
         self.mario_is_running = False
+        self.mario_upgrade_state = "regular"
         self.hub = hub
 
         self.time = 0

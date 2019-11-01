@@ -6,10 +6,11 @@ from player_fire_ball import PlayerFireBall
 
 class Player(Sprite):
     """ Player class, where the player will control """
-    def __init__(self, hub, fireball_group, pos_x=50, pos_y=50):
+    def __init__(self, hub, fireball_group, pos_x=50, pos_y=50, upgrade_state="regular"):
         """ Initialize default values """
         super().__init__()
         self.hub = hub
+        self.sound_board = hub.sound_board
         self.screen = hub.main_screen
         self.screen_rect = self.screen.get_rect()
         self.controller = hub.controller
@@ -19,7 +20,7 @@ class Player(Sprite):
 
         # Mario state
         self.mario_motion_state = "idle"
-        self.mario_upgrade_state = "regular"
+        self.mario_upgrade_state = upgrade_state
         self.mario_facing_direction = hub.RIGHT
         self.mario_image_flipped = False
 
@@ -169,6 +170,7 @@ class Player(Sprite):
         self.gamemode.mario_in_air = True
         if self.mario_motion_state is not "dying":
             self.mario_motion_state = "jumping"
+            self.sound_board.jump_small.play()
 
     def bounce(self):
         self.is_bouncing = True
@@ -176,20 +178,23 @@ class Player(Sprite):
         if self.mario_motion_state is not "dying":
             self.mario_motion_state = "jumping"
         # print("Mario Bounced off AI")
+        self.sound_board.stomp.play()
 
     def throw(self):
         if self.mario_upgrade_state is "fiery":
             self.fireball_group.add(PlayerFireBall(self.hub, self.fireball_group,
                                                    self.rect.right + self.camera.world_offset_x,
                                                    self.rect.centery))
+            self.sound_board.fireball.play()
 
     def get_bigger(self):
         # if mario is regular change to super
         if self.mario_upgrade_state is "regular":
             self.mario_upgrade_state = "super"
+            self.sound_board.powerup.play()
         # if mario is super or fiery, add points to score
         elif self.mario_upgrade_state is "super" or self.mario_upgrade_state is "fiery":
-            # TODO add score to gamemode
+            self.gamemode.score += 200
             pass
 
     def get_smaller(self):
@@ -199,6 +204,7 @@ class Player(Sprite):
             self.current_list = self.regular_image_idle
             self.rect.y -= 100
             self.gravity = 3
+            self.sound_board.mario_die.play()
         # if mario is super, change to regular mario
         elif self.mario_upgrade_state is "super":
             self.mario_upgrade_state = "regular"
