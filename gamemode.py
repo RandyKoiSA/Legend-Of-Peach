@@ -24,3 +24,8 @@ class GameMode:
         self.mario_is_running = False
 
         self.time = 0
+
+    def check_coins(self):
+        if self.coins >= 100:
+            self.coins = 0
+            self.lives += 1

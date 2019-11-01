@@ -101,6 +101,7 @@ class Coins(Sprite):
 
         if self.rect.y == self.rest_height:
             self.hub.gamemode.coins += 1
+            self.hub.gamemode.check_coins()
             self.hub.gamemode.score += 200
             self.kill()
 

@@ -209,10 +209,14 @@ class Player(Sprite):
     def die(self):
         # called when player gets hit by enemy, projectile, or out of bounds
         if not self.is_dead:
-            print("mario is dead")
-            self.gamemode.lives -= 1
-            self.gamemode.mario_is_dead = True
-            self.is_dead = True
+            if self.mario_upgrade_state == "super" or self.mario_upgrade_state == "fiery":
+                self.mario_upgrade_state = "regular"
+                self.rect.y -= 100
+            else:
+                print("mario is dead")
+                self.gamemode.lives -= 1
+                self.gamemode.mario_is_dead = True
+                self.is_dead = True
 
         sleep(0.5)
 

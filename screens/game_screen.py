@@ -304,7 +304,8 @@ class GameScreen:
         for coin in self.coin_group:
             if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
                 coin.kill()
-                self.hub.score += 200
+                self.hub.gamemode.score += 200
+                self.hub.gamemode.coins += 1
 
         # Enemy collision with player
         for shell in self.shells_group:
