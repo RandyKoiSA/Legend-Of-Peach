@@ -13,7 +13,7 @@ class Mushroom(Sprite):
         self.original_pos = [x, y]
         self.move = direction
         self.velX = self.hub.velocityMushroom
-        self.velY = 1
+        self.velY = 3
         self.state = self.hub.STAND
         self.scale = scale
         self.rest_height = y
@@ -38,6 +38,7 @@ class Mushroom(Sprite):
         self.check_direction()
 
         self.killed = False
+        self.isrising = True
 
     def check_direction(self):
         if self.state == self.hub.STAND:
@@ -57,6 +58,7 @@ class Mushroom(Sprite):
                 self.rect.y -= self.velY
             else:
                 self.state = self.hub.WALK
+                self.isrising = False
         else:
             # Apply gravity
             self.rect.y += self.gravity
