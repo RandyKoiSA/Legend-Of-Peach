@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 from time import sleep
-from player_fire_ball import PlayerFireBall
+from player.player_fire_ball import PlayerFireBall
 
 
 class Player(Sprite):
@@ -204,6 +204,7 @@ class Player(Sprite):
             self.current_list = self.regular_image_idle
             self.rect.y -= 100
             self.gravity = 3
+            self.sound_board.stop_music()
             self.sound_board.mario_die.play()
         # if mario is super, change to regular mario
         elif self.mario_upgrade_state is "super":

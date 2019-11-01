@@ -3,7 +3,7 @@ from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from obstacles.teleporter import Teleport
 from Points import Points
-from player import Player
+from player.player import Player
 from pygame import sprite
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops

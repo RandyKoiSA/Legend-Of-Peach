@@ -111,5 +111,15 @@ class Hub:
         print('new game_screen instantiated')
         self.game_screen = GameScreen(self, level_name)
         self.level_name = level_name
+        theme = self.game_levels[level_name]["theme"]
         self.camera.reset_camera()
         self.camera.world_offset_x = world_offset
+
+        if theme is "0":
+            self.sound_board.play_main_theme_overworld()
+        if theme is "1":
+            self.sound_board.play_underworld()
+        if theme is "2":
+            self.sound_board.play_castle()
+        else:
+            self.sound_board.play_main_theme_overworld()

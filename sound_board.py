@@ -29,3 +29,22 @@ class SoundBoard:
         self.vine = pygame.mixer.Sound('wavs/smb_vine.wav')
         self.warning = pygame.mixer.Sound('wavs/smb_warning.wav')
         self.world_clear = pygame.mixer.Sound('wavs/smb_world_clear.wav')
+
+    def play_main_theme_overworld(self):
+        pygame.mixer.music.load('mp3/01-main-theme-overworld.mp3')
+        pygame.mixer.music.play()
+
+    def play_underworld(self):
+        pygame.mixer.music.load('mp3/02-underworld.mp3')
+        pygame.mixer.music.play(-1, 0)
+
+    def play_underwater(self):
+        pygame.mixer_music.load('mp3/03-underwater.mp3')
+        pygame.mixer.music.play(-1, 0)
+
+    def play_castle(self):
+        pygame.mixer_music.load('mp3/04-castle.mp3')
+        pygame.mixer.music.play(-1, 0)
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
