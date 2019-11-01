@@ -25,6 +25,7 @@ def run_game():
         dt = hub.CLOCK.tick(hub.FRAMERATE)
         hub.speed = 1 / float(dt)
 
+
 # If the console command runs this file, it will run the game
 if __name__ == '__main__':
     run_game()

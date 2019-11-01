@@ -3,8 +3,10 @@ from pygame.locals import *
 from custom.text import Text
 from custom.button import Button
 
+
 class MainMenuScreen:
     """ Main Menu Screen showing exit button and play button """
+
     def __init__(self, hub):
         """ Initialize all the default values for MainMenuScreen """
         self.hub = hub
@@ -114,4 +116,3 @@ class MainMenuScreen:
             self.hub.screen_selector = 2
         elif self.exit_button.rect.collidepoint(mouse_x, mouse_y):
             self.hub.exit_game()
-
