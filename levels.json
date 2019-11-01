@@ -1007,6 +1007,13 @@
         "inside": "gshroom",
         "powerup": "Brick",
         "name": "brick"
+      },
+      {
+        "x":7253,
+        "y": 357,
+        "inside": "rshroom",
+        "powerup": "Brick",
+        "name": "brick"
       }
     ],
     "brick_group":[
@@ -1112,14 +1119,14 @@
         "Col": 6
       },
       { "startX": 5892,
-        "startY": 457,
+        "startY": 470,
         "Row": 3,
         "Col": 2
       },
       { "startX": 7003,
         "startY": 357,
         "Row": 1,
-        "Col": 6
+        "Col": 5
       }
     ],
     "plant_group": [
@@ -1304,6 +1311,28 @@
         "y": 361,
         "width": 190,
         "height": 99
+      }
+    ],
+    "platforms": [
+      {
+        "x": 6770,
+        "y": 300,
+        "name": "platform"
+      },
+      {
+        "x": 6770,
+        "y": 621,
+        "name": "platform"
+      },
+      {
+        "x": 7480,
+        "y": 221,
+        "name": "platform"
+      },
+      {
+        "x": 7480,
+        "y": 580,
+        "name": "platform"
       }
     ]
   },
