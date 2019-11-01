@@ -57,7 +57,7 @@ class Platform(Sprite):
 
     def falling(self):
             print("FALLING")
-            self.velY += 4
+            self.velY += 6
             self.rect.y += self.velY
 
     def check_gone(self):

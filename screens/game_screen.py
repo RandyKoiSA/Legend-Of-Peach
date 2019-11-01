@@ -426,16 +426,27 @@ class GameScreen:
                 # check if the player hits the left wall
                 elif enemy.rect.right < brick.rect.left + 20:
                     enemy.rect.right = brick.rect.left
+                    enemy.flip_direction()
                 # check if the player hits the right wall
                 elif enemy.rect.left > brick.rect.right - 20:
                     enemy.rect.left = brick.rect.right
+                    enemy.flip_direction()
+
                 if brick.state == self.hub.BUMPED:
                     enemy.state = self.hub.HIT
 
         if enemy_collisions:
             for enemies in enemy_collisions:
-                if enemy.rect.right > enemies.rect.left + 20 or enemy.rect.left < enemies.rect.right - 20:
-                    if enemy != enemies:
+                if enemy != enemies:
+                    if enemy.rect.bottom < enemies.rect.top:
+                        enemy.rect.bottom = enemies.rect.top
+                    if enemy.rect.right > enemies.rect.left + 20:
+                        enemy.rect.right = enemies.rect.left
+                        enemy.flip_direction()
+
+                    if enemy.rect.left < enemies.rect.right - 20:
+                        enemy.rect.left = enemies.rect.right
+
                         # Checks if enemy colliding with other enemy
                         enemy.flip_direction()
 
