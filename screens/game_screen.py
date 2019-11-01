@@ -10,6 +10,7 @@ from AI.enemy import Koopatroops
 from AI.enemy import Piranhaplant
 from obstacles.bricks import Bricks
 from obstacles.bricks import BrickPieces
+from obstacles.platform import Platform
 from items.coins import Coins
 from custom import developer_tool as dt
 from items.mushroom import Magic
@@ -81,6 +82,9 @@ class GameScreen:
 
         # Bricks to be spawned
         self.brick_group = sprite.Group()
+
+        # Platforms to be spawned
+        self.platform_group = sprite.Group()
 
         # Bricks pieces to be spawned
         self.brickpieces_group = sprite.Group()
@@ -168,6 +172,7 @@ class GameScreen:
         self.update_world_collision()
 
         if not self.hub.modeFreeze:
+            self.update_platform_group()
             self.update_enemy_group()
             self.update_death_group()
             self.update_projectile_group()
@@ -201,6 +206,8 @@ class GameScreen:
         self.draw_brick_group()
         # Draw broken Brick Pieces
         self.draw_brickpieces_group()
+        # Draw Platform
+        self.draw_platform_group()
         # Draw the Coins
         self.draw_coin_group()
         # Draw the mushrooms
@@ -228,6 +235,24 @@ class GameScreen:
     def update_world_collision(self):
         """ update world collisions"""
         # Brick Collision with player
+        for platform in self.platform_group:
+            if platform.rect.colliderect(self.player_group.sprite.rect):
+                if self.player_group.sprite.rect.bottom <= platform.rect.top + 25:
+                    platform.state = self.hub.FALL
+                    self.player_group.sprite.rect.bottom = platform.rect.top
+                    self.player_group.sprite.reset_jump()
+                    self.player_group.sprite.reset_bounce()
+                # check if the player hits the left wall
+                elif self.player_group.sprite.rect.right < platform.rect.left + 20:
+                    self.player_group.sprite.rect.right = platform.rect.left
+                # check if the player hits the right wall
+                elif self.player_group.sprite.rect.left > platform.rect.right - 20:
+                    self.player_group.sprite.rect.left = platform.rect.right
+                else:
+                    self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
+            else:
+                platform.state = self.hub.RESTING
+
         for brick in self.brick_group:
             if brick.rect.colliderect(self.player_group.sprite.rect):
                 if self.player_group.sprite.rect.bottom <= brick.rect.top + 25:
@@ -392,6 +417,21 @@ class GameScreen:
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
         enemy_collisions = pygame.sprite.spritecollide(enemy, self.enemy_group, False)
+        brick_collisions = pygame.sprite.spritecollide(enemy, self.brick_group, False)
+
+        if brick_collisions:
+            for brick in brick_collisions:
+                if enemy.rect.bottom < brick.rect.top + 25:
+                    enemy.rect.bottom = brick.rect.top
+                # check if the player hits the left wall
+                elif enemy.rect.right < brick.rect.left + 20:
+                    enemy.rect.right = brick.rect.left
+                # check if the player hits the right wall
+                elif enemy.rect.left > brick.rect.right - 20:
+                    enemy.rect.left = brick.rect.right
+                if brick.state == self.hub.BUMPED:
+                    enemy.state = self.hub.HIT
+
         if enemy_collisions:
             for enemies in enemy_collisions:
                 if enemy.rect.right > enemies.rect.left + 20 or enemy.rect.left < enemies.rect.right - 20:
@@ -494,6 +534,15 @@ class GameScreen:
                                             theme=self.hub.game_levels[self.level_name]["theme"]))
         except LookupError:
             print('no bricks exist within this level')
+
+            # Add platform Instance
+        try:
+
+            print(len(self.hub.game_levels[self.level_name]["platforms"]))
+            for platform in self.hub.game_levels[self.level_name]["platforms"]:
+                self.platform_group.add(Platform(hub=hub, x=platform["x"], y=platform["y"], name=platform["name"]))
+        except LookupError:
+            print('no platform exist within this level')
 
         # Add Coin Instance
         try:
@@ -602,6 +651,9 @@ class GameScreen:
             for brick in self.brick_group:
                 brick.rect.x = brick.original_pos[0] - self.camera.world_offset_x
 
+            for platform in self.platform_group:
+                platform.rect.x = platform.original_pos[0] - self.camera.world_offset_x
+
             for piece in self.brickpieces_group:
                 piece.rect.x = piece.original_pos[0] - self.camera.world_offset_x
 
@@ -670,6 +722,11 @@ class GameScreen:
         for brick in self.brick_group:
             brick.update()
 
+    def update_platform_group(self):
+        """ Update Platform Logic"""
+        for platform in self.platform_group:
+            platform.update()
+
     def update_brickpieces_group(self):
         """ Update pieces logic"""
         for pieces in self.brickpieces_group:
@@ -696,6 +753,11 @@ class GameScreen:
         """ Draw bricks onto the screen """
         for brick in self.brick_group:
             brick.draw()
+
+    def draw_platform_group(self):
+        """ Draw Platform onto the screen"""
+        for platform in self.platform_group:
+            platform.draw()
 
     def draw_brickpieces_group(self):
         """ Draw broken bricks on screen"""
