@@ -672,6 +672,44 @@
         "width": 49,
         "height": 49
       }
+    ],
+    "pipe_group": [
+      {
+        "pipe_type": 0,
+        "x": 1350,
+        "y": 525
+      },
+      {
+        "pipe_type": 1,
+        "x": 1833,
+        "y": 470
+      },
+      {
+        "pipe_type": 2,
+        "x": 2218,
+        "y": 423
+      },
+      {
+         "pipe_type": 2,
+         "x": 2749,
+         "y": 423
+      },
+      {
+         "pipe_type": 0,
+         "x": 8633,
+         "y": 526
+      },
+      {
+         "pipe_type": 0,
+         "x": 7861,
+         "y": 527
+      }
+    ],
+    "flagpole_group": [
+      {
+        "x": 9515,
+        "y": 60
+      }
     ]
   },
   "1-1-2": {
@@ -744,7 +782,7 @@
   "1-2-1": {
     "background_image": "imgs/background/1-2/1-2-1.jpg",
     "theme": "0",
-    "spawn_point": [0, 0],
+    "spawn_point": [116, 567],
     "teleporter": [
       {
         "_comment": "teleport to 1-2-2",

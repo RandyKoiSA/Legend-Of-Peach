@@ -10,9 +10,10 @@ class GameMode:
         self.mario_is_dead = False
         self.mario_in_air = False
         self.mario_is_running = False
+        self.mario_upgrade_state = "regular"
         self.hub = hub
 
-        self.time = 0
+        self.time = 500
 
     def reset_gamemode(self):
         self.currentlevel = 1
@@ -23,7 +24,7 @@ class GameMode:
         self.mario_in_air = False
         self.mario_is_running = False
 
-        self.time = 0
+        self.time = 500
 
     def check_coins(self):
         if self.coins >= 100:

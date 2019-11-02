@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="42f05580-85c7-4f1e-9fd7-6c9b4b67f764" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/LegendOfPeach.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LegendOfPeach.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obstacles/flag_pole.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AI/enemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/enemy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaParaTroopa/KoopaParatroopaRed.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgs/Enemies/KoopaParaTroopa/ezgif-6-007e1c5ab4c6-gif-im.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgs/background/1-1/1-1-1-Clean.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/imgs/background/1-1/1-1-1-Clean.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/levels.json" beforeDir="false" afterPath="$PROJECT_DIR$/levels.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/game_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/screens/game_screen.py" afterDir="false" />
     </list>
@@ -38,6 +35,7 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -45,6 +43,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\97ran\Desktop\LegendOfPeach\player" />
       <recent name="$PROJECT_DIR$/AI" />
     </key>
   </component>
@@ -228,6 +227,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Added Gumba to game" />
     <MESSAGE value="Bricks added and mapped to level 1" />
     <MESSAGE value="Coins spawn in bricks" />

@@ -2,7 +2,8 @@ import pygame
 from pygame.locals import *
 from obstacles.floor_collision import FloorCollision
 from obstacles.teleporter import Teleport
-from player import Player
+from Points import Points
+from player.player import Player
 from pygame import sprite
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops
@@ -15,6 +16,8 @@ from items.mushroom import Magic
 from items.mushroom import Oneup
 from items.fire_flower import Fireflower
 from items.starman import Starman
+from obstacles.pipe import Pipe
+from obstacles.flag_pole import Flag_Pole
 
 
 class GameScreen:
@@ -92,6 +95,12 @@ class GameScreen:
 
         # Coins to be spawned
         self.coin_group = sprite.Group()
+
+        # Pipe group
+        self.pipe_group = sprite.Group()
+
+        # Flag Pole Group
+        self.flagpole_group = sprite.Group()
 
         # Spawn all instances from the JSON File
         self.spawn_objects(hub)
@@ -188,7 +197,9 @@ class GameScreen:
             self.update_fireflower_group()
             self.update_starman_group()
 
+        self.update_pipe_group()
         self.update_point_group()
+        self.update_flagpole_group()
         self.update_timer()
 
     def run_draw(self):
@@ -223,6 +234,8 @@ class GameScreen:
         self.draw_fireflower_group()
         # Draw the starmans
         self.draw_starman_group()
+        self.draw_pipe_group()
+        self.draw_flagpole_group()
         # Draw points
         self.draw_point_group()
 
@@ -305,7 +318,9 @@ class GameScreen:
             if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
                 coin.kill()
                 self.hub.gamemode.score += 200
+                self.point_group.add(Points(self.hub, self.point_group, "200pts", coin.rect.centerx, coin.rect.centery))
                 self.hub.gamemode.coins += 1
+                self.hub.sound_board.coin.play()
 
         # Enemy collision with player
         for shell in self.shells_group:
@@ -327,8 +342,8 @@ class GameScreen:
             if enemy.rect.colliderect(self.player_group.sprite.rect):
                 if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
                     if enemy.name == "piranhaplant":
-                        self.player_group.sprite.die()
-                        print("Mario DED")
+                        self.player_group.sprite.get_smaller()
+                        # print("Mario DED")
                     else:
                         self.player_group.sprite.reset_bounce()
                         self.player_group.sprite.bounce()
@@ -336,6 +351,8 @@ class GameScreen:
                         enemy.isstomped = True
                         enemy.death_timer = pygame.time.get_ticks()
                         enemy.kill()
+                        self.point_group.add(Points(self.hub, self.point_group, "100pts",
+                                                    enemy.rect.centerx + self.camera.world_offset_x, enemy.rect.centery))
                         if enemy.name == "koopatroop":
                             self.shells_group.add(enemy)
                         else:
@@ -344,9 +361,9 @@ class GameScreen:
                 else:
                     # If Mario collides in x direction
                     if self.player_group.sprite.rect.right < enemy.rect.left + 20:
-                        self.player_group.sprite.die()
+                        self.player_group.sprite.get_smaller()
                     elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
-                        self.player_group.sprite.die()
+                        self.player_group.sprite.get_smaller()
 
         for mushroom in self.magic_mushroom_group:
             if mushroom.rect.colliderect(self.player_group.sprite.rect):
@@ -584,9 +601,22 @@ class GameScreen:
         except LookupError:
             print('no starmen exist within this level')
 
+        try:
+            for pipe in self.hub.game_levels[self.level_name]["pipe_group"]:
+                self.pipe_group.add(Pipe(hub, pipe["pipe_type"], pipe["x"], pipe["y"]))
+        except LookupError:
+            print('no pipes exist within this level')
+
+        try:
+            for flagpole in self.hub.game_levels[self.level_name]["flagpole_group"]:
+                self.flagpole_group.add(Flag_Pole(self.hub, flagpole["x"], flagpole["y"]))
+        except LookupError:
+            print('no flagpole exist within this level')
+
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
-        current_player = Player(hub, self.player_fireball_group, player_spawn_point[0], player_spawn_point[1])
+        current_player = Player(hub, self.player_fireball_group, player_spawn_point[0],
+                                player_spawn_point[1], self.gamemode.mario_upgrade_state)
         self.player_group.add(current_player)
 
 # ADD UPDATE FUNCTIONS HERE
@@ -716,6 +746,25 @@ class GameScreen:
         for teleporter in self.teleporter_group:
             teleporter.update(self.player_group.sprite.rect)
 
+    def update_player_fireball_group(self):
+        for fireball in self.player_fireball_group:
+            fireball.update()
+            fireball.update()
+
+    def update_timer(self):
+        """ Update timer, calculates the seconds passed and added it onto the time hud text. """
+        if pygame.time.get_ticks() >= self.time_seconds:
+            self.gamemode.time -= 1
+            self.time_seconds = pygame.time.get_ticks() + 1000
+
+    def update_pipe_group(self):
+        for pipe in self.pipe_group:
+            pipe.update()
+
+    def update_flagpole_group(self):
+        for flagpole in self.flagpole_group:
+            flagpole.update(self.player_group.sprite.rect, self.point_group)
+
 # ADD DRAWING FUNCTIONS HERE
 
     def draw_teleporter_group(self):
@@ -784,12 +833,6 @@ class GameScreen:
         for collision in self.background_collisions:
             collision.draw()
 
-    def update_timer(self):
-        """ Update timer, calculates the seconds passed and added it onto the time hud text. """
-        if pygame.time.get_ticks() >= self.time_seconds:
-            self.gamemode.time += 1
-            self.time_seconds = pygame.time.get_ticks() + 1000
-
     def update_point_group(self):
         for point in self.point_group:
             point.update()
@@ -798,10 +841,14 @@ class GameScreen:
         for point in self.point_group:
             point.draw()
 
-    def update_player_fireball_group(self):
-        for fireball in self.player_fireball_group:
-            fireball.update()
-
     def draw_player_fireball_group(self):
         for fireball in self.player_fireball_group:
             fireball.draw()
+
+    def draw_pipe_group(self):
+        for pipe in self.pipe_group:
+            pipe.draw()
+
+    def draw_flagpole_group(self):
+        for flagpole in self.flagpole_group:
+            flagpole.draw()

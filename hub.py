@@ -4,6 +4,7 @@ import json
 from screens.game_screen import GameScreen
 from screens.main_menu_screen import MainMenuScreen
 from screens.level_selection_screen import LevelSelectionScreen
+from sound_board import SoundBoard
 from screens.HUD_screen import HudScreen
 from controller import Controller
 from camera import Camera
@@ -65,6 +66,7 @@ class Hub:
         """ Initialize the type of screen possible to display
         game_screen is the only one that will probably be reinstance everytime a new level
         opens. """
+        self.sound_board = SoundBoard()
         self.main_screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
         self.hud_screen = HudScreen(self)
         self.main_menu_screen = MainMenuScreen(self)
@@ -84,6 +86,9 @@ class Hub:
             self.game_screen.run()
             if self.gamemode.mario_is_dead:
                 if self.gamemode.lives == 0:
+                    # When mario has no more lives
+                    self.gamemode.reset_gamemode()
+                    self.sound_board.gameover.play()
                     self.screen_selector = 1
                 else:
                     self.open_level(self.level_name)
@@ -109,5 +114,15 @@ class Hub:
         print('new game_screen instantiated')
         self.game_screen = GameScreen(self, level_name)
         self.level_name = level_name
+        theme = self.game_levels[level_name]["theme"]
         self.camera.reset_camera()
         self.camera.world_offset_x = world_offset
+
+        if theme is "0":
+            self.sound_board.play_main_theme_overworld()
+        elif theme is "1":
+            self.sound_board.play_underworld()
+        elif theme is "2":
+            self.sound_board.play_castle()
+        else:
+            self.sound_board.play_main_theme_overworld()
