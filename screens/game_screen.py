@@ -7,9 +7,11 @@ from player.player import Player
 from pygame import sprite
 from AI.enemy import Gumba
 from AI.enemy import Koopatroops
+from AI.enemy import Paratroops
 from AI.enemy import Piranhaplant
 from obstacles.bricks import Bricks
 from obstacles.bricks import BrickPieces
+from obstacles.platform import Platform
 from items.coins import Coins
 from custom import developer_tool as dt
 from items.mushroom import Magic
@@ -89,6 +91,9 @@ class GameScreen:
 
         # Bricks to be spawned
         self.brick_group = sprite.Group()
+
+        # Platforms to be spawned
+        self.platform_group = sprite.Group()
 
         # Bricks pieces to be spawned
         self.brickpieces_group = sprite.Group()
@@ -186,6 +191,7 @@ class GameScreen:
         self.update_world_collision()
 
         if not self.hub.modeFreeze:
+            self.update_platform_group()
             self.update_enemy_group()
             self.update_death_group()
             self.update_projectile_group()
@@ -204,6 +210,9 @@ class GameScreen:
 
     def run_draw(self):
         """ Draw all instances onto the screen """
+        # Draw background image
+        self.screen.blit(self.bg_image, self.bg_rect)
+        # Draw test collision boxes
         self.draw_world_collision_group()
         # Draw teleporter collision boxes
         self.draw_teleporter_group()
@@ -226,6 +235,8 @@ class GameScreen:
         self.draw_brick_group()
         # Draw broken Brick Pieces
         self.draw_brickpieces_group()
+        # Draw Platform
+        self.draw_platform_group()
         # Draw the Coins
         self.draw_coin_group()
         # Draw the mushrooms
@@ -256,6 +267,24 @@ class GameScreen:
 
     def update_world_collision(self):
         """ update world collisions"""
+        # Platform Collision with player
+        for platform in self.platform_group:
+            if platform.rect.colliderect(self.player_group.sprite.rect):
+                if self.player_group.sprite.rect.bottom <= platform.rect.top + 25:
+                    platform.state = self.hub.FALL
+                    self.player_group.sprite.rect.bottom = platform.rect.top
+                    self.player_group.sprite.reset_jump()
+                    self.player_group.sprite.reset_bounce()
+                # check if the player hits the left wall
+                elif self.player_group.sprite.rect.right < platform.rect.left + 20:
+                    self.player_group.sprite.rect.right = platform.rect.left
+                # check if the player hits the right wall
+                elif self.player_group.sprite.rect.left > platform.rect.right - 20:
+                    self.player_group.sprite.rect.left = platform.rect.right
+                else:
+                    self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
+            else:
+                platform.state = self.hub.RESTING
 
         # Remove collisions that are no longer needed
         for collision in self.background_collisions:
@@ -353,7 +382,11 @@ class GameScreen:
                         enemy.kill()
                         self.point_group.add(Points(self.hub, self.point_group, "100pts",
                                                     enemy.rect.centerx + self.camera.world_offset_x, enemy.rect.centery))
-                        if enemy.name == "koopatroop":
+                        if enemy.name == "paratroop":
+                            self.enemy_group.add(Koopatroops(hub=self.hub, x=enemy.rect.x + self.camera.world_offset_x
+                                                             , y=enemy.rect.y + 50
+                                                             , color=2))
+                        elif enemy.name == "koopatroop":
                             self.shells_group.add(enemy)
                         else:
                             self.death_group.add(enemy)
@@ -440,12 +473,35 @@ class GameScreen:
         """ Checks the enemy colliding with Pipes"""
         bg_collisions = pygame.sprite.spritecollide(enemy, self.background_collisions, False)
         enemy_collisions = pygame.sprite.spritecollide(enemy, self.enemy_group, False)
+        brick_collisions = pygame.sprite.spritecollide(enemy, self.brick_group, False)
+
+        if brick_collisions:
+            for brick in brick_collisions:
+                if enemy.rect.bottom < brick.rect.top + 25:
+                    enemy.rect.bottom = brick.rect.top
+                # check if the player hits the left wall
+                elif enemy.rect.right < brick.rect.left + 20:
+                    enemy.rect.right = brick.rect.left
+                    enemy.flip_direction()
+                # check if the player hits the right wall
+                elif enemy.rect.left > brick.rect.right - 20:
+                    enemy.rect.left = brick.rect.right
+                    enemy.flip_direction()
+
+                if brick.state == self.hub.BUMPED:
+                    enemy.state = self.hub.HIT
+
         if enemy_collisions:
             for enemies in enemy_collisions:
-                if enemy.rect.right > enemies.rect.left + 20 or enemy.rect.left < enemies.rect.right - 20:
-                    if enemy != enemies:
-                        # Checks if enemy colliding with other enemy
+                if enemy != enemies:
+                    if enemy.rect.bottom < enemies.rect.top:
+                        enemy.rect.bottom = enemies.rect.top
+                    if enemy.rect.right > enemies.rect.left + 20:
+                        enemy.rect.right = enemies.rect.left
                         enemy.flip_direction()
+
+                    if enemy.rect.left < enemies.rect.right - 20:
+                        enemy.rect.left = enemies.rect.right
 
         if bg_collisions:
             for collision in bg_collisions:
@@ -512,10 +568,16 @@ class GameScreen:
 
         try:
             for koopatroop in self.hub.game_levels[self.level_name]["koopatroop_group"]:
-                self.enemy_group.add(Koopatroops(hub=hub, x=koopatroop["x"], y=koopatroop["y"]))
+                self.enemy_group.add(Koopatroops(hub=hub, x=koopatroop["x"],
+                                                 y=koopatroop["y"], color=koopatroop["color"]))
         except LookupError:
             print('no koopatroop exist within this level')
-
+        # Add paratroop instances to the map
+        try:
+            for paratroop in self.hub.game_levels[self.level_name]["paratroop_group"]:
+                self.enemy_group.add(Paratroops(hub=hub, x=paratroop["x"], y=paratroop["y"]))
+        except LookupError:
+            print('no paratroop exist within this level')
         # Add floor collision instances to the map
         try:
             for collision in self.hub.game_levels[self.level_name]["collision_group"]:
@@ -542,6 +604,14 @@ class GameScreen:
                                             theme=self.hub.game_levels[self.level_name]["theme"]))
         except LookupError:
             print('no bricks exist within this level')
+        # Add platform Instance
+        try:
+
+            print(len(self.hub.game_levels[self.level_name]["platforms"]))
+            for platform in self.hub.game_levels[self.level_name]["platforms"]:
+                self.platform_group.add(Platform(hub=hub, x=platform["x"], y=platform["y"], name=platform["name"]))
+        except LookupError:
+            print('no platform exist within this level')
 
         # Add Coin Instance
         try:
@@ -663,6 +733,9 @@ class GameScreen:
             for brick in self.brick_group:
                 brick.rect.x = brick.original_pos[0] - self.camera.world_offset_x
 
+            for platform in self.platform_group:
+                platform.rect.x = platform.original_pos[0] - self.camera.world_offset_x
+
             for piece in self.brickpieces_group:
                 piece.rect.x = piece.original_pos[0] - self.camera.world_offset_x
 
@@ -731,6 +804,11 @@ class GameScreen:
         for brick in self.brick_group:
             brick.update()
 
+    def update_platform_group(self):
+        """ Update Platform Logic"""
+        for platform in self.platform_group:
+            platform.update()
+
     def update_brickpieces_group(self):
         """ Update pieces logic"""
         for pieces in self.brickpieces_group:
@@ -776,6 +854,11 @@ class GameScreen:
         """ Draw bricks onto the screen """
         for brick in self.brick_group:
             brick.draw()
+
+    def draw_platform_group(self):
+        """ Draw Platform onto the screen"""
+        for platform in self.platform_group:
+            platform.draw()
 
     def draw_brickpieces_group(self):
         """ Draw broken bricks on screen"""
