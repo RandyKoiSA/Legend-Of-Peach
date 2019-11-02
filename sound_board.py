@@ -29,6 +29,7 @@ class SoundBoard:
         self.vine = pygame.mixer.Sound('wavs/smb_vine.wav')
         self.warning = pygame.mixer.Sound('wavs/smb_warning.wav')
         self.world_clear = pygame.mixer.Sound('wavs/smb_world_clear.wav')
+        self.set_volume(0.5)
 
     def play_main_theme_overworld(self):
         pygame.mixer.music.load('mp3/01-main-theme-overworld.mp3')
@@ -48,3 +49,29 @@ class SoundBoard:
 
     def stop_music(self):
         pygame.mixer.music.stop()
+
+    def set_volume(self, volume=0.7):
+        self.one_up.set_volume(volume)
+        self.bowser_falls.set_volume(volume)
+        self.bowser_fire.set_volume(volume)
+        self.breakblock.set_volume(volume)
+        self.bump.set_volume(volume)
+        self.coin.set_volume(volume)
+        self.fireball.set_volume(volume)
+        self.fireworks.set_volume(volume)
+        self.flagpole.set_volume(volume)
+        self.gameover.set_volume(volume)
+        self.jump_small.set_volume(volume)
+        self.jump_super.set_volume(volume)
+        self.kick.set_volume(volume)
+        self.mario_die.set_volume(volume)
+        self.pause.set_volume(volume)
+        self.pipe.set_volume(volume)
+        self.powerup.set_volume(volume)
+        self.powerup_appears.set_volume(volume)
+        self.stage_clear.set_volume(volume)
+        self.stage_clear.set_volume(volume)
+        self.stomp.set_volume(volume)
+        self.vine.set_volume(volume)
+        self.warning.set_volume(volume)
+        self.world_clear.set_volume(volume)

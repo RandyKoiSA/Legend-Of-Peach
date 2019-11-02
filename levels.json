@@ -744,7 +744,7 @@
   "1-2-1": {
     "background_image": "imgs/background/1-2/1-2-1.jpg",
     "theme": "0",
-    "spawn_point": [0, 0],
+    "spawn_point": [116, 567],
     "teleporter": [
       {
         "_comment": "teleport to 1-2-2",

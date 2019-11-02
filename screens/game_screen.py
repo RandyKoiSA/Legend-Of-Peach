@@ -308,6 +308,7 @@ class GameScreen:
                 self.hub.gamemode.score += 200
                 self.point_group.add(Points(self.hub, self.point_group, "200pts", coin.rect.centerx, coin.rect.centery))
                 self.hub.gamemode.coins += 1
+                self.hub.sound_board.coin.play()
 
         # Enemy collision with player
         for shell in self.shells_group:
@@ -797,7 +798,7 @@ class GameScreen:
     def update_timer(self):
         """ Update timer, calculates the seconds passed and added it onto the time hud text. """
         if pygame.time.get_ticks() >= self.time_seconds:
-            self.gamemode.time += 1
+            self.gamemode.time -= 1
             self.time_seconds = pygame.time.get_ticks() + 1000
 
     def update_point_group(self):

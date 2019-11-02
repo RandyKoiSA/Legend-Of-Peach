@@ -86,6 +86,9 @@ class Hub:
             self.game_screen.run()
             if self.gamemode.mario_is_dead:
                 if self.gamemode.lives == 0:
+                    # When mario has no more lives
+                    self.gamemode.reset_gamemode()
+                    self.sound_board.gameover.play()
                     self.screen_selector = 1
                 else:
                     self.open_level(self.level_name)
@@ -117,9 +120,9 @@ class Hub:
 
         if theme is "0":
             self.sound_board.play_main_theme_overworld()
-        if theme is "1":
+        elif theme is "1":
             self.sound_board.play_underworld()
-        if theme is "2":
+        elif theme is "2":
             self.sound_board.play_castle()
         else:
             self.sound_board.play_main_theme_overworld()

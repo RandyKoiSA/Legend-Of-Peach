@@ -98,14 +98,17 @@ class Bricks(Sprite):
                 self.coin_total -= 1
                 if self.coin_total <= 0:
                     self.index = 1
+            self.hub.sound_board.coin.play()
         elif self.insides == 'star' or self.insides == 'gshroom' or \
                 self.insides == 'rshroom' or self.insides == 'flower':
             self.bumped_up = True
             self.index = 1
+            self.hub.sound_board.powerup_appears.play()
         else:
             self.bumped_up = True
         if self.rect.y <= (self.rest_height - 20) or self.rect.y >= (self.rest_height + 20):
             self.bumped()
+            self.hub.sound_board.bump.play()
 
     def bumped(self):
         """Bump state actions"""
@@ -155,6 +158,8 @@ class BrickPieces(Sprite):
         self.velY = vely
         self.gravity = hub.GRAVITY
         self.turntimer = 0
+
+        self.hub.sound_board.breakblock.play()
 
     def update(self):
         """Update Brick Piece"""
