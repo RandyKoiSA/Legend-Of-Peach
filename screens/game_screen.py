@@ -16,6 +16,7 @@ from items.mushroom import Magic
 from items.mushroom import Oneup
 from items.fire_flower import Fireflower
 from items.starman import Starman
+from obstacles.pipe import Pipe
 
 
 class GameScreen:
@@ -94,6 +95,9 @@ class GameScreen:
         # Coins to be spawned
         self.coin_group = sprite.Group()
 
+        # Pipe group
+        self.pipe_group = sprite.Group()
+
         # Spawn all instances from the JSON File
         self.spawn_objects(hub)
 
@@ -146,7 +150,7 @@ class GameScreen:
                     dt.set_point_b(self.controller, self.camera)
                 if event.key == K_3:
                     # Developer tool, find location, width, and height based on point A and point B
-                    dt.print_description(self.controller)
+                    dt.print_pipe_json(self.controller)
 
                 if event.key == K_LSHIFT:
                     self.player_group.sprite.throw()
@@ -189,6 +193,7 @@ class GameScreen:
             self.update_fireflower_group()
             self.update_starman_group()
 
+        self.update_pipe_group()
         self.update_point_group()
         self.update_timer()
 
@@ -224,6 +229,7 @@ class GameScreen:
         self.draw_fireflower_group()
         # Draw the starmans
         self.draw_starman_group()
+        self.draw_pipe_group()
         # Draw points
         self.draw_point_group()
 
@@ -589,6 +595,12 @@ class GameScreen:
         except LookupError:
             print('no starmen exist within this level')
 
+        try:
+            for pipe in self.hub.game_levels[self.level_name]["pipe_group"]:
+                self.pipe_group.add(Pipe(hub, pipe["pipe_type"], pipe["x"], pipe["y"]))
+        except LookupError:
+            print('no pipes exist within this level')
+
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
         current_player = Player(hub, self.player_fireball_group, player_spawn_point[0],
@@ -727,6 +739,16 @@ class GameScreen:
             fireball.update()
             fireball.update()
 
+    def update_timer(self):
+        """ Update timer, calculates the seconds passed and added it onto the time hud text. """
+        if pygame.time.get_ticks() >= self.time_seconds:
+            self.gamemode.time -= 1
+            self.time_seconds = pygame.time.get_ticks() + 1000
+
+    def update_pipe_group(self):
+        for pipe in self.pipe_group:
+            pipe.update()
+
 # ADD DRAWING FUNCTIONS HERE
 
     def draw_teleporter_group(self):
@@ -795,12 +817,6 @@ class GameScreen:
         for collision in self.background_collisions:
             collision.draw()
 
-    def update_timer(self):
-        """ Update timer, calculates the seconds passed and added it onto the time hud text. """
-        if pygame.time.get_ticks() >= self.time_seconds:
-            self.gamemode.time -= 1
-            self.time_seconds = pygame.time.get_ticks() + 1000
-
     def update_point_group(self):
         for point in self.point_group:
             point.update()
@@ -812,3 +828,7 @@ class GameScreen:
     def draw_player_fireball_group(self):
         for fireball in self.player_fireball_group:
             fireball.draw()
+
+    def draw_pipe_group(self):
+        for pipe in self.pipe_group:
+            pipe.draw()

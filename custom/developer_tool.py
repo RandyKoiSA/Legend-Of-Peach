@@ -85,3 +85,10 @@ def print_description(controller):
     print('         "width": ' + str(controller.point_b[0] - controller.point_a[0]) + ",")
     print('         "height": ' + str(controller.point_b[1] - controller.point_a[1]))
     print('      },')
+
+def print_pipe_json(controller):
+    print('      {')
+    print('         "pipe_type": ,')
+    print('         "x": ' + str(controller.point_a[0]) + ",")
+    print('         "y": ' + str(controller.point_a[1]))
+    print('      },')
