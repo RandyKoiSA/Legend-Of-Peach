@@ -57,6 +57,7 @@ class Player(Sprite):
         # get current list, image, and rect using
         self.current_list = self.regular_image_idle
         self.current_image = self.current_list[self.index]
+        self.mask = pygame.mask.from_surface(self.current_image)
         self.rect = self.current_image.get_rect()
 
         # Set initial position
@@ -303,6 +304,7 @@ class Player(Sprite):
             self.index %= len(self.current_list)
             self.current_image = self.current_list[self.index]
             self.set_image_direction()
+            self.mask = pygame.mask.from_surface(self.current_image)
 
         if self.mario_motion_state is "dying":
             # MARIO DIEING STATE
