@@ -103,10 +103,10 @@
     ],
     "bricks": [
      {
-        "x": 590,
-        "y": 290,
-        "inside": "coin",
-        "powerup": "box",
+        "x": 600,
+        "y": 300,
+        "inside": "opened",
+        "powerup": "still",
         "name": "brick"
       },
      {

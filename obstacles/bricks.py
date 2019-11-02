@@ -81,7 +81,10 @@ class Bricks(Sprite):
 
     def resting(self):
         """State when not moving"""
-        if self.insides == 'coins':
+        if self.insides == 'opened':
+            self.opened()
+            self.state = self.hub.OPENED
+        elif self.insides == 'coins':
             if self.coin_total <= 0:
                 self.state = self.hub.OPENED
             else:
