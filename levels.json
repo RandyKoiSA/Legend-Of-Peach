@@ -102,7 +102,14 @@
       }
     ],
     "bricks": [
-           {
+     {
+        "x": 590,
+        "y": 290,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+     {
         "x": 771,
         "y": 422,
         "inside": "coin",
@@ -709,6 +716,13 @@
       {
         "x": 9515,
         "y": 60
+      }
+    ],
+    "firebar_group": [
+      {
+        "x": 600,
+        "y": 300,
+        "dir": "RIGHT"
       }
     ]
   },

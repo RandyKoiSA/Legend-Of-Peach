@@ -12,6 +12,7 @@ from AI.enemy import Piranhaplant
 from obstacles.bricks import Bricks
 from obstacles.bricks import BrickPieces
 from obstacles.platform import Platform
+from obstacles.firebar import Firebar
 from items.coins import Coins
 from custom import developer_tool as dt
 from items.mushroom import Magic
@@ -107,8 +108,11 @@ class GameScreen:
         # Flag Pole Group
         self.flagpole_group = sprite.Group()
 
+        # Firebar Group
+        self.firebar_group = sprite.Group()
         # Spawn all instances from the JSON File
         self.spawn_objects(hub)
+
 
     def run(self):
         """ Run through the loop process"""
@@ -202,6 +206,7 @@ class GameScreen:
             self.update_mushroom_group()
             self.update_fireflower_group()
             self.update_starman_group()
+            self.update_firebar_group()
 
         self.update_pipe_group()
         self.update_point_group()
@@ -249,6 +254,8 @@ class GameScreen:
         self.draw_flagpole_group()
         # Draw points
         self.draw_point_group()
+        # Draw Firebar
+        self.draw_firebar_group()
 
         # if self.controller.toggle_grid:
         # Developer tool, Display grid coordinates if toggled
@@ -267,6 +274,12 @@ class GameScreen:
 
     def update_world_collision(self):
         """ update world collisions"""
+
+        for firebar in self.firebar_group:
+            if pygame.sprite.collide_mask(self.player_group.sprite, firebar):
+                print("Mario hit Firbar")
+                  # self.player_group.sprite.get_smaller()
+
         # Platform Collision with player
         for platform in self.platform_group:
             if platform.rect.colliderect(self.player_group.sprite.rect):
@@ -295,7 +308,7 @@ class GameScreen:
         # Brick Collision with player
         for brick in self.brick_group:
             if brick.rect.colliderect(self.player_group.sprite.rect):
-                if self.player_group.sprite.rect.bottom <= brick.rect.top + 25:
+                if self.player_group.sprite.rect.bottom <= brick.rect.top + 10:
                     self.player_group.sprite.rect.bottom = brick.rect.top
                     self.player_group.sprite.reset_jump()
                     self.player_group.sprite.reset_bounce()
@@ -683,6 +696,12 @@ class GameScreen:
         except LookupError:
             print('no flagpole exist within this level')
 
+        try:
+            for firebar in self.hub.game_levels[self.level_name]["firebar_group"]:
+                self.firebar_group.add(Firebar(self.hub, firebar["x"], firebar["y"], firebar["dir"]))
+        except LookupError:
+            print('no firebar exist within this level')
+
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
         current_player = Player(hub, self.player_fireball_group, player_spawn_point[0],
@@ -741,6 +760,9 @@ class GameScreen:
 
             for plant in self.plant_group:
                 plant.rect.x = plant.original_pos[0] - self.camera.world_offset_x
+
+            for firebar in self.firebar_group:
+                firebar.rect.centerx = firebar.original_pos[0] - self.camera.world_offset_x + 20
 
             for coin in self.coin_group:
                 coin.rect.x = coin.original_pos[0] - self.camera.world_offset_x
@@ -835,6 +857,10 @@ class GameScreen:
             self.gamemode.time -= 1
             self.time_seconds = pygame.time.get_ticks() + 1000
 
+    def update_firebar_group(self):
+        for firebar in self.firebar_group:
+            firebar.update()
+
     def update_pipe_group(self):
         for pipe in self.pipe_group:
             pipe.update()
@@ -927,6 +953,10 @@ class GameScreen:
     def draw_player_fireball_group(self):
         for fireball in self.player_fireball_group:
             fireball.draw()
+
+    def draw_firebar_group(self):
+        for firebar in self.firebar_group:
+            firebar.draw()
 
     def draw_pipe_group(self):
         for pipe in self.pipe_group:
