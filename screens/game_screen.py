@@ -17,6 +17,7 @@ from items.mushroom import Oneup
 from items.fire_flower import Fireflower
 from items.starman import Starman
 from obstacles.pipe import Pipe
+from obstacles.flag_pole import Flag_Pole
 
 
 class GameScreen:
@@ -98,6 +99,9 @@ class GameScreen:
         # Pipe group
         self.pipe_group = sprite.Group()
 
+        # Flag Pole Group
+        self.flagpole_group = sprite.Group()
+
         # Spawn all instances from the JSON File
         self.spawn_objects(hub)
 
@@ -150,7 +154,7 @@ class GameScreen:
                     dt.set_point_b(self.controller, self.camera)
                 if event.key == K_3:
                     # Developer tool, find location, width, and height based on point A and point B
-                    dt.print_pipe_json(self.controller)
+                    dt.print_description(self.controller)
 
                 if event.key == K_LSHIFT:
                     self.player_group.sprite.throw()
@@ -195,6 +199,7 @@ class GameScreen:
 
         self.update_pipe_group()
         self.update_point_group()
+        self.update_flagpole_group()
         self.update_timer()
 
     def run_draw(self):
@@ -230,6 +235,7 @@ class GameScreen:
         # Draw the starmans
         self.draw_starman_group()
         self.draw_pipe_group()
+        self.draw_flagpole_group()
         # Draw points
         self.draw_point_group()
 
@@ -601,6 +607,12 @@ class GameScreen:
         except LookupError:
             print('no pipes exist within this level')
 
+        try:
+            for flagpole in self.hub.game_levels[self.level_name]["flagpole_group"]:
+                self.flagpole_group.add(Flag_Pole(self.hub, flagpole["x"], flagpole["y"]))
+        except LookupError:
+            print('no flagpole exist within this level')
+
         # Add player instance
         player_spawn_point = self.hub.game_levels[self.level_name]["spawn_point"]
         current_player = Player(hub, self.player_fireball_group, player_spawn_point[0],
@@ -749,6 +761,10 @@ class GameScreen:
         for pipe in self.pipe_group:
             pipe.update()
 
+    def update_flagpole_group(self):
+        for flagpole in self.flagpole_group:
+            flagpole.update(self.player_group.sprite.rect, self.point_group)
+
 # ADD DRAWING FUNCTIONS HERE
 
     def draw_teleporter_group(self):
@@ -832,3 +848,7 @@ class GameScreen:
     def draw_pipe_group(self):
         for pipe in self.pipe_group:
             pipe.draw()
+
+    def draw_flagpole_group(self):
+        for flagpole in self.flagpole_group:
+            flagpole.draw()
