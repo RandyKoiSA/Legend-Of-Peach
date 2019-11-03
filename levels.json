@@ -1854,6 +1854,57 @@
       }
     ],
     "gumba_group": [],
+    "bricks": [
+      {
+      "x": 1450,
+      "y": 263,
+      "inside": "rshroom",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 5130,
+      "y": 420,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 5280,
+      "y": 420,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 5420,
+      "y": 420,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 5180,
+      "y":  220,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 5330,
+      "y": 220,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 5470,
+      "y": 220,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      }
+    ],
     "collision_group": [
       {
         "_comment": "base floor 1",
