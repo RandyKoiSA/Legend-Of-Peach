@@ -20,7 +20,7 @@ class Firebar(Sprite):
 
         self.index = 0
         self.increment = 1
-        self.frameRate = 40
+        self.frameRate = 30
         self.clock = 0
         self.image_index = []
         self.setimages()
@@ -33,7 +33,7 @@ class Firebar(Sprite):
         # self.mask = pygame.mask.from_surface(self.image)
         self.mask = pygame.mask.from_surface(self.image)
         self.mask2 = pygame.mask.Mask((80, 80), True)
-        self.mask.erase(self.mask2, (90, 90))
+        self.mask.erase(self.mask2, (95, 95))
         self.direction = direction
 
     def setimages(self):
@@ -52,7 +52,7 @@ class Firebar(Sprite):
             self.image = self.image_index[self.index]
             self.image = pygame.transform.scale(self.image, self.scale)
             self.mask = pygame.mask.from_surface(self.image)
-            self.mask.erase(self.mask2, (80, 80))
+            self.mask.erase(self.mask2, (95, 95))
 
     def check_direction(self):
         if self.direction == self.hub.LEFT:

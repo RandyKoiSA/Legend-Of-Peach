@@ -42,7 +42,8 @@ class Enemy(Sprite):
         self.wait_timer = 0
 
         # Physics Values
-        self.gravity = self.hub.GRAVITY
+        self.gravity = 0
+        self.set_gravity()
         self.velocity = 0
         self.check_direction()
 
@@ -52,6 +53,10 @@ class Enemy(Sprite):
         self.isflipped = False
         self.isbouncing = False
         self.checked = False
+
+    def set_gravity(self):
+        if self.name is not "piranhaplant":
+            self.gravity = self.hub.GRAVITY
 
     def check_direction(self):
         if self.state == self.hub.STAND:
@@ -64,7 +69,7 @@ class Enemy(Sprite):
     def check_cam(self):
         if self.camera.world_offset_x + self.screen_rect.right > self.original_pos[0] and\
          not self.checked:
-            if self.name == "piranhaplant " or self.name == "paratroop":
+            if self.name == "piranhaplant" or self.name == "paratroop":
                 self.rect.x = self.original_pos[0]
                 self.rect.y = self.original_pos[1]
                 self.state = self.hub.FALL
@@ -102,7 +107,7 @@ class Enemy(Sprite):
     def check_collision(self):
         if self.rect.right <= 0:
             self.kill()
-            print(self.name + " is Ded")
+            print(self.name + " is Ded to left at x:" + str(self.rect.x) + "y:"+ str(self.rect.y))
 
     def check_fell(self):
         if self.rect.top == self.screen_rect.bottom:
@@ -134,6 +139,7 @@ class Enemy(Sprite):
 
     def rise(self):
         self.gravity = 0
+        self.velX = 0
         self.velY = 0
         self.update_image()
         if self.rise_counter < 0:
@@ -148,6 +154,7 @@ class Enemy(Sprite):
     def fall(self):
         self.gravity = 0
         self.velY = 0
+        self.velX = 0
         self.update_image()
         if self.rect.y <= (self.original_pos[1] - 200) or self.rect.y >= (self.original_pos[1] + 200):
             self.rect.y = self.original_pos[1]
