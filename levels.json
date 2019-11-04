@@ -102,335 +102,313 @@
       }
     ],
     "bricks": [
-     {
-        "x": 600,
-        "y": 300,
-        "inside": "opened",
-        "powerup": "still",
-        "name": "brick"
-      },
-     {
-        "x": 771,
-        "y": 422,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-       {
-        "x": 1014,
-        "y": 422,
-        "inside": "rshroom",
-        "powerup": "box",
-        "name": "brick"
-      },
-     {
-        "x": 1109,
-        "y": 422,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-     {
-        "x": 4540,
-        "y": 216,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
+      {
+      "x": 771,
+      "y": 422,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 5112,
-        "y": 422,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-     {
-        "x": 5257,
-        "y": 422,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-     {
-        "x": 5401,
-        "y": 422,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
+      "x": 1014,
+      "y": 422,
+      "inside": "rshroom",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 5257,
-        "y": 216,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
+      "x": 1109,
+      "y": 422,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 6220,
-        "y": 216,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-           {
-        "x": 8200,
-        "y": 422,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-           {
-        "x": 6270,
-        "y": 216,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-     {
-        "x": 3764,
-        "y": 422,
-        "inside": "rshroom",
-        "powerup": "box",
-        "name": "brick"
-      },
-             {
-        "x": 1060,
-        "y": 216,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-       {
-        "x": 771,
-        "y": 422,
-        "inside": "coin",
-        "powerup": "box",
-        "name": "brick"
-      },
-                 {
-        "x": 153,
-        "y": 422,
-        "inside": "coins",
-        "powerup": "coin",
-        "name": "brick"
+      "x": 4540,
+      "y": 216,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 965,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
+      "x": 5112,
+      "y": 422,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 1060,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
+      "x": 5257,
+      "y": 422,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 1157,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
+      "x": 5401,
+      "y": 422,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 3714,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-            {
-        "x": 3810,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
+      "x": 5257,
+      "y": 216,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 3857,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
+      "x": 6220,
+      "y": 216,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 3907,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
+      "x": 8200,
+      "y": 422,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 3957,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4007,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4057,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4107,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4157,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4207,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4390,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4440,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4490,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4540,
-        "y": 422,
-        "inside": "coins",
-        "powerup": "Coin",
-        "name": "brick"
-      },
-                  {
-        "x": 4823,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 4873,
-        "y": 422,
-        "inside": "star",
-        "powerup": "star",
-        "name": "brick"
+      "x": 6270,
+      "y": 216,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
       },
       {
-        "x": 5690,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
+      "x": 3764,
+      "y": 422,
+      "inside": "rshroom",
+      "powerup": "box",
+      "name": "brick"
       },
-                  {
-        "x": 5835,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 5885,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 5935,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 6170,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 6220,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 6270,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 6317,
-        "y": 218,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 8100,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 8150,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      },
-                  {
-        "x": 8245,
-        "y": 422,
-        "inside": "None",
-        "powerup": "Brick",
-        "name": "brick"
-      }
-
-    ],
-    "platforms": [
       {
-        "x": 100,
-        "y": 300,
-        "name": "platform"
+      "x": 1060,
+      "y": 216,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 771,
+      "y": 422,
+      "inside": "coin",
+      "powerup": "box",
+      "name": "brick"
+      },
+      {
+      "x": 965,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 1060,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 1157,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 3714,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 3810,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 3857,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 3907,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 3957,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4007,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4057,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4107,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4157,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4207,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4390,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4440,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4490,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4540,
+      "y": 422,
+      "inside": "coins",
+      "powerup": "Coin",
+      "name": "brick"
+      },
+      {
+      "x": 4823,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 4873,
+      "y": 422,
+      "inside": "star",
+      "powerup": "star",
+      "name": "brick"
+      },
+      {
+      "x": 5690,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 5835,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 5885,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 5935,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 6170,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 6220,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 6270,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 6317,
+      "y": 218,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 8100,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 8150,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 8245,
+      "y": 422,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
       }
     ],
     "collision_group": [
@@ -717,13 +695,6 @@
         "x": 9515,
         "y": 60
       }
-    ],
-    "firebar_group": [
-      {
-        "x": 600,
-        "y": 300,
-        "dir": "RIGHT"
-      }
     ]
   },
   "1-1-2": {
@@ -806,6 +777,7 @@
         "world_offset": 0
       }
     ],
+
     "collision_group": [
       {
         "_comment": "base floor",
@@ -1397,7 +1369,24 @@
         "y": 580,
         "name": "platform"
       }
-    ]
+    ],
+    "pipe_group": [
+      {
+        "pipe_type": 1,
+         "x": 4977,
+         "y": 462
+      },
+      {
+        "pipe_type": 2,
+         "x": 5266,
+         "y": 411
+      },
+      {
+        "pipe_type": 0,
+         "x": 5555,
+         "y": 515
+      }
+      ]
   },
   "1-2-3": {
     "_comment": "dungeon level",
@@ -1847,7 +1836,41 @@
     "spawn_point": [0, 230],
     "teleporter": [
       {
-        "x": 7418,
+        "x": 6965,
+        "y": 532,
+        "level_name": "2-1-1",
+        "world_offset": 0
+      },      {
+        "x": 7065,
+        "y": 532,
+        "level_name": "2-1-1",
+        "world_offset": 0
+      },      {
+        "x": 7165,
+        "y": 532,
+        "level_name": "2-1-1",
+        "world_offset": 0
+      },
+      {
+        "x": 7265,
+        "y": 532,
+        "level_name": "2-1-1",
+        "world_offset": 0
+      },
+      {
+        "x": 7365,
+        "y": 532,
+        "level_name": "2-1-1",
+        "world_offset": 0
+      },
+      {
+        "x": 7465,
+        "y": 532,
+        "level_name": "2-1-1",
+        "world_offset": 0
+      },
+       {
+        "x": 7565,
         "y": 532,
         "level_name": "2-1-1",
         "world_offset": 0
@@ -1858,7 +1881,7 @@
       {
       "x": 1450,
       "y": 263,
-      "inside": "rshroom",
+      "inside": "flower",
       "powerup": "box",
       "name": "brick"
       },
@@ -1866,46 +1889,82 @@
       "x": 5130,
       "y": 420,
       "inside": "coin",
-      "powerup": "box",
+      "powerup": "invis",
       "name": "brick"
       },
       {
       "x": 5280,
       "y": 420,
       "inside": "coin",
-      "powerup": "box",
+      "powerup": "invis",
       "name": "brick"
       },
       {
       "x": 5420,
       "y": 420,
       "inside": "coin",
-      "powerup": "box",
+      "powerup": "invis",
       "name": "brick"
       },
       {
       "x": 5180,
       "y":  220,
       "inside": "coin",
-      "powerup": "box",
+      "powerup": "invis",
       "name": "brick"
       },
       {
       "x": 5330,
       "y": 220,
       "inside": "coin",
-      "powerup": "box",
+      "powerup": "invis",
       "name": "brick"
       },
       {
       "x": 5470,
       "y": 220,
       "inside": "coin",
-      "powerup": "box",
+      "powerup": "invis",
       "name": "brick"
+      },
+      {
+        "x": 1112,
+        "y": 264,
+        "inside": "opened",
+        "powerup": "still",
+        "name": "brick"
+
+      },
+      {
+        "x": 1788,
+        "y": 263,
+        "inside": "opened",
+        "powerup": "still",
+        "name": "brick"
+      },
+      {
+        "x": 3866,
+        "y": 160,
+        "inside": "opened",
+        "powerup": "still",
+        "name": "brick"
+      },
+      {
+        "x": 4445,
+        "y": 419,
+        "inside": "opened",
+        "powerup": "still",
+        "name": "brick"
       }
     ],
     "collision_group": [
+      {
+        "_comment": "Bridge",
+         "x": 6186,
+         "y": 470,
+         "width": 773,
+         "height": 80
+      },
       {
         "_comment": "base floor 1",
         "x": 0,
@@ -2081,6 +2140,44 @@
          "width": 711,
          "height": 41
       }
+    ],
+    "firebar_group":[
+      {
+        "x": 1450,
+        "y": 471 ,
+        "dir": "RIGHT"
+      },
+      {
+        "x": 2368,
+        "y": 263,
+        "dir": "RIGHT"
+      },
+      {
+        "x": 2899,
+        "y": 263,
+        "dir": "RIGHT"
+      },
+      {
+        "x": 3238,
+        "y": 263,
+        "dir": "RIGHT"
+      },
+      {
+        "x": 3673,
+        "y": 419,
+        "dir": "RIGHT"
+      },
+      {
+        "x": 4060,
+        "y": 419,
+        "dir": "RIGHT"
+      },
+      {
+        "x":  4252,
+        "y": 160,
+        "dir": "LEFT"
+      }
+
     ]
   },
   "2-1-1": {
@@ -2102,7 +2199,31 @@
       }
     ],
     "gumba_group": [],
+    "bricks": [
+      {
+      "x": 724,
+      "y": 439,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 774,
+      "y": 439,
+      "inside": "rshroom",
+      "powerup": "Brick",
+      "name": "brick"
+      },
+      {
+      "x": 824,
+      "y": 439,
+      "inside": "None",
+      "powerup": "Brick",
+      "name": "brick"
+      }
+      ],
     "collision_group": [
+
       {
          "x": 1,
          "y": 638,

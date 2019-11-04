@@ -113,7 +113,6 @@ class GameScreen:
         # Spawn all instances from the JSON File
         self.spawn_objects(hub)
 
-
     def run(self):
         """ Run through the loop process"""
         self.run_event()
@@ -215,8 +214,6 @@ class GameScreen:
 
     def run_draw(self):
         """ Draw all instances onto the screen """
-        # Draw background image
-        self.screen.blit(self.bg_image, self.bg_rect)
         # Draw test collision boxes
         self.draw_world_collision_group()
         # Draw teleporter collision boxes
@@ -274,167 +271,166 @@ class GameScreen:
 
     def update_world_collision(self):
         """ update world collisions"""
+        if self.player_group.sprite.mario_motion_state is not "dying":
+            for firebar in self.firebar_group:
+                if pygame.sprite.collide_mask(self.player_group.sprite, firebar):
+                    # print("Mario hit Firbar")
+                    self.player_group.sprite.get_smaller()
 
-        for firebar in self.firebar_group:
-            if pygame.sprite.collide_mask(self.player_group.sprite, firebar):
-                print("Mario hit Firbar")
-                  # self.player_group.sprite.get_smaller()
-
-        # Platform Collision with player
-        for platform in self.platform_group:
-            if platform.rect.colliderect(self.player_group.sprite.rect):
-                if self.player_group.sprite.rect.bottom <= platform.rect.top + 25:
-                    platform.state = self.hub.FALL
-                    self.player_group.sprite.rect.bottom = platform.rect.top
-                    self.player_group.sprite.reset_jump()
-                    self.player_group.sprite.reset_bounce()
-                # check if the player hits the left wall
-                elif self.player_group.sprite.rect.right < platform.rect.left + 20:
-                    self.player_group.sprite.rect.right = platform.rect.left
-                # check if the player hits the right wall
-                elif self.player_group.sprite.rect.left > platform.rect.right - 20:
-                    self.player_group.sprite.rect.left = platform.rect.right
-                else:
-                    self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
-            else:
-                platform.state = self.hub.RESTING
-
-        # Remove collisions that are no longer needed
-        for collision in self.background_collisions:
-            past_screen = collision.update()
-            if past_screen:
-                self.background_collisions.remove(collision)
-
-        # Brick Collision with player
-        for brick in self.brick_group:
-            if brick.rect.colliderect(self.player_group.sprite.rect):
-                if self.player_group.sprite.rect.bottom <= brick.rect.top + 10:
-                    self.player_group.sprite.rect.bottom = brick.rect.top
-                    self.player_group.sprite.reset_jump()
-                    self.player_group.sprite.reset_bounce()
-                # check if the player hits the left wall
-                elif self.player_group.sprite.rect.right < brick.rect.left + 20:
-                    self.player_group.sprite.rect.right = brick.rect.left
-                # check if the player hits the right wall
-                elif self.player_group.sprite.rect.left > brick.rect.right - 20:
-                    self.player_group.sprite.rect.left = brick.rect.right
-                else:
-                    self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
-                    if brick.state == self.hub.RESTING:
-                        brick.state = self.hub.BUMPED
-                        if brick.coin_total > 0 and (brick.insides == 'coins' or brick.insides == 'coin'):
-                            self.coin_group.add(Coins(hub=self.hub, x=brick.rect.x + 10 + self.camera.world_offset_x,
-                                                      y=brick.rect.y - 50, name="Coin"+str(brick.coin_total),
-                                                      state="floating"))
-                        elif brick.insides == 'star':
-                            self.starman_group.add(Starman(hub=self.hub,
-                                                           x=brick.rect.x + 10 + self.camera.world_offset_x,
-                                                           y=brick.rect.y-5, name="Star"))
-                        elif brick.insides == 'rshroom':
-                            self.magic_mushroom_group.add(Magic(hub=self.hub,
-                                                                x=brick.rect.x + self.camera.world_offset_x,
-                                                                y=brick.rect.y-5))
-                        elif brick.insides == 'gshroom':
-                            self.oneup_mushroom_group.add(Oneup(hub=self.hub,
-                                                                x=brick.rect.x + self.camera.world_offset_x,
-                                                                y=brick.rect.y-5))
-                        elif brick.insides == 'flower':
-                            self.fireflower_group.add(Fireflower(hub=self.hub,
-                                                                 x=brick.rect.x + self.camera.world_offset_x,
-                                                                 y=brick.rect.y-5, name="Flower"))
-                        else:
-                            print("Make a brick piece")
-                            self.brickpieces_group.add(
-                                BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
-                                            y=brick.rect.y - 25, velx=-5, vely=-12, theme=brick.theme),
-                                BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
-                                            y=brick.rect.y - 25, velx=5, vely=-12, theme=brick.theme),
-                                BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
-                                            y=brick.rect.y + 25, velx=-5, vely=-5, theme=brick.theme),
-                                BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
-                                            y=brick.rect.y + 25, velx=5, vely=-5, theme=brick.theme)
-                            )
-
-        # Coin Collision with player
-        for coin in self.coin_group:
-            if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
-                coin.kill()
-                self.hub.gamemode.score += 200
-                self.point_group.add(Points(self.hub, self.point_group, "200pts", coin.rect.centerx, coin.rect.centery))
-                self.hub.gamemode.coins += 1
-                self.hub.sound_board.coin.play()
-
-        # Enemy collision with player
-        for shell in self.shells_group:
-            if shell.rect.colliderect(self.player_group.sprite.rect):
-                shell.move = self.player_group.sprite.mario_facing_direction
-                shell.state = self.hub.SLIDE
-                if shell.move == self.hub.LEFT:
-                    shell.rect.right = self.player_group.sprite.rect.left
-                else:
-                    shell.rect.left = self.player_group.sprite.rect.right
-                if self.player_group.sprite.rect.bottom < shell.rect.top + 20:
-                    self.player_group.sprite.reset_bounce()
-                    self.player_group.sprite.bounce()
-                shell.kill()
-
-                self.projectile_group.add(shell)
-
-        for enemy in self.enemy_group:
-            if enemy.rect.colliderect(self.player_group.sprite.rect):
-                if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
-                    if enemy.name == "piranhaplant":
-                        self.player_group.sprite.get_smaller()
-                        # print("Mario DED")
+            # Platform Collision with player
+            for platform in self.platform_group:
+                if platform.rect.colliderect(self.player_group.sprite.rect):
+                    if self.player_group.sprite.rect.bottom <= platform.rect.top + 25:
+                        platform.state = self.hub.FALL
+                        self.player_group.sprite.rect.bottom = platform.rect.top
+                        self.player_group.sprite.reset_jump()
+                        self.player_group.sprite.reset_bounce()
+                    # check if the player hits the left wall
+                    elif self.player_group.sprite.rect.right < platform.rect.left + 20:
+                        self.player_group.sprite.rect.right = platform.rect.left
+                    # check if the player hits the right wall
+                    elif self.player_group.sprite.rect.left > platform.rect.right - 20:
+                        self.player_group.sprite.rect.left = platform.rect.right
                     else:
+                        self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
+                else:
+                    platform.state = self.hub.RESTING
+
+            # Remove collisions that are no longer needed
+            for collision in self.background_collisions:
+                past_screen = collision.update()
+                if past_screen:
+                    self.background_collisions.remove(collision)
+
+            # Brick Collision with player
+            for brick in self.brick_group:
+                if brick.rect.colliderect(self.player_group.sprite.rect):
+                    if self.player_group.sprite.rect.bottom <= brick.rect.top + 10:
+                        self.player_group.sprite.rect.bottom = brick.rect.top
+                        self.player_group.sprite.reset_jump()
+                        self.player_group.sprite.reset_bounce()
+                    # check if the player hits the left wall
+                    elif self.player_group.sprite.rect.right < brick.rect.left + 20:
+                        self.player_group.sprite.rect.right = brick.rect.left
+                    # check if the player hits the right wall
+                    elif self.player_group.sprite.rect.left > brick.rect.right - 20:
+                        self.player_group.sprite.rect.left = brick.rect.right
+                    else:
+                        self.player_group.sprite.counter_jump = self.player_group.sprite.jump_max_height
+                        if brick.state == self.hub.RESTING:
+                            brick.state = self.hub.BUMPED
+                            if brick.coin_total > 0 and (brick.insides == 'coins' or brick.insides == 'coin'):
+                                self.coin_group.add(Coins(hub=self.hub, x=brick.rect.x + 10 + self.camera.world_offset_x,
+                                                          y=brick.rect.y - 50, name="Coin"+str(brick.coin_total),
+                                                          state="floating"))
+                            elif brick.insides == 'star':
+                                self.starman_group.add(Starman(hub=self.hub,
+                                                               x=brick.rect.x + 10 + self.camera.world_offset_x,
+                                                               y=brick.rect.y-5, name="Star"))
+                            elif brick.insides == 'rshroom':
+                                self.magic_mushroom_group.add(Magic(hub=self.hub,
+                                                                    x=brick.rect.x + self.camera.world_offset_x,
+                                                                    y=brick.rect.y-5))
+                            elif brick.insides == 'gshroom':
+                                self.oneup_mushroom_group.add(Oneup(hub=self.hub,
+                                                                    x=brick.rect.x + self.camera.world_offset_x,
+                                                                    y=brick.rect.y-5))
+                            elif brick.insides == 'flower':
+                                self.fireflower_group.add(Fireflower(hub=self.hub,
+                                                                     x=brick.rect.x + self.camera.world_offset_x,
+                                                                     y=brick.rect.y-5, name="Flower"))
+                            else:
+                                print("Make a brick piece")
+                                self.brickpieces_group.add(
+                                    BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
+                                                y=brick.rect.y - 25, velx=-5, vely=-12, theme=brick.theme),
+                                    BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
+                                                y=brick.rect.y - 25, velx=5, vely=-12, theme=brick.theme),
+                                    BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
+                                                y=brick.rect.y + 25, velx=-5, vely=-5, theme=brick.theme),
+                                    BrickPieces(hub=self.hub, x=brick.rect.x + 25 + self.camera.world_offset_x,
+                                                y=brick.rect.y + 25, velx=5, vely=-5, theme=brick.theme)
+                                )
+
+            # Coin Collision with player
+            for coin in self.coin_group:
+                if coin.rect.colliderect(self.player_group.sprite.rect) and coin.state == "resting":
+                    coin.kill()
+                    self.hub.gamemode.score += 200
+                    self.point_group.add(Points(self.hub, self.point_group, "200pts", coin.rect.centerx, coin.rect.centery))
+                    self.hub.gamemode.coins += 1
+                    self.hub.sound_board.coin.play()
+
+            # Enemy collision with player
+            for shell in self.shells_group:
+                if shell.rect.colliderect(self.player_group.sprite.rect):
+                    shell.move = self.player_group.sprite.mario_facing_direction
+                    shell.state = self.hub.SLIDE
+                    if shell.move == self.hub.LEFT:
+                        shell.rect.right = self.player_group.sprite.rect.left
+                    else:
+                        shell.rect.left = self.player_group.sprite.rect.right
+                    if self.player_group.sprite.rect.bottom < shell.rect.top + 20:
                         self.player_group.sprite.reset_bounce()
                         self.player_group.sprite.bounce()
-                        enemy.state = self.hub.STOMPED
-                        enemy.isstomped = True
-                        enemy.death_timer = pygame.time.get_ticks()
-                        enemy.kill()
-                        self.point_group.add(Points(self.hub, self.point_group, "100pts",
-                                                    enemy.rect.centerx + self.camera.world_offset_x, enemy.rect.centery))
-                        if enemy.name == "paratroop":
-                            self.enemy_group.add(Koopatroops(hub=self.hub, x=enemy.rect.x + self.camera.world_offset_x
-                                                             , y=enemy.rect.y + 50
-                                                             , color=2))
-                        elif enemy.name == "koopatroop":
-                            self.shells_group.add(enemy)
+                    shell.kill()
+
+                    self.projectile_group.add(shell)
+
+            for enemy in self.enemy_group:
+                if enemy.rect.colliderect(self.player_group.sprite.rect):
+                    if self.player_group.sprite.rect.bottom < enemy.rect.top + 20:
+                        if enemy.name == "piranhaplant":
+                            self.player_group.sprite.get_smaller()
+                            # print("Mario DED")
                         else:
-                            self.death_group.add(enemy)
-                        # self.player_group.sprite.is_jumping = False
-                else:
-                    # If Mario collides in x direction
-                    if self.player_group.sprite.rect.right < enemy.rect.left + 20:
-                        self.player_group.sprite.get_smaller()
-                    elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
-                        self.player_group.sprite.get_smaller()
+                            self.player_group.sprite.reset_bounce()
+                            self.player_group.sprite.bounce()
+                            enemy.state = self.hub.STOMPED
+                            enemy.isstomped = True
+                            enemy.death_timer = pygame.time.get_ticks()
+                            enemy.kill()
+                            self.point_group.add(Points(self.hub, self.point_group, "100pts",
+                                                        enemy.rect.centerx + self.camera.world_offset_x, enemy.rect.centery))
+                            if enemy.name == "paratroop":
+                                self.enemy_group.add(Koopatroops(hub=self.hub, x=enemy.rect.x + self.camera.world_offset_x
+                                                                 , y=enemy.rect.y + 50
+                                                                 , color=2))
+                            elif enemy.name == "koopatroop":
+                                self.shells_group.add(enemy)
+                            else:
+                                self.death_group.add(enemy)
+                            # self.player_group.sprite.is_jumping = False
+                    else:
+                        # If Mario collides in x direction
+                        if self.player_group.sprite.rect.right < enemy.rect.left + 20:
+                            self.player_group.sprite.get_smaller()
+                        elif self.player_group.sprite.rect.left > enemy.rect.right - 20:
+                            self.player_group.sprite.get_smaller()
 
-        for mushroom in self.magic_mushroom_group:
-            if mushroom.rect.colliderect(self.player_group.sprite.rect):
-                for player in self.player_group:
-                    player.get_bigger()
-                mushroom.kill()
+            for mushroom in self.magic_mushroom_group:
+                if mushroom.rect.colliderect(self.player_group.sprite.rect):
+                    for player in self.player_group:
+                        player.get_bigger()
+                    mushroom.kill()
 
-        for mushroom in self.oneup_mushroom_group:
-            if mushroom.rect.colliderect(self.player_group.sprite.rect):
-                mushroom.kill()
-                self.gamemode.lives += 1
+            for mushroom in self.oneup_mushroom_group:
+                if mushroom.rect.colliderect(self.player_group.sprite.rect):
+                    mushroom.kill()
+                    self.gamemode.lives += 1
 
-        for flower in self.fireflower_group:
-            if flower.rect.colliderect(self.player_group.sprite.rect):
-                for player in self.player_group:
-                    player.become_fire_mario()
-                flower.kill()
+            for flower in self.fireflower_group:
+                if flower.rect.colliderect(self.player_group.sprite.rect):
+                    for player in self.player_group:
+                        player.become_fire_mario()
+                    flower.kill()
 
-        for starman in self.starman_group:
-            if starman.rect.colliderect(self.player_group.sprite.rect):
-                # invincible mario code goes here
-                starman.kill()
+            for starman in self.starman_group:
+                if starman.rect.colliderect(self.player_group.sprite.rect):
+                    # invincible mario code goes here
+                    starman.kill()
 
-        # Player has hit the world's floor or wall such as pipes and stairs
-        if self.player_group.sprite.mario_motion_state is not "dying":
+            # Player has hit the world's floor or wall such as pipes and stairs
             for collision in self.background_collisions:
                 if collision.rect.colliderect(self.player_group.sprite.rect):
                     # check if the player is standing on top
@@ -520,7 +516,6 @@ class GameScreen:
             for collision in bg_collisions:
                 # Hits ground
                 if enemy.name != "piranhaplant":
-
                     if enemy.rect.bottom < collision.rect.top + 20:
                         enemy.rect.bottom = collision.rect.top - 5
                     # Hit side walls
@@ -644,7 +639,7 @@ class GameScreen:
 
                         self.coin_group.add(Coins(hub=hub, x=row, y=col, name="coin", state="resting"))
         except LookupError:
-            print('no brickset exist within this level')
+            print('no coinset exist within this level')
 
         # Add Brick Group Instance
         try:
@@ -698,7 +693,11 @@ class GameScreen:
 
         try:
             for firebar in self.hub.game_levels[self.level_name]["firebar_group"]:
-                self.firebar_group.add(Firebar(self.hub, firebar["x"], firebar["y"], firebar["dir"]))
+                self.firebar_group.add(Firebar(self.hub, firebar["x"], firebar["y"],
+                                               name='firebar', direction=firebar["dir"]))
+                self.brick_group.add(Bricks(hub=hub, x=firebar["x"], y=firebar["y"], insides="opened",
+                                            powerup_group="still", name="brick",
+                                            theme=self.hub.game_levels[self.level_name]["theme"]))
         except LookupError:
             print('no firebar exist within this level')
 

@@ -46,6 +46,7 @@ class Bricks(Sprite):
         self.coin_total = 0
         self.setup_contents()
         self.group = powerup_group
+        self.invis = False
         self.powerup_in_box = True
         self.bumped_up = False
 
@@ -59,7 +60,10 @@ class Bricks(Sprite):
             self.coin_total = 0
 
     def draw(self):
-        self.screen.blit(self.image, self.rect)
+        if self.group == "invis":
+            pygame.draw.rect(self.screen, (0, 0, 255, 128), self.rect, -1)
+        else:
+            self.screen.blit(self.image, self.rect)
 
     def update(self):
         if self.group == "box":
@@ -115,6 +119,8 @@ class Bricks(Sprite):
 
     def bumped(self):
         """Bump state actions"""
+        if self.group == "invis":
+            self.group = "box"
         if self.rect.y <= (self.rest_height - 20) or self.rect.y >= (self.rest_height + 20):
             self.rect.y = self.rest_height
             self.bumped_up = False
