@@ -2745,6 +2745,40 @@
         "world_offset": 5547
       }
     ],
+    "coin_group":[
+      { "startX": 218,
+        "startY": 310,
+        "Row": 2,
+        "Col": 1
+      },
+      { "startX": 268,
+        "startY": 210,
+        "Row": 3,
+        "Col": 5
+       },
+      { "startX": 515,
+        "startY": 310,
+        "Row": 2,
+        "Col": 1
+      }
+    ],
+    "brick_group":[
+      { "startX": 8,
+        "startY": 51,
+        "Row": 12,
+        "Col": 1
+      },
+      { "startX": 208,
+        "startY": 52,
+        "Row": 1,
+        "Col": 7
+      },
+      { "startX": 208,
+        "startY": 466,
+        "Row": 3,
+        "Col": 7
+      }
+    ],
     "gumba_group": [],
     "collision_group": [
       {
