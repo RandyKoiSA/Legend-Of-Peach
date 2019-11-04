@@ -340,7 +340,6 @@ class GameScreen:
                                                                      x=brick.rect.x + self.camera.world_offset_x,
                                                                      y=brick.rect.y-5, name="Flower"))
                             else:
-                                print("Make a brick piece")
                                 self.brickpieces_group.add(
                                     BrickPieces(hub=self.hub, x=brick.rect.x + self.camera.world_offset_x,
                                                 y=brick.rect.y - 25, velx=-5, vely=-12, theme=brick.theme),
@@ -731,6 +730,9 @@ class GameScreen:
                 enemy.rect.x = enemy.original_pos[0] - self.camera.world_offset_x
 
             for mushroom in self.magic_mushroom_group:
+                mushroom.rect.x = mushroom.original_pos[0] - self.camera.world_offset_x
+
+            for mushroom in self.oneup_mushroom_group:
                 mushroom.rect.x = mushroom.original_pos[0] - self.camera.world_offset_x
 
             for starman in self.starman_group:

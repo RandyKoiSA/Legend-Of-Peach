@@ -95,12 +95,6 @@
          "color": 0
       }
     ],
-    "paratroop_group": [
-      {
-        "x": 500,
-        "y": 300
-      }
-    ],
     "bricks": [
       {
       "x": 771,
@@ -2198,7 +2192,151 @@
         "world_offset": 0
       }
     ],
-    "gumba_group": [],
+    "plant_group": [
+      {
+         "x": 8506,
+         "y": 360
+      },
+      {
+         "x": 5900,
+         "y": 360
+
+      },
+      {
+         "x": 6290,
+         "y": 295
+
+      },
+      {
+         "x": 5563,
+         "y": 459
+      },
+      {
+         "x": 4997,
+         "y": 360
+      },
+      {
+         "x": 2237,
+         "y": 360
+      },
+      {
+         "x": 3583,
+         "y": 360
+      }],
+    "gumba_group": [
+      {
+         "x": 7958,
+         "y": 580
+      },
+      {
+         "x": 8083,
+         "y": 579
+      },
+      {
+        "x": 5788,
+        "y": 585
+      },
+      {
+         "x": 4954,
+         "y": 369
+      },
+      {
+         "x": 5536,
+         "y": 469
+      },
+      {
+         "x": 4173,
+         "y": 583
+      },
+      {
+         "x": 4243,
+         "y": 583
+      },
+      {
+         "x": 4321,
+         "y": 583
+      },
+      {
+         "x": 3284,
+         "y": 585
+      },
+      {
+         "x": 3367,
+         "y": 583
+      },
+      {
+         "x": 3450,
+         "y": 580
+      },
+      {
+        "x": 1155,
+        "y": 329
+      },
+      {
+         "x": 2004,
+         "y": 575
+      },
+      {
+        "x": 2099,
+        "y": 579
+      },
+      {
+         "x": 2959,
+         "y": 578
+      },
+      {
+         "x": 2839,
+         "y": 585
+      }
+    ],
+    "koopatroop_group": [
+      {
+         "x": 8890,
+         "y": 563,
+        "color": 0
+      },
+      {
+         "x": 8191,
+         "y": 572,
+        "color": 0
+      },
+      {
+         "x": 8323,
+         "y": 571,
+        "color": 0
+      },
+      {
+         "x": 6622,
+         "y": 572,
+        "color": 0
+      },
+      {
+         "x": 3178,
+         "y": 572,
+        "color": 0
+      },
+       {
+         "x": 1576,
+         "y": 585,
+        "color": 0
+      },
+      {
+         "x": 1462,
+         "y": 585,
+        "color": 0
+      },
+      {
+         "x": 2655,
+         "y": 363,
+        "color": 0
+      }
+    ],
+    "paratroop_group": [
+      {
+         "x": 7282,
+         "y": 468
+      }
+    ],
     "bricks": [
       {
       "x": 724,
@@ -2220,8 +2358,233 @@
       "inside": "None",
       "powerup": "Brick",
       "name": "brick"
+      },
+      {
+        "x": 1350,
+        "y": 240,
+        "inside": "gshroom",
+        "powerup": "invis",
+        "name": "brick"
+      },
+      {
+        "x": 1350,
+        "y": 440,
+        "inside": "coin",
+        "powerup": "invis",
+        "name": "brick"
+      },
+      {
+         "x": 2556,
+         "y": 240,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2606,
+         "y": 240,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2606,
+         "y": 240,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2656,
+         "y": 240,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2706,
+         "y": 240,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2756,
+         "y": 240,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2556,
+         "y": 438,
+        "inside": "rshroom",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2606,
+         "y": 438,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2656,
+         "y": 438,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2706,
+         "y": 438,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 2756,
+         "y": 438,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 3280,
+         "y": 439,
+        "inside": "None",
+        "powerup": "brick",
+        "name": "brick"
+      },
+      {
+         "x": 3330,
+         "y": 240,
+        "inside": "None",
+        "powerup": "brick",
+        "name": "brick"
+      },
+      {
+         "x": 3810,
+         "y": 439,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 3860,
+         "y": 439,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 3910,
+         "y": 439,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 3960,
+         "y": 439,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 4110,
+         "y": 439,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 4160,
+         "y": 439,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 4210,
+         "y": 439,
+        "inside": "coin",
+        "powerup": "box",
+        "name": "brick"
+      },
+      {
+         "x": 6029,
+         "y": 239,
+        "inside": "rshroom",
+        "powerup": "brick",
+        "name": "brick"
+      },
+      {
+         "x": 7764,
+         "y": 439,
+        "inside": "coins",
+        "powerup": "brick",
+        "name": "brick"
+      },
+      {
+         "x": 8199,
+         "y": 438,
+          "inside": "coin",
+         "powerup": "box",
+         "name": "brick"
+      },
+      {
+         "x": 8295,
+         "y": 239,
+          "inside": "rshroom",
+         "powerup": "brick",
+         "name": "brick"
+      },
+      {
+         "x": 8973,
+         "y": 239,
+          "inside": "coin",
+         "powerup": "invis",
+         "name": "brick"
       }
       ],
+    "brick_group":[
+      { "startX": 1400,
+        "startY": 240,
+        "Row": 1,
+        "Col": 3
+      },
+      { "startX": 3380,
+        "startY": 240,
+        "Row": 1,
+        "Col": 3
+      },
+      { "startX": 3910,
+        "startY": 239,
+        "Row": 1,
+        "Col": 5
+      },
+      { "startX": 4437,
+        "startY": 239,
+        "Row": 1,
+        "Col": 4
+      },
+      { "startX": 6079,
+        "startY": 239,
+        "Row": 1,
+        "Col": 3
+      },
+      { "startX": 7908,
+        "startY": 239,
+        "Row": 1,
+        "Col": 5
+      },
+      { "startX": 8922,
+        "startY": 438,
+        "Row": 1,
+        "Col": 2
+      }],
     "collision_group": [
 
       {
@@ -2361,6 +2724,12 @@
          "y": 588,
          "width": 49,
          "height": 52
+      }
+    ],
+      "flagpole_group": [
+      {
+        "x": 9614,
+        "y": 70
       }
     ]
   },

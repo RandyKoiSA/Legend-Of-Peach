@@ -176,7 +176,6 @@ class BrickPieces(Sprite):
         if pygame.time.get_ticks() - self.turntimer > 100:
             self.turntimer = pygame.time.get_ticks()
             self.image = pygame.transform.rotozoom(self.image, self.velX, 1)
-        print("PIECE AT " + str(self.rect.x))
         self.rect.y += self.velY
         self.velY += self.gravity
         self.check_gone()
@@ -184,7 +183,6 @@ class BrickPieces(Sprite):
     def check_gone(self):
         """Remove When off Screen"""
         if self.rect.y > self.screen_rect.bottom:
-            print("REMOVED PIECE")
             self.kill()
 
     def draw(self):
