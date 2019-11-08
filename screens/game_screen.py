@@ -254,9 +254,9 @@ class GameScreen:
         # Draw Firebar
         self.draw_firebar_group()
 
-        # if self.controller.toggle_grid:
-        # Developer tool, Display grid coordinates if toggled
-        # dt.draw_debug_line(self.screen, self.player_group)
+        if self.controller.toggle_grid:
+            # Developer tool, Display grid coordinates if toggled
+            dt.draw_debug_line(self.screen, self.player_group, self.camera)
         if self.controller.toggle_mouse_coordinates:
             # Developer tool, Display mouse coordinates over cursor if toggled
             dt.draw_mouse_coordinates(self.screen, self.camera)

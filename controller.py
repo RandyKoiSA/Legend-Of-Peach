@@ -10,7 +10,7 @@ class Controller:
         self.hub = hub
 
         # Developer use only
-        self.developer_mode = False
+        self.developer_mode = True
         self.toggle_grid = False
         self.toggle_mouse_coordinates = False
         self.point_a = [0, 0]

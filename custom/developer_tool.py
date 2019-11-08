@@ -16,7 +16,7 @@ def get_coordinates(player_group, camera):
     print("x_coordinates based on player's left side: " + str(x_coordinates))
 
 
-def draw_debug_line(self, screen, player_group):
+def draw_debug_line(screen, player_group, camera):
     """ Developer tool, creates a horizontal lines and text to show the y coordinates.
     Also, created a vertical line on the right side of mario to find the x coordinates based on where he is. """
     increment = 50
@@ -35,14 +35,14 @@ def draw_debug_line(self, screen, player_group):
 
     # Draw vertical x axis line
     player_rect = player_group.sprite.rect
-    msg = str(self.camera.world_offset_x + self.player_group.sprite.rect.right)
+    msg = str(camera.world_offset_x + player_group.sprite.rect.right)
     font = pygame.font.Font('font/kenvector_future_thin.ttf', 20)
     message_image = font.render(msg, True, (255, 255, 255))
     message_rect = message_image.get_rect()
     message_rect.y = player_group.sprite.rect.top
     message_rect.x = player_group.sprite.rect.right
-    pygame.draw.line(self.screen, (255, 255, 255), (player_rect.right, 0),
-                     (player_rect.right, self.screen.get_rect().height))
+    pygame.draw.line(screen, (255, 255, 255), (player_rect.right, 0),
+                     (player_rect.right, screen.get_rect().height))
     screen.blit(message_image, message_rect)
 
 

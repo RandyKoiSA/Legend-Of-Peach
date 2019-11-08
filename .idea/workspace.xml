@@ -5,9 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/LegendOfPeach.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LegendOfPeach.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/levels.json" beforeDir="false" afterPath="$PROJECT_DIR$/levels.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obstacles/bricks.py" beforeDir="false" afterPath="$PROJECT_DIR$/obstacles/bricks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obstacles/firebar.py" beforeDir="false" afterPath="$PROJECT_DIR$/obstacles/firebar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom/developer_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom/developer_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/game_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/screens/game_screen.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -248,7 +248,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/screens/game_screen.py</url>
-          <line>25</line>
+          <line>30</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
